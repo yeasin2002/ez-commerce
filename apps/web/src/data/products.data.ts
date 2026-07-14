@@ -29,7 +29,7 @@ export const BEST_SELLERS: Product[] = [
     original: 109.99,
     discount: 22,
     image:
-      "https://images.unsplash.com/photo-1526232636376-102b0ec5a05d?w=800&q=80",
+      "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
   },
   {
     id: "bs-4",
@@ -52,7 +52,7 @@ export const NEW_ARRIVALS: Product[] = [
     original: 119.99,
     discount: 20,
     image:
-      "https://images.unsplash.com/photo-1614632537190-23e4b62d38e8?w=800&q=80",
+      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
     tag: "New",
   },
   {
@@ -71,7 +71,7 @@ export const NEW_ARRIVALS: Product[] = [
     price: 99.99,
     tag: "New",
     image:
-      "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&q=80",
+      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
   },
   {
     id: "na-4",

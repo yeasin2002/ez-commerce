@@ -4,7 +4,7 @@ const TILES = [
   {
     title: "Anticipated Matchup",
     caption: "El Clásico Kits — Shop the Rivalry",
-    image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=1000&q=80",
   },
   {
     title: "The Playmakers",
