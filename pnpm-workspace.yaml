@@ -1,0 +1,11 @@
+packages:
+  - "apps/**"
+  - "!apps/backend/.medusa/**"
+allowBuilds:
+  '@medusajs/telemetry': true
+  '@swc/core': true
+  esbuild: true
+  msgpackr-extract: true
+  protobufjs: true
+  sharp: true
+  unrs-resolver: true

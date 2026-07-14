@@ -1,30 +1,44 @@
 {
-  "name": "ez-commerce",
-  "private": true,
+  "name": "dtc-starter-monorepo",
+  "private": false,
+  "packageManager": "pnpm@11.13.0",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "start": "turbo start",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "backend:seed": "turbo seed --filter=@dtc/backend",
+    "backend:dev": "turbo dev --filter=@dtc/backend",
+    "storefront:dev": "turbo dev --filter=@dtc/storefront"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@medusajs/telemetry",
+      "@swc/core",
+      "esbuild",
+      "msgpackr-extract",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "devDependencies": {
-    "prettier": "^3.7.4",
-    "turbo": "^2.10.5",
-    "typescript": "5.9.2"
+    "@medusajs/eslint-plugin": "2.16.0",
+    "eslint": "^9.39.4",
+    "jiti": "^2.7.0",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.14"
   },
-  "engines": {
-    "node": ">=18"
-  },
-  "devEngines": {
-    "packageManager": {
-      "name": "bun",
-      "version": "1.3.13"
-    }
+  "overrides": {
+    "@types/react": "19.0.5",
+    "@types/react-dom": "19.0.5"
   },
   "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tooling/*"
+    "apps/**",
+    "!apps/backend/.medusa/**"
   ]
 }

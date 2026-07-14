@@ -1,159 +1,158 @@
-# Turborepo starter
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  Medusa DTC Starter
+</h1>
 
-This Turborepo starter is maintained by the Turborepo core team.
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
 
-## Using this example
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  </a>
+  <a href="https://circleci.com/gh/medusajs/medusa">
+    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
+  </a>
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
 
-Run the following command:
+# Medusa DTC Starter
 
-```sh
-npx create-turbo@latest
+A production-ready monorepo starter for direct-to-consumer ecommerce stores powered by Medusa and Next.js. Includes a fully featured storefront with product browsing, cart, checkout, customer accounts, and order management.
+
+## Features
+
+- All of [Medusa's commerce features](https://docs.medusajs.com/resources/commerce-modules)
+- Multi-region support with automatic country detection
+- Product catalog with variant selection
+- Cart with promotion codes
+- Multi-step checkout with shipping and payment
+- Customer accounts with order history and address management
+- Order transfer between accounts
+
+## Getting Started
+
+### Deploy with Medusa Cloud
+
+The fastest way to get started is deploying with [Medusa Cloud](https://cloud.medusajs.com):
+
+1. [Create a Medusa Cloud account](https://cloud.medusajs.com)
+2. Deploy this starter directly from your dashboard
+
+### Local Installation
+
+> **Prerequisites:
+>
+> - [Node.js](https://nodejs.org/) v20+
+> - [PostgreSQL](https://www.postgresql.org/) v15+
+> - [pnpm](https://pnpm.io/) v10+
+
+1. Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/medusajs/dtc-starter.git
+cd dtc-starter
+pnpm install
 ```
 
-## What's inside?
+2. Set up environment variables for the backend:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+cp apps/backend/.env.template apps/backend/.env
 ```
 
-Without global `turbo`, use your package manager:
+3. Set the database URL in `apps/backend.env`:
 
-```sh
-cd my-turborepo
-npx turbo build
-bun dlx turbo build
-bun exec turbo build
+```bash
+# Replace with actual database URL, make sure the database exists.
+DATABASE_URL=postgres://postgres:@localhost:5432/medusa-dtc-starter
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+4. Run migrations:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
+```bash
+cd apps/backend
+pnpm medusa db:migrate
 ```
 
-Without global `turbo`:
+5. Add admin user:
 
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
+```bash
+cd apps/backend
+pnpm medusa user -e admin@test.com -p supersecret
 ```
 
-### Develop
+6. Start Medusa backend:
 
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
+```bash
+cd apps/backend
+pnpm dev
 ```
 
-Without global `turbo`, use your package manager:
+7. Open the admin dashboard at `localhost:9000/app` and log in. Retrieve your publishable API key at Settings > Publishable API key.
 
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
+8. Set up environment variables for the storefront:
+
+```bash
+cp apps/storefront/.env.template apps/storefront/.env.local
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+9. Update `apps/storefront/.env.local` with your Medusa publishable API key:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
+```bash
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_6c3...
 ```
 
-Without global `turbo`:
+10.  Start storefront:
 
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
+```bash
+cd apps/storefront
+pnpm dev
 ```
 
-### Remote Caching
+The storefront runs on `http://localhost:8000`.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+You can slo run the following command from the root to start both backend and storefront:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
+```bash
+pnpm dev
 ```
 
-Without global `turbo`, use your package manager:
+## Configuration
 
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
+The storefront is configured via environment variables in `apps/storefront/.env.local`:
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | Publishable API key from your Medusa backend | — |
+| `NEXT_PUBLIC_MEDUSA_BACKEND_URL` | URL of your Medusa backend | `http://localhost:9000` |
+| `NEXT_PUBLIC_DEFAULT_REGION` | Default region country code | `dk` |
+| `NEXT_PUBLIC_BASE_URL` | Base URL of the storefront | `https://localhost:8000` |
+| `NEXT_PUBLIC_STRIPE_KEY` | Stripe publishable key (optional) | — |
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## Resources
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- [Medusa Documentation](https://docs.medusajs.com)
+- [Medusa Cloud](https://cloud.medusajs.com)
