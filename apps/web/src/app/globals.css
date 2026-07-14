@@ -1,0 +1,162 @@
+@import "tailwindcss" source(none);
+@source "..";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * FootyStyleHub Design System
+ * Editorial commerce — photography-first, mechanically restrained chrome.
+ * All colors are semantic tokens in oklch. Never hardcode hex in components.
+ */
+
+@theme inline {
+  --font-sans: "Instrument Sans", system-ui, sans-serif;
+  --font-display: "Bebas Neue", "Instrument Sans", sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-pill: 9999px;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ink: var(--ink);
+  --color-canvas: var(--canvas);
+  --color-cloud: var(--cloud);
+  --color-hairline: var(--hairline);
+  --color-hairline-soft: var(--hairline-soft);
+  --color-charcoal: var(--charcoal);
+  --color-ash: var(--ash);
+  --color-mute: var(--mute);
+  --color-stone: var(--stone);
+  --color-sale: var(--sale);
+  --color-sale-deep: var(--sale-deep);
+  --color-success: var(--success);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Editorial neutrals — near-monochrome retail chrome */
+  --ink: oklch(0.18 0 0);
+  --canvas: oklch(1 0 0);
+  --cloud: oklch(0.97 0 0);
+  --hairline: oklch(0.82 0 0);
+  --hairline-soft: oklch(0.91 0 0);
+  --charcoal: oklch(0.32 0 0);
+  --ash: oklch(0.4 0 0);
+  --mute: oklch(0.55 0 0);
+  --stone: oklch(0.68 0 0);
+
+  /* Semantic accents — reserved for signal */
+  --sale: oklch(0.58 0.22 27);
+  --sale-deep: oklch(0.38 0.18 27);
+  --success: oklch(0.55 0.15 155);
+
+  /* shadcn semantic mappings */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--canvas);
+  --card-foreground: var(--ink);
+  --popover: var(--canvas);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--canvas);
+  --secondary: var(--cloud);
+  --secondary-foreground: var(--ink);
+  --muted: var(--cloud);
+  --muted-foreground: var(--mute);
+  --accent: var(--cloud);
+  --accent-foreground: var(--ink);
+  --destructive: var(--sale);
+  --destructive-foreground: var(--canvas);
+  --border: var(--hairline-soft);
+  --input: var(--hairline-soft);
+  --ring: var(--ink);
+}
+
+.dark {
+  --background: var(--ink);
+  --foreground: var(--canvas);
+  --card: oklch(0.22 0 0);
+  --card-foreground: var(--canvas);
+  --popover: oklch(0.22 0 0);
+  --popover-foreground: var(--canvas);
+  --primary: var(--canvas);
+  --primary-foreground: var(--ink);
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: var(--canvas);
+  --muted: oklch(0.25 0 0);
+  --muted-foreground: var(--stone);
+  --accent: oklch(0.25 0 0);
+  --accent-foreground: var(--canvas);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--stone);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+}
+
+@utility marquee-track {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
