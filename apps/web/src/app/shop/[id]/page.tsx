@@ -1,14 +1,14 @@
 import { getProductById } from "@/data/products.data";
-import { Header } from "@/feature/home/Header";
 import { Footer } from "@/feature/home/Footer";
+import { Header } from "@/feature/home/Header";
 import { ProductGallery } from "@/feature/shop/ProductGallery";
 import { ProductInfo } from "@/feature/shop/ProductInfo";
 import { PromoMarquee } from "@/feature/shop/PromoMarquee";
-import { RelatedProducts } from "@/feature/shop/RelatedProducts";
 import { RecentlyViewed } from "@/feature/shop/RecentlyViewed";
+import { RelatedProducts } from "@/feature/shop/RelatedProducts";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
 
 export default async function ProductDetailsPage({
   params,
@@ -41,7 +41,10 @@ export default async function ProductDetailsPage({
 
           {/* Simple PDP pagination indicator */}
           <div className="flex items-center gap-3">
-            <Link href="/" className="hover:text-ink flex items-center gap-1 transition-colors">
+            <Link
+              href="/"
+              className="hover:text-ink flex items-center gap-1 transition-colors"
+            >
               <ChevronLeft className="h-3 w-3" /> Back
             </Link>
             <span>|</span>
@@ -51,7 +54,10 @@ export default async function ProductDetailsPage({
 
         {/* Product Details Section */}
         <div className="container-page grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 pb-16">
-          <ProductGallery images={product.images || [product.image]} name={product.name} />
+          <ProductGallery
+            images={product.images || [product.image]}
+            name={product.name}
+          />
           <ProductInfo product={product} />
         </div>
 

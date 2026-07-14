@@ -137,123 +137,135 @@ export const NEW_ARRIVALS: Product[] = [
     price: 94.99,
     original: 119.99,
     discount: 20,
-    image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
-      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80"
+      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
     ],
-    description: "The fresh drop of Atletico Madrid's 2025/26 season. Designed with modern abstract patterns and sustainable performance materials, this third jersey represents speed, precision, and passion.",
+    description:
+      "The fresh drop of Atletico Madrid's 2025/26 season. Designed with modern abstract patterns and sustainable performance materials, this third jersey represents speed, precision, and passion.",
     details: [
       "Sustainable design made of 100% recycled fibers.",
       "Advanced cooling technology for professional athletes.",
       "Unique premium color accents.",
-      "Official licensed merchandise tag."
+      "Official licensed merchandise tag.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Griezmann #7", label: "Griezmann #7" },
-      { name: "Alvarez #19", label: "Alvarez #19" }
+      { name: "Alvarez #19", label: "Alvarez #19" },
     ],
     patches: ["La Liga Sleeve Patch", "No Patch"],
     rating: 4.7,
     reviewCount: 42,
     soldCount: 12,
     viewingCount: 8,
-    tag: "New"
+    tag: "New",
   },
   {
     id: "na-2",
     name: "Brazil National Team 2026",
     team: "Brazil",
     price: 99.99,
-    image: "https://images.unsplash.com/photo-1552667466-07770ae110d0?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1552667466-07770ae110d0?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1552667466-07770ae110d0?w=800&q=80",
-      "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80"
+      "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80",
     ],
-    description: "The legendary yellow jersey of Seleção. Prepare for the World Cup with the official Brazil 2026 kit, featuring classical green details, jaguar print patterns integrated in the fabric, and the historic 5 stars.",
+    description:
+      "The legendary yellow jersey of Seleção. Prepare for the World Cup with the official Brazil 2026 kit, featuring classical green details, jaguar print patterns integrated in the fabric, and the historic 5 stars.",
     details: [
       "Historically authentic yellow and green colors.",
       "Embossed animal print designs celebrating Brazilian heritage.",
       "Dri-FIT ADV elite breathability zones.",
-      "Stitched federation badge with 5 championship stars."
+      "Stitched federation badge with 5 championship stars.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Vinicius Jr. #7", label: "Vinicius Jr. #7" },
       { name: "Neymar Jr. #10", label: "Neymar Jr. #10" },
-      { name: "Rodrygo #11", label: "Rodrygo #11" }
+      { name: "Rodrygo #11", label: "Rodrygo #11" },
     ],
     patches: ["FIFA World Cup Qualifiers Patch", "No Patch"],
     rating: 4.9,
     reviewCount: 220,
     soldCount: 95,
     viewingCount: 38,
-    tag: "Drop"
+    tag: "Drop",
   },
   {
     id: "na-3",
     name: "France Away Kit 2026",
     team: "France",
     price: 99.99,
-    image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
     ],
-    description: "Representing French class and style, the 2026 France Away Kit combines a clean white aesthetic with subtle retro pinstripes representing the colors of the Tricolore. Perfect for street styling or support.",
+    description:
+      "Representing French class and style, the 2026 France Away Kit combines a clean white aesthetic with subtle retro pinstripes representing the colors of the Tricolore. Perfect for street styling or support.",
     details: [
       "Unique Tricolore pinstripe gradient detail.",
       "Large Cockerel logo highlighting legacy.",
       "Lightweight athletic construction.",
-      "Made from eco-friendly recycled polyester."
+      "Made from eco-friendly recycled polyester.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Mbappé #10", label: "Mbappé #10" },
-      { name: "Griezmann #7", label: "Griezmann #7" }
+      { name: "Griezmann #7", label: "Griezmann #7" },
     ],
-    patches: ["Euro 2024 Sleeve Patch", "FIFA World Champions Badge", "No Patch"],
+    patches: [
+      "Euro 2024 Sleeve Patch",
+      "FIFA World Champions Badge",
+      "No Patch",
+    ],
     rating: 4.8,
     reviewCount: 165,
     soldCount: 45,
     viewingCount: 22,
-    tag: "New"
+    tag: "New",
   },
   {
     id: "na-4",
     name: "Portugal Home Kit 2026",
     team: "Portugal",
     price: 99.99,
-    image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80",
-      "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80"
+      "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80",
     ],
-    description: "Portugal's home identity wrapped in deep red and green. Inspired by the nation's naval exploration history, this premium shirt is built for peak performance and represents pride and passion.",
+    description:
+      "Portugal's home identity wrapped in deep red and green. Inspired by the nation's naval exploration history, this premium shirt is built for peak performance and represents pride and passion.",
     details: [
       "Deep classic Portugal red with green trim collar.",
       "VaporKnit high-stretch weave.",
       "Heat-transferred crest for low-weight comfort.",
-      "Eco-sustainable recycled manufacturing."
+      "Eco-sustainable recycled manufacturing.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Ronaldo #7", label: "Ronaldo #7" },
       { name: "Bruno Fernandes #8", label: "Bruno Fernandes #8" },
-      { name: "Bernardo Silva #10", label: "Bernardo Silva #10" }
+      { name: "Bernardo Silva #10", label: "Bernardo Silva #10" },
     ],
     patches: ["Euro 2024 Sleeve Patch", "No Patch"],
     rating: 4.9,
     reviewCount: 310,
     soldCount: 115,
     viewingCount: 52,
-    tag: "Drop"
-  }
+    tag: "Drop",
+  },
 ];
 
 export const ALL_PRODUCTS = [...BEST_SELLERS, ...NEW_ARRIVALS];
