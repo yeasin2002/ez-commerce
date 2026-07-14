@@ -32,6 +32,7 @@ export function EditorialTiles() {
               src={t.image}
               alt={t.title}
               fill
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="absolute inset-0 h-full w-full object-cover opacity-90 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />

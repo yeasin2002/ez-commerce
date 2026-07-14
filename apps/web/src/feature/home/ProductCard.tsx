@@ -10,6 +10,16 @@ export type Product = {
   discount?: number;
   image: string;
   tag?: string;
+  images?: string[];
+  description?: string;
+  details?: string[];
+  sizes?: string[];
+  players?: { name: string; label: string }[];
+  patches?: string[];
+  rating?: number;
+  reviewCount?: number;
+  soldCount?: number;
+  viewingCount?: number;
 };
 
 export function ProductCard({ product }: { product: Product }) {
@@ -38,6 +48,7 @@ export function ProductCard({ product }: { product: Product }) {
           src={product.image}
           alt={product.name}
           fill
+          sizes="(max-width: 768px) 50vw, 25vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
 

@@ -31,6 +31,7 @@ export function CategoryStrip() {
                   src={c.img}
                   alt={c.name}
                   fill
+                  sizes="(max-width: 768px) 25vw, 12.5vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>

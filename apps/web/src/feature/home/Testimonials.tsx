@@ -62,7 +62,8 @@ export function Testimonials() {
                   alt={r.name}
                   width={40}
                   height={40}
-                  className="rounded-pill object-cover"
+                  className="h-10 w-10 rounded-pill object-cover"
+                  style={{ width: "auto", height: "auto" }}
                 />
                 <div className="flex-1">
                   <div className="text-sm font-semibold text-ink">{r.name}</div>

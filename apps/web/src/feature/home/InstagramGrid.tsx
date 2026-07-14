@@ -30,6 +30,7 @@ export function InstagramGrid() {
               src={src}
               alt={`Instagram post ${i + 1}`}
               fill
+              sizes="(max-width: 768px) 50vw, 16.6vw"
               className="object-cover transition-transform duration-500 group-hover:scale-110"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-ink/0 transition-colors group-hover:bg-ink/40">
