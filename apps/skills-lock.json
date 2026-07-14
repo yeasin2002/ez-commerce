@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "skills": {
+    "building-admin-dashboard-customizations": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/building-admin-dashboard-customizations/SKILL.md",
+      "computedHash": "fdf61048a7c3872c70a16861c8bb3e5cf9973a04d55b97139cd49e352fa3f82c"
+    },
+    "building-storefronts": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/building-storefronts/SKILL.md",
+      "computedHash": "cdd94d4637a988d7e708ef9df9109b308d0e8cfe8fb602565301d045102bca43"
+    },
+    "building-with-medusa": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/building-with-medusa/SKILL.md",
+      "computedHash": "a0b03d86b418f29a2e822579e139174fe6e06c10d62ea23022047d30a66aa5e2"
+    },
+    "db-generate": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/db-generate/SKILL.md",
+      "computedHash": "ada2c0bdf020055310086c2697ca492a5d189c8e17d2793d8cb1134a609baaf4"
+    },
+    "db-migrate": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/db-migrate/SKILL.md",
+      "computedHash": "0a6bf470a5313ead6b31440349404ee6a96086427602bd499a6fef846f49ae6c"
+    },
+    "learning-medusa": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/learn-medusa/skills/learning-medusa/SKILL.md",
+      "computedHash": "a410dc519887289918c92acff981d3fc2711ea13d6964b0f40811cda14d4c554"
+    },
+    "new-user": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/medusa-dev/skills/new-user/SKILL.md",
+      "computedHash": "9df255145bc978dd21390c725ee372d82126fc08416c67fb1d278457a93253a1"
+    },
+    "storefront-best-practices": {
+      "source": "medusajs/medusa-agent-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/ecommerce-storefront/skills/storefront-best-practices/SKILL.md",
+      "computedHash": "e0a9b5a1ca1d4e5eb488cf4366a28a8317000ddaa2eb62a06a35b0c6b0f06085"
+    }
+  }
+}
