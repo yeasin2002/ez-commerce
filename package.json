@@ -1,7 +1,7 @@
 {
   "name": "dtc-starter-monorepo",
   "private": false,
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@11.13.0",
   "engines": {
     "node": ">=20"
   },
@@ -16,10 +16,15 @@
     "storefront:dev": "turbo dev --filter=@dtc/storefront"
   },
   "pnpm": {
-    "overrides": {
-      "@types/react": "19.0.5",
-      "@types/react-dom": "19.0.5"
-    }
+    "onlyBuiltDependencies": [
+      "@medusajs/telemetry",
+      "@swc/core",
+      "esbuild",
+      "msgpackr-extract",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "devDependencies": {
     "@medusajs/eslint-plugin": "2.16.0",
@@ -27,5 +32,13 @@
     "jiti": "^2.7.0",
     "prettier": "^3.2.5",
     "turbo": "^2.0.14"
-  }
+  },
+  "overrides": {
+    "@types/react": "19.0.5",
+    "@types/react-dom": "19.0.5"
+  },
+  "workspaces": [
+    "apps/**",
+    "!apps/backend/.medusa/**"
+  ]
 }
