@@ -1,9 +1,9 @@
-import { Header } from "@/feature/home/Header";
+import { ALL_PRODUCTS } from "@/data/products.data";
 import { Footer } from "@/feature/home/Footer";
+import { Header } from "@/feature/home/Header";
+import { ShopGrid } from "@/feature/shop/ShopGrid";
 import { ShopSidebar } from "@/feature/shop/ShopSidebar";
 import { ShopToolbar } from "@/feature/shop/ShopToolbar";
-import { ShopGrid } from "@/feature/shop/ShopGrid";
-import { ALL_PRODUCTS } from "@/data/products.data";
 import Link from "next/link";
 
 export default function ShopPage() {

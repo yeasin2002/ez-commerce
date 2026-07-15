@@ -3,9 +3,8 @@ import Link from "next/link";
 
 const NAV = [
   { label: "Home", to: "/" },
-  { label: "Shop", to: "/" },
-  { label: "Collections", to: "/" },
-  { label: "New Arrivals", to: "/" },
+  { label: "Shop", to: "/shop" },
+  // { label: "Collections", to: "/" },
   { label: "Contact", to: "/" },
 ];
 

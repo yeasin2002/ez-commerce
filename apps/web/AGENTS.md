@@ -162,3 +162,19 @@ bun run lint
 
 This version might have  breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices. And also do not check every time. Only if you face any version-related issue then do check this. 
 <!-- END:nextjs-agent-rules -->
+
+
+<!-- BEGIN:modification-permission -->
+
+## no modification permission. 
+Do not do any modification in node_modules or any other file/folder that are in .gitignore. 
+
+
+## 3. Important Rules to Keep in Mind
+
+1. **SDK-Only API requests**: Always use the imported `sdk` instance or functions from `@lib/data/` for fetching data from the backend. Never perform raw `fetch` calls to `/store/*`.
+2. **CORS Configuration**: The Medusa Backend expects `STORE_CORS` to list all client origins. If you change the web app port (defaults to `3000`), make sure to append it to `STORE_CORS` in the backend environment.
+3. **Pill-shaped Buttons**: Per the web app rules (`apps/web/AGENTS.md` and `DESIGN.md`), all buttons must always be styled with `rounded-full` (pill shape). No exceptions.
+
+
+<!-- END:modification-permission -->

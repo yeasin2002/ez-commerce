@@ -223,6 +223,15 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.4.0
         version: 5.4.0(react-hook-form@7.81.0(react@19.2.4))
+      '@medusajs/js-sdk':
+        specifier: 2.17.2
+        version: 2.17.2
+      '@stripe/react-stripe-js':
+        specifier: ^5.6.1
+        version: 5.6.1(@stripe/stripe-js@8.11.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@stripe/stripe-js':
+        specifier: ^8.11.0
+        version: 8.11.0
       '@tabler/icons-react':
         specifier: ^3.44.0
         version: 3.44.0(react@19.2.4)
@@ -232,24 +241,39 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      lodash:
+        specifier: ^4.18.1
+        version: 4.18.1
       lucide-react:
         specifier: ^1.24.0
         version: 1.24.0(react@19.2.4)
       next:
         specifier: 16.2.10
         version: 16.2.10(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      pg:
+        specifier: ^8.22.0
+        version: 8.22.0
+      qs:
+        specifier: ^6.15.3
+        version: 6.15.3
       radix-ui:
         specifier: ^1.6.2
         version: 1.6.2(@types/react-dom@19.0.5(@types/react@19.0.5))(@types/react@19.0.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
         version: 19.2.4
+      react-country-flag:
+        specifier: ^3.1.0
+        version: 3.1.0(react@19.2.4)
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
       react-hook-form:
         specifier: ^7.81.0
         version: 7.81.0(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       shadcn:
         specifier: ^4.13.0
         version: 4.13.0(typescript@5.9.3)
@@ -263,18 +287,30 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
+      '@medusajs/types':
+        specifier: 2.17.2
+        version: 2.17.2(ioredis@5.8.2)(vite@5.4.21(@types/node@20.19.26)(lightningcss@1.32.0)(terser@5.44.1))
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.3.2
+      '@types/lodash':
+        specifier: ^4.17.24
+        version: 4.17.24
       '@types/node':
         specifier: ^20
         version: 20.19.26
+      '@types/pg':
+        specifier: ^8.20.0
+        version: 8.20.0
       '@types/react':
         specifier: ^19
         version: 19.0.5
       '@types/react-dom':
         specifier: ^19
         version: 19.0.5(@types/react@19.0.5)
+      ansi-colors:
+        specifier: ^4.1.3
+        version: 4.1.3
       babel-plugin-react-compiler:
         specifier: 1.0.0
         version: 1.0.0
@@ -5333,9 +5369,6 @@ packages:
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
-
-  '@types/pg@8.16.0':
-    resolution: {integrity: sha512-RmhMd/wD+CF8Dfo+cVIy3RR5cl8CyfXQ0tGgW6XBL8L4LM/UTEbNXYRbLwU6w+CgrKBNbrQWt4FUtTfaU5jSYQ==}
 
   '@types/pg@8.20.0':
     resolution: {integrity: sha512-bEPFOaMAHTEP1EzpvHTbmwR8UsFyHSKsRisLIHVMXnpNefSbGA1bD6CVy+qKjGSqmZqNqBDV2azOBo8TgkcVow==}
@@ -12565,10 +12598,10 @@ snapshots:
 
   '@medusajs/deps@2.17.2(@types/node@20.19.43)':
     dependencies:
-      '@mikro-orm/cli': 6.6.14(pg@8.20.0)
+      '@mikro-orm/cli': 6.6.14(pg@8.22.0)
       '@mikro-orm/core': 6.6.14
-      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.20.0)
-      '@mikro-orm/migrations': 6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.20.0)
+      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.22.0)
+      '@mikro-orm/migrations': 6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.22.0)
       '@mikro-orm/postgresql': 6.6.14(@mikro-orm/core@6.6.14)
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation-pg': 0.52.0(@opentelemetry/api@1.9.0)
@@ -12576,7 +12609,7 @@ snapshots:
       '@opentelemetry/sdk-node': 0.218.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-node': 2.7.1(@opentelemetry/api@1.9.0)
       awilix: 8.0.1
-      pg: 8.20.0
+      pg: 8.22.0
       zod: 4.2.0
     transitivePeerDependencies:
       - '@types/node'
@@ -13013,6 +13046,13 @@ snapshots:
       ioredis: 5.8.2
       vite: 5.4.21(@types/node@17.0.21)(lightningcss@1.32.0)(terser@5.44.1)
 
+  '@medusajs/types@2.17.2(ioredis@5.8.2)(vite@5.4.21(@types/node@20.19.26)(lightningcss@1.32.0)(terser@5.44.1))':
+    dependencies:
+      bignumber.js: 9.3.1
+    optionalDependencies:
+      ioredis: 5.8.2
+      vite: 5.4.21(@types/node@20.19.26)(lightningcss@1.32.0)(terser@5.44.1)
+
   '@medusajs/types@2.17.2(ioredis@5.8.2)(vite@5.4.21(@types/node@20.19.43)(lightningcss@1.32.0)(terser@5.44.1))':
     dependencies:
       bignumber.js: 9.3.1
@@ -13127,11 +13167,11 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/cli@6.6.14(pg@8.20.0)':
+  '@mikro-orm/cli@6.6.14(pg@8.22.0)':
     dependencies:
       '@jercle/yargonaut': 1.1.5
       '@mikro-orm/core': 6.6.14
-      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.20.0)
+      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.22.0)
       fs-extra: 11.3.3
       tsconfig-paths: 4.2.0
       yargs: 17.7.2
@@ -13174,10 +13214,26 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/migrations@6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.20.0)':
+  '@mikro-orm/knex@6.6.14(@mikro-orm/core@6.6.14)(pg@8.22.0)':
     dependencies:
       '@mikro-orm/core': 6.6.14
-      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.20.0)
+      fs-extra: 11.3.3
+      knex: 3.2.10(pg@8.22.0)
+      sqlstring: 2.3.3
+    transitivePeerDependencies:
+      - mysql
+      - mysql2
+      - pg
+      - pg-native
+      - pg-query-stream
+      - sqlite3
+      - supports-color
+      - tedious
+
+  '@mikro-orm/migrations@6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.22.0)':
+    dependencies:
+      '@mikro-orm/core': 6.6.14
+      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.22.0)
       fs-extra: 11.3.3
       umzug: 3.8.2(@types/node@20.19.43)
     transitivePeerDependencies:
@@ -16832,6 +16888,13 @@ snapshots:
       react: 19.0.5
       react-dom: 19.0.5(react@19.0.5)
 
+  '@stripe/react-stripe-js@5.6.1(@stripe/stripe-js@8.11.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@stripe/stripe-js': 8.11.0
+      prop-types: 15.8.1
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
   '@stripe/stripe-js@8.11.0': {}
 
   '@swc/core-darwin-arm64@1.15.43':
@@ -17179,13 +17242,7 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.16.0
-
-  '@types/pg@8.16.0':
-    dependencies:
-      '@types/node': 20.19.43
-      pg-protocol: 1.13.0
-      pg-types: 2.2.0
+      '@types/pg': 8.20.0
 
   '@types/pg@8.20.0':
     dependencies:
@@ -20630,6 +20687,27 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  knex@3.2.10(pg@8.22.0):
+    dependencies:
+      colorette: 2.0.19
+      commander: 10.0.1
+      debug: 4.3.4
+      escalade: 3.2.0
+      esm: 3.2.25
+      get-package-type: 0.1.0
+      getopts: 2.3.0
+      interpret: 2.2.0
+      lodash: 4.18.1
+      pg-connection-string: 2.6.2
+      rechoir: 0.8.0
+      resolve-from: 5.0.0
+      tarn: 3.0.2
+      tildify: 2.0.0
+    optionalDependencies:
+      pg: 8.22.0
+    transitivePeerDependencies:
+      - supports-color
+
   kuler@2.0.0: {}
 
   language-subtag-registry@0.3.23: {}
@@ -21778,6 +21856,10 @@ snapshots:
   react-country-flag@3.1.0(react@19.0.5):
     dependencies:
       react: 19.0.5
+
+  react-country-flag@3.1.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
 
   react-currency-input-field@3.10.0(react@18.3.1):
     dependencies:
@@ -23065,6 +23147,18 @@ snapshots:
       rollup: 4.53.3
     optionalDependencies:
       '@types/node': 17.0.21
+      fsevents: 2.3.3
+      lightningcss: 1.32.0
+      terser: 5.44.1
+    optional: true
+
+  vite@5.4.21(@types/node@20.19.26)(lightningcss@1.32.0)(terser@5.44.1):
+    dependencies:
+      esbuild: 0.21.5
+      postcss: 8.5.19
+      rollup: 4.53.3
+    optionalDependencies:
+      '@types/node': 20.19.26
       fsevents: 2.3.3
       lightningcss: 1.32.0
       terser: 5.44.1
