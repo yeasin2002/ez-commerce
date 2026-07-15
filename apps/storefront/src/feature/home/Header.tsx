@@ -5,7 +5,7 @@ const NAV = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
   // { label: "Collections", to: "/" },
-  { label: "Contact", to: "/" },
+  { label: "Contact", to: "/contact" },
 ];
 
 export function Header() {
