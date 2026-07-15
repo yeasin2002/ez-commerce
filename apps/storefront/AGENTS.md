@@ -1,159 +1,206 @@
-<!-- Products -->
+<!-- 1.Product -->
+# Product
 
-# Product: FootyStyleHub / EZ Commerce Storefront
+**ez-commerce storefront** is a multi-category e-commerce storefront built for a business that initially sells football jerseys and sportswear but is architected to support any product category (apparel, electronics, accessories, etc.).
 
-A multi-category e-commerce storefront (currently focused on sportswear/football jerseys but designed to expand to any retail category). The platform serves customer-facing shopping flows only — no admin dashboard.
+## What It Does
 
-## Core User Types
-- **Guest Shopper** — browse and buy without an account
-- **Registered Customer** — account with order history, wishlist, saved addresses
-- **Returning Customer** — repeat buyer with personalized experience
+- Customers browse products across categories, view product detail pages, add to cart, and complete checkout.
+- Supports guest checkout and registered customer accounts.
+- Handles regional routing — all URLs are prefixed with a country code (e.g. `/bn/shop`).
+- Integrates with a Medusa v2 backend for products, cart, orders, payments, and regions.
+- Supports Cash on Delivery and Stripe online payments.
+- Displays promotional pricing (sale badges, strikethrough original prices, discount percentages).
 
-## Key Customer-Facing Features
-- Homepage with hero banners, featured categories, new arrivals, best sellers
-- Category & sub-category browsing, Product Listing Pages (PLP), Product Detail Pages (PDP)
-- Global search, filters, sorting
-- Shopping cart, guest checkout, address management, order summary
-- Payment: Cash on Delivery + online payment methods (TBD by region)
-- Customer accounts: order history, order tracking, wishlist, reviews & ratings
-- Discount pricing, promo codes, promotional badges
-- Static content pages: FAQ, Returns, Shipping, Contact, About
-- Order confirmation and status notifications
+## Target Users
 
-## Brand Identity
-- **Two-canvas system**: black (`#000000`) for cinematic/marketing pages; white/cream (`#ffffff`, `#fbfbf5`) for transactional pages
-- **Buttons are always pill-shaped** (`border-radius: 9999px`) — no exceptions
-- Primary fonts: **Instrument Sans** (brand/UI), **Neue Haas Grotesk Display** (display/hero), **Inter Variable** (body/UI)
-- Design system is documented in `DESIGN.md` and `SKILL.md`
-- BRD is in `BRD-Ecommerce-Platform.md`
+- Guest shoppers and registered customers
+- Mobile-first audience — the majority of traffic is expected on phones
 
-## Out of Scope
-- Admin/management dashboard
-- Vendor/marketplace seller onboarding
-- Physical logistics/warehouse operations
+## Key Business Rules
+
+- All buttons must use pill shape (`rounded-pill` / `border-radius: 9999px`) — this is a non-negotiable brand requirement.
+- Sale/discount prices are shown in the `--sale` accent color with the original price struck through.
+- The design follows a near-monochrome editorial style: black ink on white canvas, with the sale orange-red as the only semantic accent.
 
 
-<!-- Refarence files -->
-
-@BRD-Ecommerce-Platform.md
-@SKILL.md 
-@DESIGN.md
-
-
-<!-- Structure -->
-
+<!-- 2.structure -->
 # Project Structure
 
-## Root Layout
-
-```
-apps/web/
-├── src/
-│   └── app/                  # Next.js App Router root
-│       ├── layout.tsx        # Root layout (fonts, metadata, body wrapper)
-│       ├── page.tsx          # Homepage
-│       └── globals.css       # Global styles / Tailwind base
-├── public/                   # Static assets (SVGs, images)
-├── next.config.ts
-├── tsconfig.json
-├── postcss.config.mjs
-├── eslint.config.mjs
-├── DESIGN.md                 # Design system tokens and component specs
-├── SKILL.md                  # FootyStyleHub design-system authoring rules
-└── BRD-Ecommerce-Platform.md # Business requirements document
-```
-
-## Conventions
-
-### File & Folder Naming
-- Route folders and files: `kebab-case` (e.g., `product-detail/`, `shopping-cart/`)
-- React components: `PascalCase.tsx` (e.g., `ProductCard.tsx`)
-- Utility/helper modules: `camelCase.ts` (e.g., `formatPrice.ts`)
-- Co-locate component-specific styles, tests, and types in the same folder as the component
-
-### App Router Patterns
-- Pages live at `src/app/<route>/page.tsx`
-- Shared layouts at `src/app/<route>/layout.tsx`
-- Server Components by default; add `"use client"` only when needed (event handlers, browser APIs, hooks)
-- Use `next/image` for all images and `next/link` for all internal navigation
-- Metadata exported from `layout.tsx` or `page.tsx` via the `Metadata` type
-
-### Imports
-- Use the `@/*` alias for all imports from `src/` (e.g., `import { Button } from "@/components/ui/Button"`)
-- Avoid relative `../` imports that cross feature boundaries
-
-### Styling
-- Tailwind CSS v4 utility classes are the primary styling mechanism
-- No inline `style` props except for dynamic values that can't be expressed as utilities
-- Design tokens from `DESIGN.md` should be mapped to Tailwind config / CSS variables
-- **Buttons must always use `rounded-full`** — pill shape is non-negotiable per brand rules
-- Two canvas contexts: dark (`bg-black text-white`) for marketing/hero, light (`bg-white text-black`) for transactional pages — never mix
-
-### TypeScript
-- Strict mode is on — no `any`, no `// @ts-ignore` without a documented reason
-- Prefer `interface` for object shapes, `type` for unions and aliases
-- Co-locate types with the module that owns them; shared types go in `src/types/`
-
-## Planned Directory Expansion
-As the project grows, organize under `src/` like this:
+## Top-Level Layout
 
 ```
 src/
-├── app/                  # Routes (App Router)
-├── components/
-│   ├── ui/               # Primitive/design-system components (Button, Card, Input…)
-│   └── <feature>/        # Feature-specific components (ProductCard, CartItem…)
-├── lib/                  # Utilities, helpers, API clients
-├── hooks/                # Custom React hooks
-├── types/                # Shared TypeScript types
-└── styles/               # Global CSS variables / Tailwind theme extension
+├── app/                  # Next.js App Router pages and layouts
+├── components/           # Reusable, generic components
+├── data/                 # Static mock/seed data (not Medusa API calls)
+├── feature/              # Page-level feature components, grouped by route
+├── lib/                  # Shared utilities, hooks, config, and server data functions
+├── modules/              # Self-contained feature modules (icons, store refinement)
+└── types/                # Shared TypeScript types
 ```
 
+## `src/app/` — Routes
 
-<!-- Tech -->
+All customer-facing routes live under the `[countryCode]` dynamic segment. The middleware in `src/middleware.ts` handles detection and redirection to the correct country prefix.
 
+```
+app/
+├── layout.tsx              # Root layout (fonts, global CSS)
+├── globals.css             # Design tokens and Tailwind base styles
+└── [countryCode]/
+    ├── page.tsx            # Homepage
+    ├── shop/
+    │   ├── page.tsx        # Product listing page (PLP)
+    │   └── [id]/page.tsx   # Product detail page (PDP)
+    └── contact/page.tsx
+```
+
+## `src/feature/` — Page Feature Components
+
+Feature components are co-located by the page/route they belong to. They are not generic — they are purpose-built for a specific page section.
+
+```
+feature/
+├── home/       # Homepage sections: Hero, Header, Footer, ProductCard, ProductGrid, FAQ, etc.
+└── shop/       # Shop page sections: ShopGrid, ShopSidebar, ProductInfo, ProductGallery, etc.
+```
+
+- Feature components can be Server or Client Components depending on their needs.
+- Add `"use client"` only when the component requires interactivity or browser APIs.
+
+## `src/components/` — Shared UI Components
+
+```
+components/
+├── ui/         # shadcn/ui primitives: Button, Input, Textarea, InputGroup
+└── shared/     # Project-specific shared components (e.g. CommonInput)
+```
+
+- `ui/` components are generic and unstyled beyond the design system tokens.
+- `shared/` components are thin wrappers that compose `ui/` components with project-specific defaults.
+- Always export shared components through `shared/index.ts`.
+
+## `src/lib/` — Utilities and Data Layer
+
+```
+lib/
+├── config.ts           # Medusa SDK client initialization
+├── utils.ts            # cn() helper (clsx + tailwind-merge)
+├── constants.tsx       # App-wide constants
+├── context/            # React context providers (e.g. modal-context)
+├── hooks/              # Custom React hooks (use-in-view, use-toggle-state)
+├── data/               # Server Actions for Medusa API calls
+│   ├── products.ts
+│   ├── cart.ts
+│   ├── orders.ts
+│   ├── regions.ts
+│   ├── customer.ts
+│   ├── payment.ts
+│   └── ...
+└── util/               # Pure utility functions (formatting, sorting, price calc)
+```
+
+- Every file in `lib/data/` must have `"use server"` at the top — these are Server Actions only.
+- Pure helpers (no I/O, no server deps) belong in `lib/util/`.
+
+## `src/modules/` — Self-Contained Feature Modules
+
+Used for more complex, self-contained UI features that bundle their own components.
+
+```
+modules/
+├── common/icons/       # SVG icon components (Bancontact, iDEAL, PayPal)
+└── store/components/refinement-list/   # Product sort/filter UI
+```
+
+## `src/types/` — Shared Types
+
+- `global.ts` — shared types like `VariantPrice`, `FeaturedProduct`, `StoreFreeShippingPrice`
+- `icon.ts` — icon prop types
+
+## Path Aliases
+
+Configured in `tsconfig.json`. Use these instead of relative paths:
+
+| Alias | Resolves to |
+|---|---|
+| `@/*` | `src/*` |
+| `@lib/*` | `src/lib/*` |
+| `@modules/*` | `src/modules/*` |
+| `@feature/*` | `src/feature/*` |
+
+## Key Conventions
+
+- **New pages** go under `src/app/[countryCode]/`.
+- **New page sections** go in the matching `src/feature/<page>/` directory.
+- **New reusable primitives** go in `src/components/ui/` (generic) or `src/components/shared/` (project-specific).
+- **New Medusa data calls** go in `src/lib/data/` as Server Actions (`"use server"`).
+- **New utility functions** (pure, no I/O) go in `src/lib/util/`.
+- **Static/mock data** used for prototyping goes in `src/data/`.
+
+
+<!-- 3.Tech -->
 # Tech Stack
 
-## Core
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript 5 (strict mode)
-- **Runtime**: React 19
-- **Styling**: Tailwind CSS v4
-- **Linting**: ESLint 9 with `eslint-config-next`
+## Core Framework
+- **Next.js 16** (App Router) with React 19
+- **TypeScript 5** — `ignoreBuildErrors: true` in next.config.ts (do not rely on build-time type errors catching issues)
+- **React Compiler** enabled (`reactCompiler: true`)
 
-## Compiler & Optimization
-- **React Compiler** is enabled (`reactCompiler: true` in `next.config.ts`) — do not manually wrap components in `useMemo`/`useCallback` where the compiler can handle it
-- TypeScript path alias: `@/*` maps to `./src/*`
+## Backend Integration
+- **Medusa v2** (`@medusajs/js-sdk` 2.17.2) — headless commerce backend
+- The SDK client is initialized in `src/lib/config.ts` and extended to inject `x-medusa-locale` headers on every request
+- All data-fetching functions in `src/lib/data/` are **Server Actions** (`"use server"`) — never import them in client components directly
+- Cache is handled via Next.js `fetch` tags (`getCacheOptions`) and `force-cache`
+
+## Styling
+- **Tailwind CSS v4** with `@tailwindcss/postcss`
+- **Design tokens** are defined as CSS custom properties in `src/app/globals.css` using `oklch` color space — never hardcode hex values in components
+- Key semantic tokens: `--ink`, `--canvas`, `--cloud`, `--mute`, `--sale`, `--hairline-soft`
+- `rounded-pill` (9999px) is defined as a custom radius token — use it for all buttons
+- `container-page` is a custom `@utility` for the max-width page wrapper (1440px, responsive padding)
+- **shadcn/ui** components live in `src/components/ui/` — use `cn()` from `src/lib/utils.ts` for class merging
+
+## UI Libraries
+- `radix-ui` — primitives used by shadcn components
+- `class-variance-authority` (CVA) — variant definitions for UI components
+- `clsx` + `tailwind-merge` — via the `cn()` helper
+- `lucide-react` + `@tabler/icons-react` — icon sets
+- `react-hook-form` + `zod` — forms and validation
+- `@stripe/react-stripe-js` + `@stripe/stripe-js` — payment UI
 
 ## Fonts
-Loaded via `next/font/google`. Currently scaffolded with Geist/Geist Mono — these should be replaced with the brand fonts:
-- **Instrument Sans** — primary UI font
-- **Neue Haas Grotesk Display** (or Inter Display as open-source substitute) — display/hero headings
-- **Inter Variable** — body and UI copy
+- **Instrument Sans** — `--font-sans`, used for body text
+- **Bebas Neue** — `--font-display`, used for headings (`h1`–`h6`)
+- Both loaded via `next/font/google`
+
+## Environment Variables
+- `NEXT_PUBLIC_MEDUSA_BACKEND_URL` — Medusa backend URL (defaults to `http://localhost:9000`)
+- `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` — Medusa publishable API key
+- `NEXT_PUBLIC_DEFAULT_REGION` — fallback country code for regional routing (defaults to `"bn"`)
+- `MEDUSA_CLOUD_S3_HOSTNAME` / `MEDUSA_CLOUD_S3_PATHNAME` — optional S3 image host for `next/image` remote patterns
+- Validated at boot via `check-env-variables.ts`
 
 ## Common Commands
 
 ```bash
-# Development server (run manually in terminal)
-bun run dev
+# Development server (port 3002)
+pnpm dev
 
 # Production build
-bun run build
+pnpm build
 
 # Start production server
-bun run start
+pnpm start
 
 # Lint
-bun run lint
+pnpm lint
 ```
 
-> Note: `bun run dev` is a long-running process — run it manually in a terminal, do not execute it programmatically.
+> This project is part of a pnpm monorepo (`ez-commerce`). Run commands from the `apps/storefront` directory or via the root workspace tooling (Turborepo — see `.turbo/`).
 
-## Key Config Files
-- `next.config.ts` — Next.js config
-- `tsconfig.json` — TypeScript config (strict, bundler module resolution)
-- `postcss.config.mjs` — PostCSS with `@tailwindcss/postcss`
-- `eslint.config.mjs` — ESLint flat config
+
 
 
 
