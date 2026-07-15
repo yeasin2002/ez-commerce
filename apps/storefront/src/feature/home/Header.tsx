@@ -64,9 +64,10 @@ export function Header() {
             <IconBtn label="Account">
               <User className="h-5 w-5" />
             </IconBtn>
-            <IconBtn label="Wishlist">
-              <Heart className="h-5 w-5" />
-            </IconBtn>
+            
+            <Link href={"/wishlist"} aria-label="Wishlist" className="cursor-pointer">
+              <Heart className="h-5 w-5" />  
+            </Link>
 
             <ShowCarts/>
 

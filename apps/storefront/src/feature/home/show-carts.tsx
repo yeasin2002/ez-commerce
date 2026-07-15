@@ -15,8 +15,7 @@ import {
   Pencil,
   Plus,
   ShoppingBag,
-  Trash2,
-  Truck
+  Trash2
 } from "lucide-react";
 import Image from "next/image";
 
@@ -49,8 +48,6 @@ export const ShowCarts = () => {
   // Static details matching the screenshot
   const totalItems = isCartEmpty ? 0 : 2;
   const subtotal = 52.80;
-  const remainingForFreeShipping = isCartEmpty ? 64.00 : 11.20;
-  const shippingProgress = isCartEmpty ? 0 : 82.5;
 
   return (
     <Sheet>
