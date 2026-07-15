@@ -17,9 +17,9 @@
   },
   "devDependencies": {
     "@medusajs/eslint-plugin": "2.16.0",
-    "eslint": "^9.39.4",
+    "eslint": "^9.39.5",
     "jiti": "^2.7.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.9.5",
     "turbo": "^2.10.5"
   },
   "overrides": {
