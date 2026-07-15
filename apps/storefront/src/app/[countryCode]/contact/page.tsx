@@ -55,18 +55,18 @@ export default function ContactUsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between">
+    <div className="dark min-h-screen bg-background text-foreground flex flex-col justify-between">
       <Header />
 
-      <main className="flex-1 bg-canvas py-8">
+      <main className="flex-grow flex-1 bg-background py-8">
         {/* Breadcrumb */}
-        <div className="container-page border-b border-hairline-soft pb-4 mb-8 text-xs text-mute">
+        <div className="container-page border-b border-border pb-4 mb-8 text-xs text-mute">
           <nav className="flex items-center gap-2">
-            <Link href="/" className="hover:text-ink transition-colors">
+            <Link href="/" className="hover:text-foreground transition-colors">
               Home
             </Link>
             <span>/</span>
-            <span className="text-ink font-semibold">Contact Us</span>
+            <span className="text-foreground font-semibold">Contact Us</span>
           </nav>
         </div>
 
@@ -78,7 +78,7 @@ export default function ContactUsPage() {
           <p className="mt-3 text-sm text-mute leading-relaxed max-w-xl mx-auto">
             Please use the form below to get in touch. You can also reach our
             customer support team directly at{" "}
-            <span className="font-bold text-ink whitespace-nowrap">
+            <span className="font-bold text-foreground whitespace-nowrap">
               +1 (832) 387-6391
             </span>
             .
@@ -89,7 +89,7 @@ export default function ContactUsPage() {
         <div className="container-page grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-16 pb-16">
           {/* Left Column: Support info */}
           <div className="space-y-6">
-            <div className="bg-cloud/30 border border-hairline-soft rounded-2xl p-6 md:p-8 space-y-6">
+            <div className="bg-card border border-border rounded-2xl p-6 md:p-8 space-y-6">
               <div>
                 <h2 className="font-display text-2xl uppercase tracking-wide">
                   Support Customer
@@ -100,10 +100,10 @@ export default function ContactUsPage() {
                 </p>
               </div>
 
-              <div className="space-y-4 pt-4 border-t border-hairline-soft">
+              <div className="space-y-4 pt-4 border-t border-border">
                 {/* Phone */}
                 <div className="flex items-start gap-4">
-                  <div className="p-2 bg-cloud rounded-full text-ink shrink-0">
+                  <div className="p-2 bg-muted rounded-full text-foreground shrink-0">
                     <Phone className="h-4 w-4" />
                   </div>
                   <div>
@@ -118,7 +118,7 @@ export default function ContactUsPage() {
 
                 {/* Email */}
                 <div className="flex items-start gap-4">
-                  <div className="p-2 bg-cloud rounded-full text-ink shrink-0">
+                  <div className="p-2 bg-muted rounded-full text-foreground shrink-0">
                     <Mail className="h-4 w-4" />
                   </div>
                   <div>
@@ -133,7 +133,7 @@ export default function ContactUsPage() {
 
                 {/* Hours */}
                 <div className="flex items-start gap-4">
-                  <div className="p-2 bg-cloud rounded-full text-ink shrink-0">
+                  <div className="p-2 bg-muted rounded-full text-foreground shrink-0">
                     <Clock className="h-4 w-4" />
                   </div>
                   <div>
@@ -147,13 +147,13 @@ export default function ContactUsPage() {
             </div>
 
             {/* Premium FAQ Tip block */}
-            <div className="bg-ink text-canvas rounded-2xl p-6 md:p-8 flex gap-4 items-start">
-              <HelpCircle className="h-6 w-6 text-canvas shrink-0 mt-0.5" />
+            <div className="bg-card border border-border text-foreground rounded-2xl p-6 md:p-8 flex gap-4 items-start">
+              <HelpCircle className="h-6 w-6 text-foreground shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-sm font-bold uppercase tracking-wider">
                   Quick Response Time
                 </h4>
-                <p className="text-xs text-canvas/70 mt-1 leading-relaxed">
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                   We typically reply to all email inquiries within 2 hours. For
                   immediate support, please give us a call.
                 </p>
@@ -162,7 +162,7 @@ export default function ContactUsPage() {
           </div>
 
           {/* Right Column: Contact form */}
-          <div className="bg-canvas border border-hairline-soft rounded-2xl p-6 md:p-8">
+          <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
             {isSubmitted ? (
               // Success Screen
               <div className="py-12 text-center space-y-4 max-w-md mx-auto">
@@ -176,7 +176,7 @@ export default function ContactUsPage() {
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="mt-6 border border-hairline hover:bg-cloud px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-colors"
+                  className="mt-6 border border-border hover:bg-muted text-foreground px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-colors cursor-pointer"
                 >
                   Send Another Message
                 </button>
@@ -228,13 +228,13 @@ export default function ContactUsPage() {
                     <input
                       type="checkbox"
                       {...register("agreeToPolicy")}
-                      className="mt-1 shrink-0 rounded border-hairline accent-ink h-3.5 w-3.5 focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                      className="mt-1 shrink-0 rounded border-hairline accent-foreground h-3.5 w-3.5 focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     />
-                    <span className="text-xs text-charcoal leading-snug">
+                    <span className="text-xs text-stone leading-snug">
                       I agree to the{" "}
                       <Link
                         href="/"
-                        className="underline hover:text-ink transition-colors"
+                        className="underline hover:text-foreground transition-colors"
                       >
                         Privacy Policy
                       </Link>{" "}
@@ -254,7 +254,7 @@ export default function ContactUsPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-ink hover:bg-charcoal text-canvas px-8 py-3 rounded-full font-semibold transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer text-xs uppercase tracking-wider focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-ink"
+                    className="bg-primary hover:bg-primary/95 text-primary-foreground px-8 py-3 rounded-full font-semibold transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer text-xs uppercase tracking-wider focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-ink"
                   >
                     {isSubmitting ? "Sending..." : "Send"}
                   </button>
