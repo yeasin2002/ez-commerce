@@ -1,16 +1,27 @@
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+export interface IconBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  label: string;
+  badge?: number;
+}
+
 export function IconBtn({
   children,
   label,
   badge,
-}: {
-  children: React.ReactNode;
-  label: string;
-  badge?: number;
-}) {
+  className,
+  ...props
+}: IconBtnProps) {
   return (
     <button
       aria-label={label}
-      className="relative flex h-10 w-10 items-center justify-center rounded-pill text-ink transition-colors hover:bg-cloud focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      className={cn(
+        "relative flex h-10 w-10 items-center justify-center rounded-pill text-ink transition-colors hover:bg-cloud focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink cursor-pointer",
+        className
+      )}
+      {...props}
     >
       {children}
       {badge ? (

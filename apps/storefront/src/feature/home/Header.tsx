@@ -1,4 +1,8 @@
-import { Heart, Menu, Search, User } from "lucide-react";
+"use client"
+
+import { useState, useEffect } from "react";
+import { Heart, Menu, Moon, Search, Sun, User } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { IconBtn } from "./icon-btn";
 import { ShowCarts } from "./show-carts";
@@ -11,6 +15,14 @@ const NAV = [
 ];
 
 export function Header() {
+  const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
   return (
     <header className="sticky top-0 z-40 bg-canvas">
       {/* Utility bar */}
@@ -61,6 +73,17 @@ export function Header() {
                 className="w-full bg-transparent text-sm placeholder:text-mute outline-none"
               />
             </div>
+            <IconBtn 
+              label="Theme" 
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {mounted && theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </IconBtn>
+
             <IconBtn label="Account">
               <User className="h-5 w-5" />
             </IconBtn>
