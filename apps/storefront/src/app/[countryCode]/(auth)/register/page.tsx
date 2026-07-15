@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
-import { User, Mail, Phone, Lock, SendHorizontal, AlertCircle, CheckCircle } from "lucide-react";
+import { User, Mail, Phone, Lock, SendHorizontal, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { AuthInput } from "@/components/shared";
 
 // Form Validation Schema using Zod
 const registerSchema = z.object({
@@ -64,7 +64,7 @@ export default function RegisterPage({ params }: PageProps) {
     setIsSubmitted(true);
     reset();
 
-    // Mock redirect to login/home page after success
+    // Mock redirect to login page after success
     setTimeout(() => {
       window.location.href = `/${countryCode}/login`;
     }, 2000);
@@ -102,130 +102,55 @@ export default function RegisterPage({ params }: PageProps) {
         {/* Name Fields (Side-by-side) */}
         <div className="grid grid-cols-2 gap-3">
           {/* First Name */}
-          <div className="space-y-1">
-            <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none">
-                <User className="h-3.5 w-3.5" />
-              </span>
-              <input
-                type="text"
-                placeholder="First name"
-                {...register("first_name")}
-                disabled={isSubmitting}
-                className={cn(
-                  "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-                  errors.first_name ? "border-sale bg-sale/5 focus:border-sale" : ""
-                )}
-              />
-            </div>
-            {errors.first_name && (
-              <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-4 mt-0.5">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                {errors.first_name.message}
-              </span>
-            )}
-          </div>
+          <AuthInput
+            type="text"
+            placeholder="First name"
+            icon={<User className="h-3.5 w-3.5" />}
+            error={errors.first_name}
+            disabled={isSubmitting}
+            {...register("first_name")}
+          />
 
           {/* Last Name */}
-          <div className="space-y-1">
-            <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none">
-                <User className="h-3.5 w-3.5" />
-              </span>
-              <input
-                type="text"
-                placeholder="Last name"
-                {...register("last_name")}
-                disabled={isSubmitting}
-                className={cn(
-                  "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-                  errors.last_name ? "border-sale bg-sale/5 focus:border-sale" : ""
-                )}
-              />
-            </div>
-            {errors.last_name && (
-              <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-4 mt-0.5">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                {errors.last_name.message}
-              </span>
-            )}
-          </div>
+          <AuthInput
+            type="text"
+            placeholder="Last name"
+            icon={<User className="h-3.5 w-3.5" />}
+            error={errors.last_name}
+            disabled={isSubmitting}
+            {...register("last_name")}
+          />
         </div>
 
         {/* Email field */}
-        <div className="space-y-1">
-          <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none">
-              <Mail className="h-3.5 w-3.5" />
-            </span>
-            <input
-              type="email"
-              placeholder="Email"
-              {...register("email")}
-              disabled={isSubmitting}
-              className={cn(
-                "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-                errors.email ? "border-sale bg-sale/5 focus:border-sale" : ""
-              )}
-            />
-          </div>
-          {errors.email && (
-            <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-4 mt-0.5">
-              <AlertCircle className="h-3 w-3 shrink-0" />
-              {errors.email.message}
-            </span>
-          )}
-        </div>
+        <AuthInput
+          type="email"
+          placeholder="Email"
+          icon={<Mail className="h-3.5 w-3.5" />}
+          error={errors.email}
+          disabled={isSubmitting}
+          {...register("email")}
+        />
 
         {/* Phone field */}
-        <div className="space-y-1">
-          <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none">
-              <Phone className="h-3.5 w-3.5" />
-            </span>
-            <input
-              type="text"
-              placeholder="Phone number"
-              {...register("phone")}
-              disabled={isSubmitting}
-              className={cn(
-                "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-                errors.phone ? "border-sale bg-sale/5 focus:border-sale" : ""
-              )}
-            />
-          </div>
-          {errors.phone && (
-            <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-4 mt-0.5">
-              <AlertCircle className="h-3 w-3 shrink-0" />
-              {errors.phone.message}
-            </span>
-          )}
-        </div>
+        <AuthInput
+          type="text"
+          placeholder="Phone number"
+          icon={<Phone className="h-3.5 w-3.5" />}
+          error={errors.phone}
+          disabled={isSubmitting}
+          {...register("phone")}
+        />
 
         {/* Password field */}
-        <div className="space-y-1">
-          <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none">
-              <Lock className="h-3.5 w-3.5" />
-            </span>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-              disabled={isSubmitting}
-              className={cn(
-                "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-                errors.password ? "border-sale bg-sale/5 focus:border-sale" : ""
-              )}
-            />
-          </div>
-          {errors.password && (
-            <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-4 mt-0.5">
-              <AlertCircle className="h-3 w-3 shrink-0" />
-              {errors.password.message}
-            </span>
-          )}
-        </div>
+        <AuthInput
+          type="password"
+          placeholder="Password"
+          icon={<Lock className="h-3.5 w-3.5" />}
+          error={errors.password}
+          disabled={isSubmitting}
+          {...register("password")}
+        />
       </div>
 
       {/* Submit Button */}

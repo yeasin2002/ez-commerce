@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
-import { Key, SendHorizontal, AlertCircle, CheckCircle } from "lucide-react";
+import { Key, SendHorizontal, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { AuthInput } from "@/components/shared";
 
 // Form Validation Schema using Zod
 const verifySchema = z.object({
@@ -86,29 +86,14 @@ export default function VerifyEmailPage({ params }: PageProps) {
       {/* Input Fields */}
       <div className="space-y-3.5 pt-2">
         {/* Verification Code field */}
-        <div className="space-y-1">
-          <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60 pointer-events-none">
-              <Key className="h-3.5 w-3.5" />
-            </span>
-            <input
-              type="text"
-              placeholder="Verification code"
-              {...register("code")}
-              disabled={isSubmitting}
-              className={cn(
-                "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-                errors.code ? "border-sale bg-sale/5 focus:border-sale" : ""
-              )}
-            />
-          </div>
-          {errors.code && (
-            <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-4 mt-0.5">
-              <AlertCircle className="h-3 w-3 shrink-0" />
-              {errors.code.message}
-            </span>
-          )}
-        </div>
+        <AuthInput
+          type="text"
+          placeholder="Verification code"
+          icon={<Key className="h-3.5 w-3.5" />}
+          error={errors.code}
+          disabled={isSubmitting}
+          {...register("code")}
+        />
 
         {/* Resend Code Link */}
         <div className="flex justify-end mt-0.5">
