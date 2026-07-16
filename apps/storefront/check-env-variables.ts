@@ -6,7 +6,12 @@ const requiredEnvs = [
     description:
       "Learn how to create a publishable key: https://docs.medusajs.com/v2/resources/storefront-development/publishable-api-keys",
   },
-]
+  {
+    key: "NEXT_PUBLIC_MEDUSA_BACKEND_URL",
+    description:
+      "Learn how to create a publishable key: https://docs.medusajs.com/v2/resources/storefront-development/publishable-api-keys",
+  },
+];
 
 export default function checkEnvVariables() {
   const missingEnvs = requiredEnvs.filter(function (env) {
