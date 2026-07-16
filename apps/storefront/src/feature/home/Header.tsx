@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { Heart, Menu, Moon, Search, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { IconBtn } from "./icon-btn";
+import { useEffect, useState } from "react";
 import { ShowCarts } from "./show-carts";
 
 const NAV = [
@@ -73,29 +73,34 @@ export function Header() {
                 className="w-full bg-transparent text-sm placeholder:text-mute outline-none"
               />
             </div>
-            <IconBtn 
-              label="Theme" 
+            <Button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="rounded-pill size-8 cursor-pointer"
             >
               {mounted && theme === "dark" ? (
                 <Sun className="h-5 w-5" />
               ) : (
                 <Moon className="h-5 w-5" />
               )}
-            </IconBtn>
+            </Button>
 
-            <IconBtn label="Account">
+            <Link
+              href={"/account"}
+              aria-label="Account"
+              className="cursor-pointer"
+            >
               <User className="h-5 w-5" />
-            </IconBtn>
-            
-            <Link href={"/wishlist"} aria-label="Wishlist" className="cursor-pointer">
-              <Heart className="h-5 w-5" />  
             </Link>
 
-            <ShowCarts/>
+            <Link
+              href={"/wishlist"}
+              aria-label="Wishlist"
+              className="cursor-pointer"
+            >
+              <Heart className="h-5 w-5" />
+            </Link>
 
-            
-
+            <ShowCarts />
 
             <button
               aria-label="Menu"
