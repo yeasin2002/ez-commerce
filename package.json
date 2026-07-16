@@ -22,10 +22,7 @@
     "prettier": "^3.9.5",
     "turbo": "^2.10.5"
   },
-  "overrides": {
-    "@types/react": "19.0.5",
-    "@types/react-dom": "19.0.5"
-  },
+
   "workspaces": [
     "apps/**",
     "!apps/backend/.medusa/**"

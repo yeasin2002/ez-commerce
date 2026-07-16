@@ -9,3 +9,7 @@ allowBuilds:
   protobufjs: true
   sharp: true
   unrs-resolver: true
+
+overrides:
+  "@types/react": "19.0.5"
+  "@types/react-dom": "19.0.5"

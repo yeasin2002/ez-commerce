@@ -1,13 +1,13 @@
 "use client";
 
+import { AuthInput } from "@/components/shared";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle, Lock, Mail, SendHorizontal } from "lucide-react";
+import Link from "next/link";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import Link from "next/link";
-import { Mail, Lock, SendHorizontal, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AuthInput } from "@/components/shared";
 
 // Form Validation Schema using Zod
 const loginSchema = z.object({

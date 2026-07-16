@@ -40,7 +40,7 @@ const nextConfig: NextConfig = {
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
             {
-              protocol: "https",
+              protocol: "https" as const,
               hostname: S3_HOSTNAME,
               pathname: S3_PATHNAME,
             },

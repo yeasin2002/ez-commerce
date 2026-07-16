@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full", "antialiased")}>
+    <html lang="en" className={cn("h-full", "antialiased")} suppressHydrationWarning>
       <body className={cn("min-h-full flex flex-col", fontVariables)}>
         <ThemeProvider
           attribute="class"

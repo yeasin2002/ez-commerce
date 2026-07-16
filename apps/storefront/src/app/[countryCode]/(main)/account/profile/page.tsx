@@ -24,7 +24,7 @@ const profileSchema = z.object({
     .email("Please enter a valid email address"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   gender: z.enum(["male", "female"], {
-    required_error: "Please select your gender",
+    message: "Please select your gender",
   }),
 });
 
