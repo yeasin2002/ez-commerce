@@ -1,22 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import {
+  IconBell,
+  IconDashboard,
+  IconHeart,
+  IconLogout,
+  IconMapPin,
+  IconMenu2,
+  IconShield,
+  IconShoppingBag,
+  IconUser,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { 
-  IconDashboard, 
-  IconShoppingBag, 
-  IconMapPin, 
-  IconHeart, 
-  IconUser, 
-  IconShield, 
-  IconBell, 
-  IconLogout, 
-  IconMenu2 
-} from "@tabler/icons-react";
-import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
 
 interface SidebarProps {
   countryCode: string;
@@ -68,7 +74,7 @@ export function Sidebar({ countryCode }: SidebarProps) {
     },
     {
       name: "Notifications",
-      href: "#", // mock notifications
+      href: `/${countryCode}/account/notifications`,
       icon: <IconBell size={18} className="shrink-0" />,
       exact: false,
       badge: 2,

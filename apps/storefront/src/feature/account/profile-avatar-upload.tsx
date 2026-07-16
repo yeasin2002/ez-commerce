@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import Image from "next/image";
 import { IconCamera, IconTrash } from "@tabler/icons-react";
 import { 
   Attachment, 
@@ -24,14 +23,14 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Create a local blob url for instant preview
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+
     // Set uploading simulation
     setUploadState("uploading");
     
-    // Create a local blob url for instant preview
-    const objectUrl = URL.createObjectURL(file);
-    
     setTimeout(() => {
-      setPreviewUrl(objectUrl);
       setUploadState("done");
     }, 800); // Simulate network upload speed
   };
@@ -47,10 +46,9 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
 
   return (
     <div className="flex flex-col items-center gap-3">
-      {/* Attachment Primitive Wrapper */}
       <Attachment 
         state={uploadState === "uploading" ? "uploading" : "done"}
-        className="w-28 h-28 rounded-full border border-hairline-soft bg-cloud/30 flex items-center justify-center relative group"
+        className="w-28 h-28 min-w-0 aspect-square rounded-full border border-hairline-soft bg-cloud/30 flex items-center justify-center relative group"
       >
         
         {/* Hidden Input field */}
@@ -68,12 +66,9 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
           className="w-full h-full rounded-full overflow-hidden absolute inset-0 shrink-0 select-none pointer-events-none"
         >
           {previewUrl ? (
-            <Image 
+            <img 
               src={previewUrl} 
               alt="Profile Avatar" 
-              width={112}
-              height={112}
-              unoptimized
               className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-75"
             />
           ) : (

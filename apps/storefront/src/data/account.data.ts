@@ -248,3 +248,47 @@ export const mockAddresses: MockAddress[] = [
     type: "home"
   }
 ];
+
+export interface MockNotification {
+  id: string;
+  title: string;
+  message: string;
+  date: string;
+  read: boolean;
+  type: "order" | "promo" | "security" | "system";
+}
+
+export const mockNotifications: MockNotification[] = [
+  {
+    id: "notif-1",
+    title: "Order Shipped!",
+    message: "Your Barcelona Retro 1998/99 Home Jersey has been shipped. Follow the transit updates inside the order details page or copy tracking ID TRK874392810.",
+    date: "1 hour ago",
+    read: false,
+    type: "order",
+  },
+  {
+    id: "notif-2",
+    title: "New Season Collection Launch",
+    message: "Grab the latest 2025/26 kits before everyone else. Buy 2 and get free home delivery worldwide. Code: NEWKIT25.",
+    date: "1 day ago",
+    read: false,
+    type: "promo",
+  },
+  {
+    id: "notif-3",
+    title: "Password Updated Successfully",
+    message: "Your account credentials were changed recently. If you did not make this update, please change your password immediately or contact our support.",
+    date: "2 days ago",
+    read: true,
+    type: "security",
+  },
+  {
+    id: "notif-4",
+    title: "Welcome to EZ Commerce",
+    message: "Thank you for registering an account on our store. Complete your profile and add your address to experience seamless direct-to-consumer jerseys shopping.",
+    date: "5 days ago",
+    read: true,
+    type: "system",
+  },
+];
