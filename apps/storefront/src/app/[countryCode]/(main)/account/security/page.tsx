@@ -7,6 +7,7 @@ import * as z from "zod";
 import { IconShield, IconDeviceLaptop, IconLock } from "@tabler/icons-react";
 import { CommonInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const passwordSchema = z.object({
   currentPassword: z
@@ -90,7 +91,7 @@ export default function SecuritySettingsPage() {
           <div className="pt-2">
             <Button 
               type="submit"
-              className="rounded-full bg-ink hover:bg-charcoal text-canvas px-6 py-2.5 text-xs font-semibold uppercase tracking-wider border-none h-11 shadow-sm cursor-pointer font-sans"
+              className="rounded-full bg-ink hover:bg-charcoal text-canvas px-6 py-2.5 text-xs font-semibold uppercase tracking-wider border-none h-11 cursor-pointer font-sans"
             >
               Update Password
             </Button>
@@ -101,7 +102,7 @@ export default function SecuritySettingsPage() {
         <div className="md:col-span-5 space-y-6">
           
           {/* Card 1: Two Factor Authentication */}
-          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-full bg-cloud/50 dark:bg-zinc-900 text-ink/75 dark:text-canvas/75 flex items-center justify-center shrink-0">
                 <IconShield size={18} />
@@ -140,7 +141,7 @@ export default function SecuritySettingsPage() {
           </div>
 
           {/* Card 2: Login Sessions */}
-          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-full bg-cloud/50 dark:bg-zinc-900 text-ink/75 dark:text-canvas/75 flex items-center justify-center shrink-0">
                 <IconDeviceLaptop size={18} />

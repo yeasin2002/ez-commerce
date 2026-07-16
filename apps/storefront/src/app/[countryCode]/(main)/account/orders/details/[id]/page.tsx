@@ -92,7 +92,7 @@ export default function OrderDetailsPage({ params }: PageProps) {
         <div className="lg:col-span-8 space-y-6">
           
           {/* Timeline Tracking */}
-          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-6 shadow-sm">
+          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6">
             <h3 className="text-sm font-bold uppercase tracking-wider text-ink dark:text-canvas border-b border-hairline-soft/80 pb-3 mb-6 font-sans">
               Order Progress Timeline
             </h3>
@@ -142,7 +142,7 @@ export default function OrderDetailsPage({ params }: PageProps) {
           </div>
 
           {/* Purchased Items List */}
-          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-6 shadow-sm">
+          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6">
             <h3 className="text-sm font-bold uppercase tracking-wider text-ink dark:text-canvas border-b border-hairline-soft/80 pb-3 mb-4 font-sans">
               Items Ordered
             </h3>
@@ -185,7 +185,7 @@ export default function OrderDetailsPage({ params }: PageProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             {/* Shipping Address Box */}
-            <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm space-y-2">
+            <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-2">
               <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-mute font-sans">
                 Shipping Address
               </h4>
@@ -199,7 +199,7 @@ export default function OrderDetailsPage({ params }: PageProps) {
             </div>
 
             {/* Payment Method Box */}
-            <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm space-y-2">
+            <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-2">
               <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-mute font-sans">
                 Payment Method
               </h4>
@@ -222,7 +222,7 @@ export default function OrderDetailsPage({ params }: PageProps) {
         {/* Right Column: Order Summary Pricing breakdown */}
         <div className="lg:col-span-4 lg:sticky lg:top-24">
           
-          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-6 shadow-sm">
+          <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6">
             <h3 className="text-base font-display uppercase tracking-wider text-ink dark:text-canvas border-b border-hairline-soft pb-3.5 mb-4">
               Order Summary
             </h3>

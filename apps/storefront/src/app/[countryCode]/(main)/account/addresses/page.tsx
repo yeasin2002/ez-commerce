@@ -129,7 +129,7 @@ export default function AddressesPage() {
         {!isEditing && (
           <Button 
             onClick={handleAddNewClick}
-            className="rounded-full bg-ink hover:bg-charcoal text-canvas px-4 py-2 text-xs font-semibold uppercase tracking-wider border-none h-10 shadow-sm cursor-pointer font-sans flex items-center gap-1.5"
+            className="rounded-full bg-ink hover:bg-charcoal text-canvas px-4 py-2 text-xs font-semibold uppercase tracking-wider border-none h-10 cursor-pointer font-sans flex items-center gap-1.5"
           >
             <IconPlus size={14} />
             <span>Add New Address</span>
@@ -139,7 +139,7 @@ export default function AddressesPage() {
 
       {isEditing ? (
         /* Edit or Add New Form Panel */
-        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-6 shadow-sm space-y-6 animate-in fade-in duration-300">
+        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6 space-y-6 animate-in fade-in duration-300">
           <div className="flex items-center justify-between border-b border-hairline-soft/80 pb-3">
             <h3 className="text-sm font-bold uppercase tracking-wider text-ink dark:text-canvas font-sans">
               {editingAddress ? "Edit Address" : "Add New Address"}
@@ -244,7 +244,7 @@ export default function AddressesPage() {
             <div className="flex gap-3 pt-4 border-t border-hairline-soft/85">
               <Button 
                 type="submit"
-                className="rounded-full bg-ink hover:bg-charcoal text-canvas px-6 py-2.5 text-xs font-semibold uppercase tracking-wider border-none h-11 shadow-sm cursor-pointer font-sans"
+                className="rounded-full bg-ink hover:bg-charcoal text-canvas px-6 py-2.5 text-xs font-semibold uppercase tracking-wider border-none h-11 cursor-pointer font-sans"
               >
                 Save Address
               </Button>
@@ -265,7 +265,7 @@ export default function AddressesPage() {
           {addresses.map((address) => (
             <div 
               key={address.id} 
-              className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm space-y-4 flex flex-col justify-between"
+              className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-4 flex flex-col justify-between"
             >
               
               {/* Card content address details */}
@@ -322,7 +322,7 @@ export default function AddressesPage() {
           {/* Dotted empty placeholder to quickly add card */}
           <div 
             onClick={handleAddNewClick}
-            className="border-2 border-dashed border-hairline-soft hover:border-ink dark:hover:border-canvas rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors text-mute hover:text-ink dark:hover:text-canvas gap-2 py-10"
+            className="border-2 border-dashed border-hairline-soft hover:border-ink dark:hover:border-canvas rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors text-mute hover:text-ink dark:hover:text-canvas gap-2 py-10"
           >
             <IconMapPin size={24} className="opacity-60" />
             <div className="space-y-0.5">

@@ -153,7 +153,7 @@ export default function CartPage({ params }: PageProps) {
           {items.length > 0 ? (
             <div className="space-y-4">
               {/* Product Listing Card/Table */}
-              <div className="bg-canvas border border-hairline-soft rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-canvas border border-hairline-soft rounded-xl overflow-hidden">
                 
                 {/* Desktop Headers */}
                 <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-cloud/20 border-b border-hairline-soft text-[11px] font-bold uppercase tracking-wider text-mute font-sans">
@@ -247,7 +247,7 @@ export default function CartPage({ params }: PageProps) {
               </div>
 
               {/* Promo Code Box */}
-              <div className="bg-canvas border border-hairline-soft rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm">
+              <div className="bg-canvas border border-hairline-soft rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-cloud/50 flex items-center justify-center text-ink/70">
                     <Tag className="h-4.5 w-4.5" />
@@ -270,7 +270,7 @@ export default function CartPage({ params }: PageProps) {
                   />
                   <Button 
                     type="button"
-                    className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 h-10 text-xs font-semibold uppercase tracking-wider border-none shadow-sm cursor-pointer font-sans"
+                    className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 h-10 text-xs font-semibold uppercase tracking-wider border-none cursor-pointer font-sans"
                   >
                     Apply
                   </Button>
@@ -279,7 +279,7 @@ export default function CartPage({ params }: PageProps) {
             </div>
           ) : (
             /* Items list Cleared fallback block */
-            <div className="bg-canvas border border-hairline-soft rounded-xl p-8 text-center space-y-4 shadow-sm animate-in fade-in duration-300">
+            <div className="bg-canvas border border-hairline-soft rounded-xl p-8 text-center space-y-4 animate-in fade-in duration-300">
               <div className="w-12 h-12 rounded-full bg-cloud/80 text-mute flex items-center justify-center mx-auto">
                 <ShoppingBag className="h-5 w-5" />
               </div>
@@ -344,7 +344,7 @@ export default function CartPage({ params }: PageProps) {
 
           {/* Bottom Box empty cart template shown explicitly as mock decoration */}
           {items.length > 0 && (
-            <div className="bg-canvas border border-hairline-soft rounded-xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm opacity-55 hover:opacity-100 transition-opacity mt-4 border-dashed">
+            <div className="bg-canvas border border-hairline-soft rounded-xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 opacity-55 hover:opacity-100 transition-opacity mt-4 border-dashed">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-cloud/50 flex items-center justify-center text-mute">
                   <ShoppingBag className="h-4.5 w-4.5" />
@@ -359,7 +359,7 @@ export default function CartPage({ params }: PageProps) {
                 </div>
               </div>
               <Link href={`/${countryCode}/shop`}>
-                <Button className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 text-xs font-semibold uppercase tracking-wider border-none shadow-sm cursor-pointer font-sans whitespace-nowrap">
+                <Button className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 text-xs font-semibold uppercase tracking-wider border-none cursor-pointer font-sans whitespace-nowrap">
                   Continue Shopping
                 </Button>
               </Link>
@@ -371,7 +371,7 @@ export default function CartPage({ params }: PageProps) {
         {/* RIGHT COLUMN: Order Summary Card */}
         <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24 space-y-4">
           
-          <div className="bg-canvas border border-hairline-soft rounded-xl p-6 shadow-sm">
+          <div className="bg-canvas border border-hairline-soft rounded-xl p-6">
             {/* Header */}
             <div className="border-b border-hairline-soft pb-4">
               <h2 className="text-2xl font-display font-normal uppercase tracking-wider text-ink">
@@ -458,7 +458,7 @@ export default function CartPage({ params }: PageProps) {
               <Link href={`/${countryCode}/checkout`} className="w-full block">
                 <Button 
                   disabled={items.length === 0}
-                  className="w-full rounded-full bg-ink hover:bg-charcoal text-canvas py-4 text-xs font-bold uppercase tracking-wider border-none shadow-sm cursor-pointer font-sans h-12 flex items-center justify-center"
+                  className="w-full rounded-full bg-ink hover:bg-charcoal text-canvas py-4 text-xs font-bold uppercase tracking-wider border-none cursor-pointer font-sans h-12 flex items-center justify-center"
                 >
                   Proceed to Checkout
                 </Button>

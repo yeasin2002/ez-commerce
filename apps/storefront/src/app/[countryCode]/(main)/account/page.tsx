@@ -63,7 +63,7 @@ export default function AccountOverviewPage({ params }: PageProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         
         {/* Card 1: Total Orders */}
-        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm flex items-start gap-4">
+        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 flex items-start gap-4">
           <div className="w-10 h-10 rounded-full bg-cloud/50 dark:bg-zinc-900 flex items-center justify-center text-ink/70 dark:text-canvas/70 shrink-0">
             <IconShoppingBag size={20} />
           </div>
@@ -85,7 +85,7 @@ export default function AccountOverviewPage({ params }: PageProps) {
         </div>
 
         {/* Card 2: Saved Addresses */}
-        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm flex items-start gap-4">
+        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 flex items-start gap-4">
           <div className="w-10 h-10 rounded-full bg-cloud/50 dark:bg-zinc-900 flex items-center justify-center text-ink/70 dark:text-canvas/70 shrink-0">
             <IconMapPin size={20} />
           </div>
@@ -107,7 +107,7 @@ export default function AccountOverviewPage({ params }: PageProps) {
         </div>
 
         {/* Card 3: Profile Info */}
-        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-5 shadow-sm flex items-start gap-4">
+        <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 flex items-start gap-4">
           <div className="w-10 h-10 rounded-full bg-cloud/50 dark:bg-zinc-900 flex items-center justify-center text-ink/70 dark:text-canvas/70 shrink-0">
             <IconUser size={20} />
           </div>
@@ -131,7 +131,7 @@ export default function AccountOverviewPage({ params }: PageProps) {
       </div>
 
       {/* Recent Orders List Card Section */}
-      <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl p-6 shadow-sm space-y-4">
+      <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6 space-y-4">
         
         {/* Title bar */}
         <div className="flex items-center justify-between pb-3 border-b border-hairline-soft/80">

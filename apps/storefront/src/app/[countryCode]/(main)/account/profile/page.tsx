@@ -160,7 +160,7 @@ export default function ProfileSettingsPage() {
           <div className="pt-4 border-t border-hairline-soft/80 flex justify-start">
             <Button 
               type="submit"
-              className="rounded-full bg-ink hover:bg-charcoal text-canvas px-7 py-3 text-xs font-semibold uppercase tracking-wider border-none h-11 shadow-sm cursor-pointer font-sans"
+              className="rounded-full bg-ink hover:bg-charcoal text-canvas px-7 py-3 text-xs font-semibold uppercase tracking-wider border-none h-11 cursor-pointer font-sans"
             >
               Save Changes
             </Button>
@@ -169,7 +169,7 @@ export default function ProfileSettingsPage() {
         </form>
 
         {/* Right Side: Photo widget (Circular) */}
-        <div className="md:col-span-4 order-1 md:order-2 flex justify-center py-6 md:py-4 border border-hairline-soft/60 md:border-none rounded-2xl md:rounded-none bg-cloud/5 md:bg-transparent">
+        <div className="md:col-span-4 order-1 md:order-2 flex justify-center py-6 md:py-4 border border-hairline-soft/60 md:border-none rounded-xl md:rounded-none bg-cloud/5 md:bg-transparent">
           <ProfileAvatarUpload initialAvatarUrl={mockCustomerProfile.avatarUrl} />
         </div>
 

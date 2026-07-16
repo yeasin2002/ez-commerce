@@ -51,7 +51,7 @@ export default function OrderHistoryPage({ params }: PageProps) {
       </div>
 
       {/* Orders Table Container */}
-      <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl overflow-hidden">
         
         {/* Table Headers (Desktop) */}
         <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-cloud/20 dark:bg-zinc-900/40 border-b border-hairline-soft text-[11px] font-bold uppercase tracking-wider text-mute font-sans">

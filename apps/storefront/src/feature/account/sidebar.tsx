@@ -148,7 +148,7 @@ export function Sidebar({ countryCode }: SidebarProps) {
   return (
     <>
       {/* DESKTOP SIDEBAR PANEL */}
-      <div className="hidden lg:block bg-canvas border border-hairline-soft rounded-2xl p-5 sticky top-24 shadow-sm">
+      <div className="hidden lg:block bg-transparent sticky top-24">
         <h2 className="text-[10px] font-extrabold uppercase tracking-widest text-mute mb-4 px-4 font-sans">
           My Account
         </h2>
@@ -156,7 +156,7 @@ export function Sidebar({ countryCode }: SidebarProps) {
       </div>
 
       {/* MOBILE COLLAPSIBLE RESPONSIVE BAR */}
-      <div className="lg:hidden w-full bg-canvas border border-hairline-soft rounded-xl p-3 flex items-center justify-between shadow-sm">
+      <div className="lg:hidden w-full bg-canvas border-b border-hairline-soft p-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-mute shrink-0">
             {activeItem.icon}
