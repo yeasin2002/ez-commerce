@@ -3,6 +3,8 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant data-open (&[data-state=open]);
+@custom-variant data-closed (&[data-state=closed]);
 
 /*
  * FootyStyleHub Design System

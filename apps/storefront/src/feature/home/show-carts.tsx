@@ -8,6 +8,7 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import {
   Calendar,
   Minus,
@@ -15,9 +16,10 @@ import {
   Pencil,
   Plus,
   ShoppingBag,
-  Trash2
+  Trash2,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Change this to false to see the cart with items!
 const isCartEmpty: boolean = false;
@@ -47,7 +49,7 @@ const EmptyCartIcon = () => (
 export const ShowCarts = () => {
   // Static details matching the screenshot
   const totalItems = isCartEmpty ? 0 : 2;
-  const subtotal = 52.80;
+  const subtotal = 52.8;
 
   return (
     <Sheet>
@@ -60,8 +62,8 @@ export const ShowCarts = () => {
         )}
       </SheetTrigger>
 
-      <SheetContent 
-        side="right" 
+      <SheetContent
+        side="right"
         showCloseButton={true}
         className="w-full sm:max-w-[440px] flex flex-col p-0 bg-canvas border-l border-hairline"
       >
@@ -74,9 +76,6 @@ export const ShowCarts = () => {
 
         {/* Scrollable Container */}
         <div className="flex-1 overflow-y-auto flex flex-col">
-          
-        
-
           {isCartEmpty ? (
             /* Empty State */
             <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 text-center">
@@ -87,13 +86,12 @@ export const ShowCarts = () => {
                 Your cart is currently empty!.
               </h3>
               <p className="text-xs text-mute max-w-[280px] mb-8 leading-relaxed font-sans">
-                You may check out all the available products and buy some in the shop.
+                You may check out all the available products and buy some in the
+                shop.
               </p>
-              
+
               <SheetTrigger asChild>
-                <Button 
-                  className="bg-ink hover:bg-charcoal text-canvas rounded-pill px-8 py-2.5 text-sm font-semibold tracking-wide cursor-pointer font-sans"
-                >
+                <Button className="bg-ink hover:bg-charcoal text-canvas rounded-pill px-8 py-2.5 text-sm font-semibold tracking-wide cursor-pointer font-sans">
                   Continue Shopping
                 </Button>
               </SheetTrigger>
@@ -101,15 +99,14 @@ export const ShowCarts = () => {
           ) : (
             /* Populated State */
             <div className="flex-1 flex flex-col">
-
               <div className="flex-1 divide-y divide-dashed divide-hairline-soft">
                 {/* Product 1 */}
                 <div className="p-6 flex gap-4 bg-canvas">
                   {/* Product Image */}
                   <div className="w-20 h-20 bg-cloud rounded-lg overflow-hidden shrink-0 border border-hairline-soft relative">
-                    <Image 
-                      src="https://images.unsplash.com/photo-1541002442297-50348f9757e5?w=300&q=80" 
-                      alt="Santos 2013 Home" 
+                    <Image
+                      src="https://images.unsplash.com/photo-1541002442297-50348f9757e5?w=300&q=80"
+                      alt="Santos 2013 Home"
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -122,7 +119,7 @@ export const ShowCarts = () => {
                       <h4 className="text-[14px] font-semibold text-ink leading-snug font-sans">
                         Santos 2013 Home
                       </h4>
-                      
+
                       {/* Variant details */}
                       <div className="text-[11px] text-mute mt-1.5 leading-relaxed font-sans">
                         <span>Size: XXS / Player Name: Neymar Jr. 11</span>
@@ -162,10 +159,16 @@ export const ShowCarts = () => {
 
                   {/* Edit & Delete Actions */}
                   <div className="flex flex-col items-center justify-start gap-3 shrink-0 pt-0.5">
-                    <button className="text-stone hover:text-ink transition-colors cursor-pointer" aria-label="Edit item">
+                    <button
+                      className="text-stone hover:text-ink transition-colors cursor-pointer"
+                      aria-label="Edit item"
+                    >
                       <Pencil className="w-4 h-4" />
                     </button>
-                    <button className="text-stone hover:text-sale transition-colors cursor-pointer" aria-label="Remove item">
+                    <button
+                      className="text-stone hover:text-sale transition-colors cursor-pointer"
+                      aria-label="Remove item"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -175,9 +178,9 @@ export const ShowCarts = () => {
                 <div className="p-6 flex gap-4 bg-canvas">
                   {/* Product Image */}
                   <div className="w-20 h-20 bg-cloud rounded-lg overflow-hidden shrink-0 border border-hairline-soft relative">
-                    <Image 
-                      src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=300&q=80" 
-                      alt="Barcelona 2024/25 Away x Travis Scott Special" 
+                    <Image
+                      src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=300&q=80"
+                      alt="Barcelona 2024/25 Away x Travis Scott Special"
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -190,12 +193,14 @@ export const ShowCarts = () => {
                       <h4 className="text-[14px] font-semibold text-ink leading-snug font-sans">
                         Barcelona 2024/25 Away x Travis Scott Special
                       </h4>
-                      
+
                       {/* Variant details */}
                       <div className="text-[11px] text-mute mt-1.5 leading-relaxed font-sans">
                         <span>Size: S / Player Name: Pedri #8</span>
                         <br />
-                        <span>/ Patch: Patch (Leave Patch Name At Checkout) Worldcup</span>
+                        <span>
+                          / Patch: Patch (Leave Patch Name At Checkout) Worldcup
+                        </span>
                       </div>
                     </div>
 
@@ -230,10 +235,16 @@ export const ShowCarts = () => {
 
                   {/* Edit & Delete Actions */}
                   <div className="flex flex-col items-center justify-start gap-3 shrink-0 pt-0.5">
-                    <button className="text-stone hover:text-ink transition-colors cursor-pointer" aria-label="Edit item">
+                    <button
+                      className="text-stone hover:text-ink transition-colors cursor-pointer"
+                      aria-label="Edit item"
+                    >
                       <Pencil className="w-4 h-4" />
                     </button>
-                    <button className="text-stone hover:text-sale transition-colors cursor-pointer" aria-label="Remove item">
+                    <button
+                      className="text-stone hover:text-sale transition-colors cursor-pointer"
+                      aria-label="Remove item"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -264,17 +275,18 @@ export const ShowCarts = () => {
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
-              
+
               <div className="flex flex-col gap-2.5">
-                <Button 
-                  variant="outline" 
-                  className="w-full border-ink text-ink hover:bg-cloud rounded-pill py-5 font-semibold text-[14px] cursor-pointer font-sans"
+                <Link
+                  href="/dk/cart"
+                  className={cn(
+                    "w-full border border-black text-ink hover:bg-cloud rounded-pill py-4 font-semibold text-[14px] cursor-pointer font-sans text-center",
+                  )}
                 >
                   View Cart
-                </Button>
-                <Button 
-                  className="w-full bg-ink text-canvas hover:bg-charcoal rounded-pill py-5 font-semibold text-[14px] cursor-pointer font-sans"
-                >
+                </Link>
+
+                <Button className="w-full bg-ink text-canvas hover:bg-charcoal rounded-pill py-5 font-semibold text-[14px] cursor-pointer font-sans">
                   Checkout
                 </Button>
               </div>

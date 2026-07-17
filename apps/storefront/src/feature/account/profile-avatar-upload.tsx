@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { IconCamera, IconTrash } from "@tabler/icons-react";
-import { 
-  Attachment, 
-  AttachmentMedia, 
-  AttachmentTrigger,
+import {
+  Attachment,
+  AttachmentAction,
   AttachmentActions,
-  AttachmentAction
+  AttachmentMedia,
+  AttachmentTrigger,
 } from "@/components/ui/attachment";
+import { IconCamera, IconTrash } from "@tabler/icons-react";
+import Image from "next/image";
+import React, { useRef, useState } from "react";
 
 interface ProfileAvatarUploadProps {
   initialAvatarUrl?: string;
@@ -46,14 +47,13 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <Attachment 
+      <Attachment
         state={uploadState === "uploading" ? "uploading" : "done"}
         className="w-28 h-28 min-w-0 aspect-square rounded-full border border-hairline-soft bg-cloud/30 flex items-center justify-center relative group"
       >
-        
         {/* Hidden Input field */}
-        <input 
-          type="file" 
+        <input
+          type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
           accept="image/*"
@@ -61,14 +61,16 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
         />
 
         {/* Media Preview (Circular Avatar Style) */}
-        <AttachmentMedia 
-          variant="image" 
+        <AttachmentMedia
+          variant="image"
           className="w-full h-full rounded-full overflow-hidden absolute inset-0 shrink-0 select-none pointer-events-none"
         >
           {previewUrl ? (
-            <img 
-              src={previewUrl} 
-              alt="Profile Avatar" 
+            <Image
+              width={100}
+              height={100}
+              src={previewUrl}
+              alt="Profile Avatar"
               className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-75"
             />
           ) : (
@@ -79,7 +81,7 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
         </AttachmentMedia>
 
         {/* Circular Action Overlay (Camera Icon) */}
-        <AttachmentTrigger 
+        <AttachmentTrigger
           onClick={() => fileInputRef.current?.click()}
           className="absolute right-0 bottom-0 bg-ink hover:bg-charcoal text-canvas p-2 rounded-full shadow-md transition-colors cursor-pointer border border-canvas flex items-center justify-center z-30"
         >
@@ -89,7 +91,7 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
         {/* Action button to delete/remove image */}
         {previewUrl && (
           <AttachmentActions className="absolute -top-1.5 -right-1.5 z-40">
-            <AttachmentAction 
+            <AttachmentAction
               variant="outline"
               size="icon-xs"
               onClick={handleRemove}
@@ -99,18 +101,17 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
             </AttachmentAction>
           </AttachmentActions>
         )}
-
       </Attachment>
 
       {/* Helper text button description */}
-      <button 
+      <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
         className="text-[10px] font-bold uppercase tracking-wider text-mute hover:text-ink transition-colors cursor-pointer font-sans"
       >
         Change Photo
       </button>
-      
+
       <span className="text-[9px] text-mute font-sans leading-none">
         JPG, PNG or WEBP. Max size 2MB.
       </span>
