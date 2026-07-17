@@ -1,32 +1,46 @@
-import { LayoutGrid, Grid3X3, List, Grid } from "lucide-react";
+import { Grid, Grid3X3, LayoutGrid, List } from "lucide-react";
 
-export function ShopToolbar() {
-  const activeMode = "grid-3";
+interface ShopToolbarProps {
+  activeMode: string;
+  onModeChange: (mode: string) => void;
+  sortBy: string;
+  onSortChange: (sort: string) => void;
+}
 
+const gridOptions = [
+  { id: "grid-2", label: "2 Columns", icon: LayoutGrid },
+  { id: "grid-3", label: "3 Columns", icon: Grid },
+  { id: "grid-4", label: "4 Columns", icon: Grid3X3 },
+  { id: "list", label: "List View", icon: List },
+];
+
+export function ShopToolbar({
+  activeMode,
+  onModeChange,
+  sortBy,
+  onSortChange,
+}: ShopToolbarProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-hairline-soft pb-4 mb-8 text-ink">
       {/* Grid Layout Toggles */}
       <div className="flex items-center gap-1.5">
-        {[
-          { id: "grid-2", label: "2 Columns", icon: LayoutGrid },
-          { id: "grid-3", label: "3 Columns", icon: Grid },
-          { id: "grid-4", label: "4 Columns", icon: Grid3X3 },
-          { id: "list", label: "List View", icon: List },
-        ].map((mode) => {
+        {gridOptions.map((mode) => {
           const Icon = mode.icon;
           const isActive = activeMode === mode.id;
           return (
-            <div
+            <button
               key={mode.id}
+              type="button"
+              onClick={() => onModeChange(mode.id)}
               aria-label={mode.label}
-              className={`p-2 rounded transition-colors ${
+              className={`p-2 rounded transition-colors border-0 outline-none ${
                 isActive
                   ? "bg-cloud text-ink"
                   : "text-mute hover:text-ink hover:bg-cloud/50 cursor-pointer"
               }`}
             >
               <Icon className="h-4.5 w-4.5" />
-            </div>
+            </button>
           );
         })}
       </div>
@@ -36,7 +50,8 @@ export function ShopToolbar() {
         <span className="text-xs text-mute font-medium">Sort by:</span>
         <div className="relative">
           <select
-            defaultValue="az"
+            value={sortBy}
+            onChange={(e) => onSortChange(e.target.value)}
             className="appearance-none bg-canvas border border-hairline-soft rounded-pill px-4 pr-10 py-2 text-xs font-semibold focus:border-ink outline-none cursor-pointer transition-colors"
           >
             <option value="az">Alphabetically, A-Z</option>

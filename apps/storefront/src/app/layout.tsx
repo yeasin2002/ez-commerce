@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { fontVariables } from "@/lib/font";
 import "./globals.css";
@@ -16,7 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full", "antialiased")} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn("h-full", "antialiased")}
+      suppressHydrationWarning
+    >
       <body className={cn("min-h-full flex flex-col", fontVariables)}>
         <ThemeProvider
           attribute="class"
@@ -24,7 +29,7 @@ export default function RootLayout({
           // enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <NuqsAdapter>{children}</NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>

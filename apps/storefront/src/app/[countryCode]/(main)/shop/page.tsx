@@ -1,9 +1,8 @@
 import { ALL_PRODUCTS } from "@/data/products.data";
 import { Footer } from "@/feature/home/Footer";
 import { Header } from "@/feature/home/Header";
-import { ShopGrid } from "@/feature/shop/ShopGrid";
+import { ShopContent } from "@/feature/shop/ShopContent";
 import { ShopSidebar } from "@/feature/shop/ShopSidebar";
-import { ShopToolbar } from "@/feature/shop/ShopToolbar";
 import Link from "next/link";
 
 export default function ShopPage() {
@@ -26,15 +25,12 @@ export default function ShopPage() {
         {/* Shop Layout */}
         <div className="container-page flex flex-col lg:flex-row gap-10 pb-16">
           {/* Sidebar Filters */}
-          <div className="w-full lg:w-64 flex-shrink-0">
+          <div className="w-full lg:w-64 shrink-0">
             <ShopSidebar />
           </div>
 
           {/* Main Product Area */}
-          <div className="flex-1">
-            <ShopToolbar />
-            <ShopGrid products={ALL_PRODUCTS} />
-          </div>
+          <ShopContent products={ALL_PRODUCTS} />
         </div>
       </main>
 

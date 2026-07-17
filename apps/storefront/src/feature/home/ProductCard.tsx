@@ -22,8 +22,74 @@ export type Product = {
   viewingCount?: number;
 };
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  layout = "grid",
+}: {
+  product: Product;
+  layout?: "grid" | "list";
+}) {
   const onSale = product.original && product.original > product.price;
+
+  if (layout === "list") {
+    return (
+      <a
+        href="#"
+        className="group flex flex-row gap-6 border-b border-hairline-soft pb-6 items-center w-full"
+      >
+        {/* Product Image */}
+        <div className="relative aspect-[3/4] w-28 sm:w-36 overflow-hidden bg-cloud shrink-0 border border-hairline-soft">
+          {product.discount ? (
+            <span className="absolute left-3 top-3 z-10 inline-flex items-center rounded-pill bg-sale px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-canvas">
+              {product.discount}% Off
+            </span>
+          ) : product.tag ? (
+            <span className="absolute left-3 top-3 z-10 inline-flex items-center rounded-pill bg-canvas px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-ink">
+              {product.tag}
+            </span>
+          ) : null}
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 30vw, 15vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
+        {/* Product Details */}
+        <div className="flex-1 flex flex-col gap-1 sm:gap-1.5 min-w-0">
+          <span className="text-[11px] uppercase tracking-[0.15em] text-mute">
+            {product.team}
+          </span>
+          <h4 className="text-sm sm:text-base font-semibold text-ink line-clamp-2">
+            {product.name}
+          </h4>
+          <p className="text-xs text-mute line-clamp-2 leading-relaxed hidden sm:block">
+            {product.description ||
+              "Premium quality athletic wear designed for performance and style."}
+          </p>
+          <div className="mt-1 flex items-baseline gap-2">
+            <span
+              className={`text-sm font-bold ${onSale ? "text-sale" : "text-ink"}`}
+            >
+              ${product.price.toFixed(2)}
+            </span>
+            {onSale ? (
+              <span className="text-xs text-mute line-through">
+                ${product.original!.toFixed(2)}
+              </span>
+            ) : null}
+          </div>
+          <div className="mt-2.5">
+            <button className="h-9 px-5 rounded-pill bg-ink text-[11px] font-semibold uppercase tracking-wider text-canvas hover:bg-charcoal transition-colors cursor-pointer border-0">
+              Quick Add
+            </button>
+          </div>
+        </div>
+      </a>
+    );
+  }
+
   return (
     <a href="#" className="group flex flex-col">
       <div className="relative aspect-[3/4] overflow-hidden bg-cloud">
