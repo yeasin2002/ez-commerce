@@ -1,8 +1,7 @@
-import { ThemeProvider } from "@/components/shared/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
+import { RootWrapper } from "@/components/shared/root-wrapper";
 import { fontVariables } from "@/lib/font";
 import "./globals.css";
 
@@ -23,14 +22,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={cn("min-h-full flex flex-col", fontVariables)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          // enableSystem
-          disableTransitionOnChange
-        >
-          <NuqsAdapter>{children}</NuqsAdapter>
-        </ThemeProvider>
+        <RootWrapper>{children}</RootWrapper>
       </body>
     </html>
   );
