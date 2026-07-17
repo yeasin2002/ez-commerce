@@ -149,3 +149,63 @@ export const listProductsWithSort = async ({
     queryParams,
   }
 }
+
+export const retrieveProduct = async (id: string, countryCode?: string) => {
+  let region: HttpTypes.StoreRegion | undefined | null
+
+  if (countryCode) {
+    region = await getRegion(countryCode)
+  }
+
+  const query: Record<string, any> = {
+    fields:
+      "*variants.calculated_price,+variants.inventory_quantity,*variants.images,*variants.options,+metadata,+tags",
+  }
+
+  if (region?.id) {
+    query.region_id = region.id
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const next = {
+    ...(await getCacheOptions(["products", id].join("-"))),
+  }
+
+  // Try retrieving by ID directly
+  try {
+    return await sdk.client
+      .fetch<{ product: HttpTypes.StoreProduct }>(`/store/products/${id}`, {
+        method: "GET",
+        query,
+        headers,
+        next,
+        cache: "force-cache",
+      })
+      .then(({ product }) => product)
+  } catch (error) {
+    // If that fails, try to fetch by handle
+    const productsRes = await sdk.client.fetch<{
+      products: HttpTypes.StoreProduct[]
+      count: number
+    }>(`/store/products`, {
+      method: "GET",
+      query: {
+        ...query,
+        handle: id,
+        limit: 1,
+      },
+      headers,
+      next,
+      cache: "force-cache",
+    })
+
+    if (productsRes.products && productsRes.products.length > 0) {
+      return productsRes.products[0]
+    }
+
+    throw error
+  }
+}

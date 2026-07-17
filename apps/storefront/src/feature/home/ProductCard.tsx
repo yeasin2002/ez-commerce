@@ -1,8 +1,13 @@
+"use client";
+
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export type Product = {
   id: string;
+  handle?: string;
   name: string;
   team: string;
   price: number;
@@ -22,6 +27,7 @@ export type Product = {
   viewingCount?: number;
 };
 
+
 export function ProductCard({
   product,
   layout = "grid",
@@ -29,16 +35,19 @@ export function ProductCard({
   product: Product;
   layout?: "grid" | "list";
 }) {
+  const params = useParams();
+  const countryCode = (params?.countryCode as string) || "bn";
+  const productLink = `/${countryCode}/shop/${product.handle || product.id}`;
   const onSale = product.original && product.original > product.price;
 
   if (layout === "list") {
     return (
-      <a
-        href="#"
+      <Link
+        href={productLink}
         className="group flex flex-row gap-6 border-b border-hairline-soft pb-6 items-center w-full"
       >
         {/* Product Image */}
-        <div className="relative aspect-[3/4] w-28 sm:w-36 overflow-hidden bg-cloud shrink-0 border border-hairline-soft">
+        <div className="relative aspect-3/4 w-28 sm:w-36 overflow-hidden bg-cloud shrink-0 border border-hairline-soft">
           {product.discount ? (
             <span className="absolute left-3 top-3 z-10 inline-flex items-center rounded-pill bg-sale px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-canvas">
               {product.discount}% Off
@@ -86,13 +95,13 @@ export function ProductCard({
             </button>
           </div>
         </div>
-      </a>
+      </Link>
     );
   }
 
   return (
-    <a href="#" className="group flex flex-col">
-      <div className="relative aspect-[3/4] overflow-hidden bg-cloud">
+    <Link href={productLink} className="group flex flex-col">
+      <div className="relative aspect-3/4 overflow-hidden bg-cloud">
         {product.discount ? (
           <span className="absolute left-3 top-3 z-10 inline-flex items-center rounded-pill bg-sale px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-canvas">
             {product.discount}% Off
@@ -126,17 +135,25 @@ export function ProductCard({
       </div>
 
       <div className="mt-4 flex flex-col gap-1">
-        <span className="text-[11px] uppercase tracking-[0.15em] text-mute">{product.team}</span>
-        <h4 className="text-sm font-medium text-ink line-clamp-1">{product.name}</h4>
+        <span className="text-[11px] uppercase tracking-[0.15em] text-mute">
+          {product.team}
+        </span>
+        <h4 className="text-sm font-medium text-ink line-clamp-1">
+          {product.name}
+        </h4>
         <div className="mt-1 flex items-baseline gap-2">
-          <span className={`text-sm font-semibold ${onSale ? "text-sale" : "text-ink"}`}>
+          <span
+            className={`text-sm font-semibold ${onSale ? "text-sale" : "text-ink"}`}
+          >
             ${product.price.toFixed(2)}
           </span>
           {onSale ? (
-            <span className="text-xs text-mute line-through">${product.original!.toFixed(2)}</span>
+            <span className="text-xs text-mute line-through">
+              ${product.original!.toFixed(2)}
+            </span>
           ) : null}
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

@@ -1,20 +1,25 @@
 "use client";
 
+import { HttpTypes } from "@medusajs/types";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import { useQueryState } from "nuqs";
 
-const CATEGORIES = [
-  "Serie A",
-  "Ligue 1",
-  "Kids",
-  "Training Kits",
-  "Windbreakers",
-  "Tracksuits",
-  "Boots",
-];
+interface ShopSidebarProps {
+  categories?: HttpTypes.StoreProductCategory[];
+}
 
-export function ShopSidebar() {
+export function ShopSidebar({ categories = [] }: ShopSidebarProps) {
   const [categoriesOpen, setCategoriesOpen] = useState(true);
+  const [activeCategory, setActiveCategory] = useQueryState("category");
+
+  const handleCategoryClick = (categoryId: string) => {
+    if (activeCategory === categoryId) {
+      setActiveCategory(null);
+    } else {
+      setActiveCategory(categoryId);
+    }
+  };
 
   return (
     <aside className="w-full lg:w-64 flex flex-col gap-6 text-ink">
@@ -41,13 +46,23 @@ export function ShopSidebar() {
         >
           <div className="overflow-hidden">
             <ul className="space-y-3 text-xs text-charcoal">
-              {CATEGORIES.map((cat) => (
-                <li key={cat}>
-                  <button className="hover:text-ink transition-colors text-left w-full font-medium">
-                    {cat}
-                  </button>
-                </li>
-              ))}
+              {categories.map((category) => {
+                const isActive = activeCategory === category.id;
+                return (
+                  <li key={category.id}>
+                    <button
+                      onClick={() => handleCategoryClick(category.id)}
+                      className={`hover:text-ink transition-colors text-left w-full font-medium cursor-pointer ${
+                        isActive
+                          ? "text-ink underline underline-offset-4 decoration-2"
+                          : "text-mute"
+                      }`}
+                    >
+                      {category.name}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

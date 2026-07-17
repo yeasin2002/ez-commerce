@@ -1,4 +1,6 @@
-import { getProductById } from "@/data/products.data";
+import { retrieveProduct } from "@lib/data/products";
+import { getProductPrice } from "@lib/util/get-product-price";
+import { HttpTypes } from "@medusajs/types";
 import { Footer } from "@/feature/home/Footer";
 import { Header } from "@/feature/home/Header";
 import { ProductGallery } from "@/feature/shop/ProductGallery";
@@ -10,17 +12,70 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+function mapStoreProductToPDPProduct(product: HttpTypes.StoreProduct) {
+  const { cheapestPrice } = getProductPrice({ product });
+
+  const sizeOption = product.options?.find(
+    (o) => o.title?.toLowerCase() === "size"
+  );
+  const sizes = sizeOption?.values?.map((v) => v.value).filter(Boolean) as string[] || [];
+
+  const rawDetails = product.metadata?.details;
+  const details = Array.isArray(rawDetails) ? rawDetails.map(String) : undefined;
+
+  const rawPlayers = product.metadata?.players;
+  const players = Array.isArray(rawPlayers)
+    ? rawPlayers.map((p: any) => ({
+        name: typeof p === "object" && p ? String(p.name || "") : String(p),
+        label: typeof p === "object" && p ? String(p.label || p.name || "") : String(p),
+      }))
+    : undefined;
+
+  const rawPatches = product.metadata?.patches;
+  const patches = Array.isArray(rawPatches) ? rawPatches.map(String) : undefined;
+
+  return {
+    id: product.id!,
+    name: product.title || "",
+    team: (product.metadata?.team as string) || product.subtitle || "Sportswear",
+    price: cheapestPrice?.calculated_price_number ?? 0,
+    original: cheapestPrice?.original_price_number ?? undefined,
+    discount: cheapestPrice?.percentage_diff
+      ? parseInt(cheapestPrice.percentage_diff)
+      : undefined,
+    image: product.thumbnail || "",
+    tag: product.subtitle || undefined,
+    description: product.description || undefined,
+    images: product.images?.map((img) => img.url) || [],
+    sizes,
+    details,
+    players,
+    patches,
+    soldCount: (product.metadata?.sold_count as number) || undefined,
+    viewingCount: (product.metadata?.viewing_count as number) || undefined,
+  };
+}
+
 export default async function ProductDetailsPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ countryCode: string; id: string }>;
 }) {
-  const { id } = await params;
-  const product = getProductById(id);
+  const { id, countryCode } = await params;
+  let dbProduct: HttpTypes.StoreProduct | null = null;
 
-  if (!product) {
+  try {
+    dbProduct = await retrieveProduct(id, countryCode);
+  } catch (error) {
+    console.error("Error retrieving product:", error);
     notFound();
   }
+
+  if (!dbProduct) {
+    notFound();
+  }
+
+  const product = mapStoreProductToPDPProduct(dbProduct);
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between">
