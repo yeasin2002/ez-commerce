@@ -1,17 +1,29 @@
-import Image from "next/image";
+import Image from "next/image"
+import Link from "next/link"
 
-const CATEGORIES = [
-  { name: "Retro Kits", img: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=400&q=80" },
-  { name: "National Teams", img: "https://images.unsplash.com/photo-1552667466-07770ae110d0?w=400&q=80" },
-  { name: "Club Home", img: "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=400&q=80" },
-  { name: "Away Kits", img: "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80" },
-  { name: "Legends", img: "https://images.unsplash.com/photo-1552667466-07770ae110d0?w=400&q=80" },
-  { name: "Accessories", img: "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=400&q=80" },
-  { name: "Boots", img: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=400&q=80" },
-  { name: "Training", img: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=400&q=80" },
-];
+interface CategoryWithImage {
+  id: string
+  name: string
+  handle: string
+  is_active: boolean
+  is_internal: boolean
+  category_image?: {
+    image_url: string
+  }
+}
 
-export function CategoryStrip() {
+interface CategoryStripProps {
+  categories: CategoryWithImage[]
+}
+
+export function CategoryStrip({ categories = [] }: CategoryStripProps) {
+  // filter active and non-internal ones
+  const activeCategories = categories.filter((c) => c.is_active && !c.is_internal)
+
+  if (activeCategories.length === 0) {
+    return null
+  }
+
   return (
     <section className="border-b border-hairline-soft py-16">
       <div className="container-page">
@@ -20,26 +32,37 @@ export function CategoryStrip() {
             <h2 className="font-display text-4xl md:text-5xl uppercase">Top Collections</h2>
             <p className="mt-2 text-sm text-mute">Browse the moments that defined the game.</p>
           </div>
-          <a href="#" className="hidden md:inline text-sm font-medium underline underline-offset-4">View all</a>
+          <Link href="/shop" className="hidden md:inline text-sm font-medium underline underline-offset-4">
+            View all
+          </Link>
         </div>
 
         <div className="grid grid-cols-4 gap-4 md:grid-cols-8 md:gap-6">
-          {CATEGORIES.map((c) => (
-            <a key={c.name} href="#" className="group flex flex-col items-center gap-3 text-center">
-              <div className="relative aspect-square w-full overflow-hidden rounded-pill bg-cloud ring-1 ring-hairline-soft">
-                <Image
-                  src={c.img}
-                  alt={c.name}
-                  fill
-                  sizes="(max-width: 768px) 25vw, 12.5vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
-              <span className="text-xs font-medium uppercase tracking-wide text-ink">{c.name}</span>
-            </a>
-          ))}
+          {activeCategories.map((c) => {
+            const fallbackImg = "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=400&q=80"
+            const imgUrl = c.category_image?.image_url || fallbackImg
+
+            return (
+              <Link 
+                key={c.id} 
+                href={`/shop?category=${c.id}`} 
+                className="group flex flex-col items-center gap-3 text-center cursor-pointer"
+              >
+                <div className="relative aspect-square w-full overflow-hidden rounded-pill bg-cloud ring-1 ring-hairline-soft">
+                  <Image
+                    src={imgUrl}
+                    alt={c.name}
+                    fill
+                    sizes="(max-width: 768px) 25vw, 12.5vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <span className="text-xs font-medium uppercase tracking-wide text-ink">{c.name}</span>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </section>
-  );
+  )
 }

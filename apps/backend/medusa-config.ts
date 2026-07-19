@@ -20,4 +20,24 @@ module.exports = defineConfig({
       options: {},
     },
   ],
+  modules: [
+    {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/file-local",
+            id: "local",
+            options: {
+              upload_dir: "uploads",
+              backend_url: "http://localhost:9000",
+            },
+          },
+        ],
+      },
+    },
+    {
+      resolve: "./src/modules/categoryExtension",
+    },
+  ],
 })

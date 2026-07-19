@@ -10,8 +10,8 @@ export const listCategories = async (query?: Record<string, unknown>) => {
   const limit = query?.limit || 100
 
   return sdk.client
-    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
-      "/store/product-categories",
+    .fetch<{ product_categories: (HttpTypes.StoreProductCategory & { category_image?: { image_url: string } })[] }>(
+      "/store/custom-categories",
       {
         query: {
           fields:
@@ -34,8 +34,8 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(
-      `/store/product-categories`,
+    .fetch<{ product_categories: (HttpTypes.StoreProductCategory & { category_image?: { image_url: string } })[] }>(
+      `/store/custom-categories`,
       {
         query: {
           fields: "*category_children, *products",

@@ -1,5 +1,3 @@
-"use client";
-
 import { CategoryStrip } from "@/feature/home/CategoryStrip";
 import { EditorialTiles } from "@/feature/home/EditorialTiles";
 import { FAQ } from "@/feature/home/FAQ";
@@ -13,17 +11,23 @@ import { Newsletter } from "@/feature/home/Newsletter";
 import { ProductGrid } from "@/feature/home/ProductGrid";
 import { Testimonials } from "@/feature/home/Testimonials";
 import { ValueProps } from "@/feature/home/ValueProps";
+import { listCategories } from "@lib/data/categories";
 
 import { BEST_SELLERS, NEW_ARRIVALS } from "@/data/products.data";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const categories = await listCategories().catch((err) => {
+    console.error("Error loading categories for homepage:", err);
+    return [];
+  });
+
   return (
     <div className="min-h-screen bg-canvas text-ink">
       <Header />
       <main>
         <Hero />
         <ValueProps />
-        <CategoryStrip />
+        <CategoryStrip categories={categories as any} />
         <FeatureBanner />
         <ProductGrid
           eyebrow="Trending"
