@@ -1,15 +1,16 @@
 "use client";
 
-import { type Product } from "@/feature/home/ProductCard";
+import { mapStoreProductToProduct } from "@lib/util/map-product";
+import { useProducts } from "@lib/hooks/api/use-products";
 import { useQueryState, parseAsString } from "nuqs";
-import { ShopGrid } from "./ShopGrid";
+import { ShopGrid, ProductSkeletonGrid } from "./ShopGrid";
 import { ShopToolbar } from "./ShopToolbar";
 
 interface ShopContentProps {
-  products: Product[];
+  countryCode: string;
 }
 
-export function ShopContent({ products }: ShopContentProps) {
+export function ShopContent({ countryCode }: ShopContentProps) {
   const [viewMode, setViewMode] = useQueryState(
     "view",
     parseAsString.withDefault("grid-4")
@@ -18,6 +19,16 @@ export function ShopContent({ products }: ShopContentProps) {
     "sort",
     parseAsString.withDefault("az")
   );
+  const [activeCategory] = useQueryState("category");
+
+  const {
+    data: dbProducts = [],
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useProducts(countryCode, activeCategory || undefined);
+
+  const products = dbProducts.map(mapStoreProductToProduct);
 
   const sortedProducts = [...products].sort((a, b) => {
     if (sortBy === "az") {
@@ -45,8 +56,14 @@ export function ShopContent({ products }: ShopContentProps) {
         onModeChange={(mode) => setViewMode(mode)}
         sortBy={sortBy}
         onSortChange={(sort) => setSortBy(sort)}
+        onRefetch={() => refetch()}
+        isRefetching={isRefetching}
       />
-      <ShopGrid products={sortedProducts} viewMode={viewMode} />
+      {isLoading ? (
+        <ProductSkeletonGrid viewMode={viewMode} />
+      ) : (
+        <ShopGrid products={sortedProducts} viewMode={viewMode} />
+      )}
     </div>
   );
 }

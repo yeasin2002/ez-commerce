@@ -7,6 +7,8 @@ interface ShopToolbarProps {
   onModeChange: (mode: string) => void;
   sortBy: string;
   onSortChange: (sort: string) => void;
+  onRefetch?: () => void;
+  isRefetching?: boolean;
 }
 
 const gridOptions = [
@@ -21,6 +23,8 @@ export function ShopToolbar({
   onModeChange,
   sortBy,
   onSortChange,
+  onRefetch,
+  isRefetching = false,
 }: ShopToolbarProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-hairline-soft pb-4 mb-8 text-ink">
@@ -53,10 +57,11 @@ export function ShopToolbar({
           variant="outline"
           size="sm"
           className="rounded-2xl cursor-pointer"
-          onClick={() => window.location.reload()}
+          onClick={onRefetch}
+          disabled={isRefetching}
         >
           <span>refresh</span>
-          <IconReload />
+          <IconReload className={isRefetching ? "animate-spin" : ""} />
         </Button>
 
         <div className="flex items-center gap-3 ml-auto sm:ml-0">

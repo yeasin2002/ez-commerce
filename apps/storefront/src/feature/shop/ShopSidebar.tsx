@@ -1,17 +1,15 @@
 "use client";
 
-import { HttpTypes } from "@medusajs/types";
+import { useCategories } from "@lib/hooks/api/use-categories";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { useQueryState } from "nuqs";
 
-interface ShopSidebarProps {
-  categories?: HttpTypes.StoreProductCategory[];
-}
-
-export function ShopSidebar({ categories = [] }: ShopSidebarProps) {
+export function ShopSidebar() {
   const [categoriesOpen, setCategoriesOpen] = useState(true);
   const [activeCategory, setActiveCategory] = useQueryState("category");
+
+  const { data: categories = [], isLoading } = useCategories();
 
   const handleCategoryClick = (categoryId: string) => {
     if (activeCategory === categoryId) {
@@ -20,6 +18,26 @@ export function ShopSidebar({ categories = [] }: ShopSidebarProps) {
       setActiveCategory(categoryId);
     }
   };
+
+  if (isLoading) {
+    return (
+      <aside className="w-full lg:w-64 flex flex-col gap-6 text-ink">
+        {/* Products Category Accordion Skeleton */}
+        <div className="border-b border-hairline-soft pb-6">
+          <div className="flex w-full items-center justify-between text-left font-semibold text-sm uppercase tracking-wider py-2">
+            <div className="h-4 w-32 bg-cloud animate-pulse rounded" />
+          </div>
+          <ul className="space-y-3 mt-4">
+            {[1, 2, 3, 4].map((i) => (
+              <li key={i}>
+                <div className="h-3 w-24 bg-cloud animate-pulse rounded" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside className="w-full lg:w-64 flex flex-col gap-6 text-ink">
