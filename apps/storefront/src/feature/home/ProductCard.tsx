@@ -31,9 +31,11 @@ export type Product = {
 export function ProductCard({
   product,
   layout = "grid",
+  priority = false,
 }: {
   product: Product;
   layout?: "grid" | "list";
+  priority?: boolean;
 }) {
   const params = useParams();
   const countryCode = (params?.countryCode as string) || "bn";
@@ -62,6 +64,7 @@ export function ProductCard({
             alt={product.name}
             fill
             sizes="(max-width: 768px) 30vw, 15vw"
+            priority={priority}
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
@@ -124,6 +127,7 @@ export function ProductCard({
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
+          priority={priority}
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
 

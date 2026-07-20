@@ -5,9 +5,9 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React from "react";
 
-const queryClient = new QueryClient();
-
 export const RootWrapper = ({ children }: { children: React.ReactNode }) => {
+  const [queryClient] = React.useState(() => new QueryClient());
+
   return (
     <>
       <NextThemesProvider

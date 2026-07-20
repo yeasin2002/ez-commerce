@@ -3,6 +3,12 @@ import { ArrowRight } from "lucide-react";
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-ink text-canvas">
+      <link
+        rel="preload"
+        href="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80&auto=format&fit=crop"
+        as="image"
+        fetchPriority="high"
+      />
       <div
         className="relative min-h-[70vh] md:min-h-[85vh] w-full bg-cover bg-center"
         style={{

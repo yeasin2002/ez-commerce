@@ -46,7 +46,6 @@ export default async function ShopPage(props: {
   const categories = await getCategories();
   const dbProducts = await getProducts(countryCode, activeCategoryId);
   const mappedProducts = dbProducts.map(mapStoreProductToProduct);
-  console.log("🚀 ~ ShopPage ~ mappedProducts:", mappedProducts);
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between">

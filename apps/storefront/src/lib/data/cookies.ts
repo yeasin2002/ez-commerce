@@ -18,7 +18,27 @@ export const getAuthHeaders = async (): Promise<
   }
 }
 
+const GLOBAL_TAGS = [
+  "products",
+  "categories",
+  "collections",
+  "regions",
+  "variants",
+  "locales",
+  "payment_providers",
+  "fulfillment",
+  "shippingOptions",
+];
+
 export const getCacheTag = async (tag: string): Promise<string> => {
+  const isGlobal = GLOBAL_TAGS.some(
+    (gt) => tag === gt || tag.startsWith(`${gt}-`)
+  );
+
+  if (isGlobal) {
+    return tag;
+  }
+
   try {
     const cookies = await nextCookies()
     const cacheId = cookies.get("_medusa_cache_id")?.value

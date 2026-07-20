@@ -24,11 +24,12 @@ export function ShopGrid({ products, viewMode = "grid-3" }: ShopGridProps) {
 
   return (
     <div className={gridClasses}>
-      {products.map((product) => (
+      {products.map((product, idx) => (
         <ProductCard
           key={product.id}
           product={product}
           layout={isListView ? "list" : "grid"}
+          priority={idx < 4}
         />
       ))}
     </div>
