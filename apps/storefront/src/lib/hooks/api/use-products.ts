@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { productsApi } from "@lib/api/products"
 import { useRegions } from "./use-regions"
 
@@ -15,15 +15,27 @@ export const useProducts = (countryCode: string, categoryId?: string) => {
     regions?.find((r) => r.countries?.some((c) => c?.iso_2 === countryCode)) ||
     regions?.find((r) => r.countries?.some((c) => c?.iso_2 === "us"))
 
-  const queryParams = {
-    limit: 100,
-    ...(region?.id ? { region_id: region.id } : {}),
-    ...(categoryId ? { category_id: [categoryId] } : {}),
-  }
-
-  return useQuery({
-    queryKey: PRODUCT_KEYS.list(queryParams),
-    queryFn: () => productsApi.list(queryParams).then((res) => res.products),
+  return useInfiniteQuery({
+    queryKey: PRODUCT_KEYS.list({
+      countryCode,
+      categoryId,
+      regionId: region?.id,
+    }),
+    queryFn: ({ pageParam }) => {
+      const offset = pageParam * 24
+      const queryParams = {
+        limit: 24,
+        offset,
+        ...(region?.id ? { region_id: region.id } : {}),
+        ...(categoryId ? { category_id: [categoryId] } : {}),
+      }
+      return productsApi.list(queryParams)
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const currentCount = allPages.length * 24
+      return lastPage.count > currentCount ? allPages.length : null
+    },
     enabled: !!regions,
   })
 }
