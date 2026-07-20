@@ -1,6 +1,24 @@
 {
   "version": 1,
   "skills": {
+    "audit-website": {
+      "source": "squirrelscan/skills",
+      "sourceType": "github",
+      "skillPath": "skills/audit-website/SKILL.md",
+      "computedHash": "66597d22234d31f9912dc4dec88685ebf0194444544c7ab338e39b51365b9c46"
+    },
+    "lighthouse": {
+      "source": "onnokh/lighthouse",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "bf7de3a0453e975ab24833dc42d4b983f7e59b6f47660134e4e43fb94669a0fa"
+    },
+    "performance": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance/SKILL.md",
+      "computedHash": "646931a3af896ae12a3cad3d762668cb6487fe3ab179daf8fdc974fb79acfe49"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
