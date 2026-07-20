@@ -1,10 +1,10 @@
 import { Footer } from "@/feature/home/Footer";
 import { Header } from "@/feature/home/Header";
-import { mapStoreProductToProduct } from "@lib/util/map-product";
 import { ShopContent } from "@/feature/shop/ShopContent";
 import { ShopSidebar } from "@/feature/shop/ShopSidebar";
 import { listCategories } from "@lib/data/categories";
 import { listProducts } from "@lib/data/products";
+import { mapStoreProductToProduct } from "@lib/util/map-product";
 import Link from "next/link";
 
 async function getCategories() {
@@ -46,7 +46,7 @@ export default async function ShopPage(props: {
   const categories = await getCategories();
   const dbProducts = await getProducts(countryCode, activeCategoryId);
   const mappedProducts = dbProducts.map(mapStoreProductToProduct);
-
+  console.log("🚀 ~ ShopPage ~ mappedProducts:", mappedProducts);
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between">
