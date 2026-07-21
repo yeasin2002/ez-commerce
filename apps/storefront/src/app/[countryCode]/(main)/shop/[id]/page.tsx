@@ -10,67 +10,6 @@ import { ProductInfo } from "@/feature/shop/ProductInfo";
 import { PromoMarquee } from "@/feature/shop/PromoMarquee";
 import { RelatedProducts } from "@/feature/shop/RelatedProducts";
 import { retrieveProduct } from "@lib/data/products";
-import { getProductPrice } from "@lib/util/get-product-price";
-
-function mapStoreProductToPDPProduct(product: HttpTypes.StoreProduct) {
-  const { cheapestPrice } = getProductPrice({ product });
-
-  const sizeOption = product.options?.find(
-    (o) => o.title?.toLowerCase() === "size",
-  );
-  const sizes =
-    (sizeOption?.values?.map((v) => v.value).filter(Boolean) as string[]) || [];
-
-  const rawDetails = product.metadata?.details;
-  const details = Array.isArray(rawDetails)
-    ? rawDetails.map(String)
-    : undefined;
-
-  const rawPlayers = product.metadata?.players;
-  const players = Array.isArray(rawPlayers)
-    ? rawPlayers.map((p) => {
-        const item = p as Record<string, unknown> | null | undefined;
-        return {
-          name:
-            typeof item === "object" && item
-              ? String(item.name || "")
-              : String(p),
-          label:
-            typeof item === "object" && item
-              ? String(item.label || item.name || "")
-              : String(p),
-        };
-      })
-    : undefined;
-
-  const rawPatches = product.metadata?.patches;
-  const patches = Array.isArray(rawPatches)
-    ? rawPatches.map(String)
-    : undefined;
-
-  return {
-    id: product.id!,
-    name: product.title || "",
-    team:
-      (product.metadata?.team as string) || product.subtitle || "Sportswear",
-    price: cheapestPrice?.calculated_price_number ?? 0,
-    original: cheapestPrice?.original_price_number ?? undefined,
-    discount: cheapestPrice?.percentage_diff
-      ? parseInt(cheapestPrice.percentage_diff)
-      : undefined,
-    image: product.thumbnail || "",
-    tag: product.subtitle || undefined,
-    description: product.description || undefined,
-    images: product.images?.map((img) => img.url) || [],
-    sizes,
-    details,
-    players,
-    patches,
-    soldCount: (product.metadata?.sold_count as number) || undefined,
-    viewingCount: (product.metadata?.viewing_count as number) || undefined,
-    rawProduct: product,
-  };
-}
 
 export default async function ProductDetailsPage({
   params,
@@ -91,8 +30,6 @@ export default async function ProductDetailsPage({
     notFound();
   }
 
-  const product = mapStoreProductToPDPProduct(dbProduct);
-
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between">
       <Header />
@@ -106,7 +43,7 @@ export default async function ProductDetailsPage({
             </Link>
             <span>/</span>
             <span className="text-ink font-medium truncate max-w-50 md:max-w-none">
-              {product.name}
+              {dbProduct.title}
             </span>
           </nav>
 
@@ -126,10 +63,10 @@ export default async function ProductDetailsPage({
         {/* Product Details Section */}
         <div className="container-page grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 pb-16">
           <ProductGallery
-            images={product.images || [product.image]}
-            name={product.name}
+            images={dbProduct.images?.map((img) => img.url!) || [dbProduct.thumbnail!]}
+            name={dbProduct.title || ""}
           />
-          <ProductInfo product={product} />
+          <ProductInfo product={dbProduct} />
         </div>
 
         {/* Marquee Promotion Banner */}
@@ -139,8 +76,7 @@ export default async function ProductDetailsPage({
 
         {/* Product Suggestions & Recently Viewed */}
         <div className="container-page space-y-8 mt-12">
-          <RelatedProducts currentProductId={product.id} />
-          {/* <RecentlyViewed currentProductId={product.id} /> */}
+          <RelatedProducts currentProductId={dbProduct.id} />
         </div>
       </main>
 
