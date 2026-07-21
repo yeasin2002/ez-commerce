@@ -1,11 +1,36 @@
 "use client";
 
-import { useState } from "react";
 import type { Product } from "@/feature/home/ProductCard";
-import { Heart, Share2, HelpCircle, ChevronDown, Minus, Plus, Truck, Calendar } from "lucide-react";
+import { getProductPrice } from "@lib/util/get-product-price";
+import { HttpTypes } from "@medusajs/types";
+import {
+  ChevronDown,
+  Heart,
+  HelpCircle,
+  Minus,
+  Plus,
+  Share2,
+} from "lucide-react";
+import { useState } from "react";
+import ShippingAndDeliveryCard from "./shipping-and-delivery.card";
 
 export function ProductInfo({ product }: { product: Product }) {
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "M");
+  const rawProduct = product.rawProduct as HttpTypes.StoreProduct | undefined;
+
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {};
+    if (rawProduct?.options) {
+      rawProduct.options.forEach((opt) => {
+        if (opt.values?.[0]?.value) {
+          initial[opt.id] = opt.values[0].value;
+        }
+      });
+    } else if (product.sizes?.[0]) {
+      initial["size"] = product.sizes[0];
+    }
+    return initial;
+  });
+
   const [selectedPlayer, setSelectedPlayer] = useState(product.players?.[0]?.name || "Patch Only");
   const [customName, setCustomName] = useState("");
   const [selectedPatch, setSelectedPatch] = useState(product.patches?.[0] || "No Patch");
@@ -18,16 +43,36 @@ export function ProductInfo({ product }: { product: Product }) {
     setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const hasDiscount = product.original && product.original > product.price;
+  // Find active variant matching selected options
+  const selectedVariant = rawProduct?.variants?.find((v) =>
+    v.options?.every((opt) => selectedOptions[opt.option_id!] === opt.value)
+  );
+
+  // Retrieve pricing for currently selected variant
+  const { cheapestPrice, variantPrice } = rawProduct
+    ? getProductPrice({
+        product: rawProduct,
+        variantId: selectedVariant?.id,
+      })
+    : { cheapestPrice: null, variantPrice: null };
+
+  const activePrice = variantPrice || cheapestPrice;
+  const currentPrice = activePrice?.calculated_price_number ?? product.price;
+  const originalPrice = activePrice?.original_price_number ?? product.original;
+  const discountPercent = activePrice?.percentage_diff
+    ? parseInt(activePrice.percentage_diff)
+    : product.discount;
+
+  const hasDiscount = originalPrice && originalPrice > currentPrice;
 
   return (
     <div className="flex flex-col gap-6 text-ink">
       {/* Badge & Title */}
       <div>
         <div className="flex items-center gap-3">
-          {product.discount ? (
+          {discountPercent ? (
             <span className="inline-flex items-center rounded-pill bg-sale px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-canvas">
-              -{product.discount}%
+              -{discountPercent}%
             </span>
           ) : null}
           <div className="flex items-center gap-1.5 text-xs text-sale font-medium">
@@ -45,63 +90,112 @@ export function ProductInfo({ product }: { product: Product }) {
 
       {/* Pricing */}
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-bold text-sale">${product.price.toFixed(2)}</span>
+        <span className="text-3xl font-bold text-sale">
+          ${currentPrice.toFixed(2)}
+        </span>
         {hasDiscount ? (
-          <span className="text-lg text-mute line-through">${product.original!.toFixed(2)}</span>
+          <span className="text-lg text-mute line-through">
+            ${originalPrice!.toFixed(2)}
+          </span>
         ) : null}
       </div>
 
-      {/* Shipping & Delivery card */}
-      <div className="rounded-lg border border-hairline-soft bg-cloud/50 p-4 space-y-3">
-        <div className="flex items-start gap-3 text-xs text-charcoal">
-          <Calendar className="h-4 w-4 text-mute mt-0.5" />
-          <div>
-            <span className="font-semibold">Estimated delivery time:</span> 7-21 Days.
-          </div>
-        </div>
-        <div className="flex items-start gap-3 text-xs text-charcoal">
-          <Truck className="h-4 w-4 text-mute mt-0.5" />
-          <div>
-            <span className="font-semibold">Free shipping:</span> Min Order of 3+ Items
-          </div>
-        </div>
-      </div>
+      <ShippingAndDeliveryCard />
 
       {/* Real-time viewers */}
       <div className="text-xs text-charcoal flex items-center gap-2">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-        <span>{product.viewingCount || 35} people are viewing this right now</span>
+        <span>
+          {product.viewingCount || 35} people are viewing this right now
+        </span>
       </div>
 
-      {/* Size Selector */}
-      {product.sizes && product.sizes.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold uppercase tracking-wide text-ink">Size: {selectedSize}</span>
-            <button className="text-mute underline underline-offset-4 hover:text-ink">Size guide</button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {product.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`min-w-12 h-10 px-3 rounded-pill text-xs font-semibold border transition-all ${
-                  selectedSize === size
-                    ? "bg-ink border-ink text-canvas"
-                    : "bg-canvas border-hairline-soft text-ink hover:border-ink"
-                }`}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Dynamic Options Selector (Size, Color, etc.) */}
+      {rawProduct?.options
+        ? rawProduct.options.map((opt) => {
+            const selectedValue = selectedOptions[opt.id];
+            return (
+              <div key={opt.id} className="space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold uppercase tracking-wide text-ink">
+                    {opt.title}: {selectedValue}
+                  </span>
+                  {opt.title?.toLowerCase() === "size" && (
+                    <button className="text-mute underline underline-offset-4 hover:text-ink">
+                      Size guide
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {opt.values?.map((val) => {
+                    const isSelected = selectedValue === val.value;
+                    return (
+                      <button
+                        key={val.id}
+                        onClick={() =>
+                          setSelectedOptions((prev) => ({
+                            ...prev,
+                            [opt.id]: val.value ?? "",
+                          }))
+                        }
+                        className={`min-w-12 h-10 px-4 rounded-pill text-xs font-semibold border transition-all cursor-pointer ${
+                          isSelected
+                            ? "bg-ink border-ink text-canvas"
+                            : "bg-canvas border-hairline-soft text-ink hover:border-ink"
+                        }`}
+                      >
+                        {val.value}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })
+        : /* Size Selector Fallback for Mock/Static Data */
+          product.sizes &&
+          product.sizes.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold uppercase tracking-wide text-ink">
+                  Size: {selectedOptions["size"] || "M"}
+                </span>
+                <button className="text-mute underline underline-offset-4 hover:text-ink">
+                  Size guide
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {product.sizes.map((size) => {
+                  const isSelected = (selectedOptions["size"] || "M") === size;
+                  return (
+                    <button
+                      key={size}
+                      onClick={() =>
+                        setSelectedOptions((prev) => ({
+                          ...prev,
+                          size: size,
+                        }))
+                      }
+                      className={`min-w-12 h-10 px-3 rounded-pill text-xs font-semibold border transition-all ${
+                        isSelected
+                          ? "bg-ink border-ink text-canvas"
+                          : "bg-canvas border-hairline-soft text-ink hover:border-ink"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
       {/* Player Customization */}
       {product.players && product.players.length > 0 && (
         <div className="space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-wide block">Player Name</span>
+          <span className="text-xs font-semibold uppercase tracking-wide block">
+            Player Name
+          </span>
           <div className="flex flex-wrap gap-2">
             {product.players.map((p) => (
               <button
@@ -130,7 +224,9 @@ export function ProductInfo({ product }: { product: Product }) {
       {/* Patch Selector */}
       {product.patches && product.patches.length > 0 && (
         <div className="space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-wide block">Patch</span>
+          <span className="text-xs font-semibold uppercase tracking-wide block">
+            Patch
+          </span>
           <div className="flex flex-wrap gap-2">
             {product.patches.map((patch) => (
               <button
@@ -173,7 +269,9 @@ export function ProductInfo({ product }: { product: Product }) {
             >
               <Minus className="h-3 w-3" />
             </button>
-            <span className="w-8 text-center text-sm font-semibold">{quantity}</span>
+            <span className="w-8 text-center text-sm font-semibold">
+              {quantity}
+            </span>
             <button
               onClick={() => setQuantity((q) => q + 1)}
               className="p-1 text-mute hover:text-ink transition-colors"
@@ -232,7 +330,10 @@ export function ProductInfo({ product }: { product: Product }) {
             title: "Shipping and Returns",
             content: (
               <p>
-                We offer worldwide trackable shipping. Orders are processed within 1-2 business days. Estimated delivery is 7-21 days depending on your location. Returns are accepted within 30 days of receipt if the items are unworn and tags remain intact.
+                We offer worldwide trackable shipping. Orders are processed
+                within 1-2 business days. Estimated delivery is 7-21 days
+                depending on your location. Returns are accepted within 30 days
+                of receipt if the items are unworn and tags remain intact.
               </p>
             ),
           },
@@ -241,7 +342,10 @@ export function ProductInfo({ product }: { product: Product }) {
             title: "Refund Policies",
             content: (
               <p>
-                Refunds will be processed back to your original payment method once the returned item is inspected and approved. Customized player jerseys (with custom name/number) are final sale and cannot be returned unless there is a manufacturer defect.
+                Refunds will be processed back to your original payment method
+                once the returned item is inspected and approved. Customized
+                player jerseys (with custom name/number) are final sale and
+                cannot be returned unless there is a manufacturer defect.
               </p>
             ),
           },
@@ -250,7 +354,11 @@ export function ProductInfo({ product }: { product: Product }) {
             title: "Don't Know How to Add Patch or Number and Name?",
             content: (
               <p>
-                To customize your jersey, select the player button or choose &quot;Patch Only&quot;. If you want a custom name and number not listed, type it in the text box exactly as you&apos;d like it to appear. You can also specify any extra instructions in the order note field during checkout.
+                To customize your jersey, select the player button or choose
+                &quot;Patch Only&quot;. If you want a custom name and number not
+                listed, type it in the text box exactly as you&apos;d like it to
+                appear. You can also specify any extra instructions in the order
+                note field during checkout.
               </p>
             ),
           },
@@ -262,7 +370,9 @@ export function ProductInfo({ product }: { product: Product }) {
                 onClick={() => toggleAccordion(tab.key)}
                 className="flex w-full items-center justify-between text-left focus:outline-none"
               >
-                <span className="text-sm font-semibold uppercase tracking-wide">{tab.title}</span>
+                <span className="text-sm font-semibold uppercase tracking-wide">
+                  {tab.title}
+                </span>
                 <ChevronDown
                   className={`h-4 w-4 text-mute transition-transform duration-300 ${
                     isOpen ? "rotate-180" : ""
@@ -271,7 +381,9 @@ export function ProductInfo({ product }: { product: Product }) {
               </button>
               <div
                 className={`grid transition-all duration-300 ease-in-out ${
-                  isOpen ? "grid-rows-[1fr] opacity-100 mt-3" : "grid-rows-[0fr] opacity-0"
+                  isOpen
+                    ? "grid-rows-[1fr] opacity-100 mt-3"
+                    : "grid-rows-[0fr] opacity-0"
                 }`}
               >
                 <div className="overflow-hidden text-xs text-charcoal leading-relaxed">

@@ -25,6 +25,7 @@ export type Product = {
   reviewCount?: number;
   soldCount?: number;
   viewingCount?: number;
+  rawProduct?: unknown;
 };
 
 

@@ -13,7 +13,8 @@ export const useProducts = (countryCode: string, categoryId?: string) => {
 
   const region =
     regions?.find((r) => r.countries?.some((c) => c?.iso_2 === countryCode)) ||
-    regions?.find((r) => r.countries?.some((c) => c?.iso_2 === "us"))
+    regions?.find((r) => r.countries?.some((c) => c?.iso_2 === "us")) ||
+    regions?.[0]
 
   return useInfiniteQuery({
     queryKey: PRODUCT_KEYS.list({

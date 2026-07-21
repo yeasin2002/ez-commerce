@@ -1,14 +1,10 @@
 "use client";
 
-import React, { use } from "react";
-import Link from "next/link";
-import { 
-  IconArrowLeft, 
-  IconCheck, 
-  IconClock 
-} from "@tabler/icons-react";
 import { mockOrders } from "@/data/account.data";
 import { cn } from "@/lib/utils";
+import { IconArrowLeft, IconCheck, IconClock } from "@tabler/icons-react";
+import Link from "next/link";
+import { use } from "react";
 
 interface PageProps {
   params: Promise<{
@@ -104,16 +100,18 @@ export default function OrderDetailsPage({ params }: PageProps) {
                 return (
                   <div key={idx} className="relative">
                     {/* Circle Bullet icon */}
-                    <div className={cn(
-                      "absolute -left-[35px] top-0 w-6 h-6 rounded-full flex items-center justify-center border text-[9px] font-bold z-10 transition-colors duration-300",
-                      step.done 
-                        ? isCurrent 
-                          ? "bg-ink text-canvas border-ink" 
-                          : "bg-emerald-600 border-emerald-600 text-canvas"
-                        : "bg-canvas dark:bg-zinc-950 border-hairline text-mute"
-                    )}>
+                    <div
+                      className={cn(
+                        "absolute -left-8.75 top-0 w-6 h-6 rounded-full flex items-center justify-center border text-[9px] font-bold z-10 transition-colors duration-300",
+                        step.done
+                          ? isCurrent
+                            ? "bg-ink text-canvas border-ink"
+                            : "bg-emerald-600 border-emerald-600 text-canvas"
+                          : "bg-canvas dark:bg-zinc-950 border-hairline text-mute",
+                      )}
+                    >
                       {step.done ? (
-                        <IconCheck size={10} className="stroke-[3]" />
+                        <IconCheck size={10} className="stroke-3" />
                       ) : (
                         <IconClock size={10} />
                       )}
@@ -121,10 +119,14 @@ export default function OrderDetailsPage({ params }: PageProps) {
 
                     <div className="space-y-1">
                       <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                        <h4 className={cn(
-                          "text-xs font-bold font-sans",
-                          step.done ? "text-ink dark:text-canvas" : "text-mute"
-                        )}>
+                        <h4
+                          className={cn(
+                            "text-xs font-bold font-sans",
+                            step.done
+                              ? "text-ink dark:text-canvas"
+                              : "text-mute",
+                          )}
+                        >
                           {step.status}
                         </h4>
                         <span className="text-[10px] text-mute font-sans">

@@ -1,43 +1,58 @@
-import { retrieveProduct } from "@lib/data/products";
-import { getProductPrice } from "@lib/util/get-product-price";
 import { HttpTypes } from "@medusajs/types";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import { Footer } from "@/feature/home/Footer";
 import { Header } from "@/feature/home/Header";
 import { ProductGallery } from "@/feature/shop/ProductGallery";
 import { ProductInfo } from "@/feature/shop/ProductInfo";
 import { PromoMarquee } from "@/feature/shop/PromoMarquee";
-import { RecentlyViewed } from "@/feature/shop/RecentlyViewed";
 import { RelatedProducts } from "@/feature/shop/RelatedProducts";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import { retrieveProduct } from "@lib/data/products";
+import { getProductPrice } from "@lib/util/get-product-price";
 
 function mapStoreProductToPDPProduct(product: HttpTypes.StoreProduct) {
   const { cheapestPrice } = getProductPrice({ product });
 
   const sizeOption = product.options?.find(
-    (o) => o.title?.toLowerCase() === "size"
+    (o) => o.title?.toLowerCase() === "size",
   );
-  const sizes = sizeOption?.values?.map((v) => v.value).filter(Boolean) as string[] || [];
+  const sizes =
+    (sizeOption?.values?.map((v) => v.value).filter(Boolean) as string[]) || [];
 
   const rawDetails = product.metadata?.details;
-  const details = Array.isArray(rawDetails) ? rawDetails.map(String) : undefined;
+  const details = Array.isArray(rawDetails)
+    ? rawDetails.map(String)
+    : undefined;
 
   const rawPlayers = product.metadata?.players;
   const players = Array.isArray(rawPlayers)
-    ? rawPlayers.map((p: any) => ({
-        name: typeof p === "object" && p ? String(p.name || "") : String(p),
-        label: typeof p === "object" && p ? String(p.label || p.name || "") : String(p),
-      }))
+    ? rawPlayers.map((p) => {
+        const item = p as Record<string, unknown> | null | undefined;
+        return {
+          name:
+            typeof item === "object" && item
+              ? String(item.name || "")
+              : String(p),
+          label:
+            typeof item === "object" && item
+              ? String(item.label || item.name || "")
+              : String(p),
+        };
+      })
     : undefined;
 
   const rawPatches = product.metadata?.patches;
-  const patches = Array.isArray(rawPatches) ? rawPatches.map(String) : undefined;
+  const patches = Array.isArray(rawPatches)
+    ? rawPatches.map(String)
+    : undefined;
 
   return {
     id: product.id!,
     name: product.title || "",
-    team: (product.metadata?.team as string) || product.subtitle || "Sportswear",
+    team:
+      (product.metadata?.team as string) || product.subtitle || "Sportswear",
     price: cheapestPrice?.calculated_price_number ?? 0,
     original: cheapestPrice?.original_price_number ?? undefined,
     discount: cheapestPrice?.percentage_diff
@@ -53,6 +68,7 @@ function mapStoreProductToPDPProduct(product: HttpTypes.StoreProduct) {
     patches,
     soldCount: (product.metadata?.sold_count as number) || undefined,
     viewingCount: (product.metadata?.viewing_count as number) || undefined,
+    rawProduct: product,
   };
 }
 
@@ -89,7 +105,7 @@ export default async function ProductDetailsPage({
               Home
             </Link>
             <span>/</span>
-            <span className="text-ink font-medium truncate max-w-[200px] md:max-w-none">
+            <span className="text-ink font-medium truncate max-w-50 md:max-w-none">
               {product.name}
             </span>
           </nav>
@@ -124,7 +140,7 @@ export default async function ProductDetailsPage({
         {/* Product Suggestions & Recently Viewed */}
         <div className="container-page space-y-8 mt-12">
           <RelatedProducts currentProductId={product.id} />
-          <RecentlyViewed currentProductId={product.id} />
+          {/* <RecentlyViewed currentProductId={product.id} /> */}
         </div>
       </main>
 
