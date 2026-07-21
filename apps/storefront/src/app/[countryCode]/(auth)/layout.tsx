@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import { SocialLogin } from "@/feature/auth/social-login";
 import Image from "next/image";
+import React from "react";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         <div className="w-full max-w-[320px] space-y-6">
           {children}
         </div>
+
       </div>
 
       {/* Right Column: Illustration Section */}

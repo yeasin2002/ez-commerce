@@ -1,13 +1,14 @@
 "use client";
 
+import { AuthInput } from "@/components/shared";
+import { Button } from "@/components/ui/button";
+import { SocialLogin } from "@/feature/auth/social-login";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle, Lock, Mail, Phone, SendHorizontal, User } from "lucide-react";
+import Link from "next/link";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import Link from "next/link";
-import { User, Mail, Phone, Lock, SendHorizontal, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AuthInput } from "@/components/shared";
 
 // Form Validation Schema using Zod
 const registerSchema = z.object({
@@ -89,98 +90,95 @@ export default function RegisterPage({ params }: PageProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 font-sans">
-      {/* Header Title */}
-      <div className="space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-          Create account
-        </h1>
-      </div>
-
-      {/* Input Fields */}
-      <div className="space-y-3.5 pt-2">
-        {/* Name Fields (Side-by-side) */}
-        <div className="grid grid-cols-2 gap-3">
-          {/* First Name */}
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 font-sans">
+        {/* Header Title */}
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+            Create account
+          </h1>
+        </div>
+        {/* Input Fields */}
+        <div className="space-y-3.5 pt-2">
+          {/* Name Fields (Side-by-side) */}
+          <div className="grid grid-cols-2 gap-3">
+            {/* First Name */}
+            <AuthInput
+              type="text"
+              placeholder="First name"
+              icon={<User className="h-3.5 w-3.5" />}
+              error={errors.first_name}
+              disabled={isSubmitting}
+              {...register("first_name")}
+            />
+            {/* Last Name */}
+            <AuthInput
+              type="text"
+              placeholder="Last name"
+              icon={<User className="h-3.5 w-3.5" />}
+              error={errors.last_name}
+              disabled={isSubmitting}
+              {...register("last_name")}
+            />
+          </div>
+          {/* Email field */}
           <AuthInput
-            type="text"
-            placeholder="First name"
-            icon={<User className="h-3.5 w-3.5" />}
-            error={errors.first_name}
+            type="email"
+            placeholder="Email"
+            icon={<Mail className="h-3.5 w-3.5" />}
+            error={errors.email}
             disabled={isSubmitting}
-            {...register("first_name")}
+            {...register("email")}
           />
-
-          {/* Last Name */}
+          {/* Phone field */}
           <AuthInput
             type="text"
-            placeholder="Last name"
-            icon={<User className="h-3.5 w-3.5" />}
-            error={errors.last_name}
+            placeholder="Phone number"
+            icon={<Phone className="h-3.5 w-3.5" />}
+            error={errors.phone}
             disabled={isSubmitting}
-            {...register("last_name")}
+            {...register("phone")}
+          />
+          {/* Password field */}
+          <AuthInput
+            type="password"
+            placeholder="Password"
+            icon={<Lock className="h-3.5 w-3.5" />}
+            error={errors.password}
+            disabled={isSubmitting}
+            {...register("password")}
           />
         </div>
+        {/* Submit Button */}
+        <div className="pt-1">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full h-10 rounded-full bg-[#6a35f2] hover:bg-[#5829d6] text-white font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer text-xs uppercase tracking-wider focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#6a35f2] border-none shadow-md shadow-purple-900/10"
+          >
+            {isSubmitting ? (
+              "Creating Account..."
+            ) : (
+              <>
+                Register
+                <SendHorizontal className="h-3 w-3 fill-white text-white" />
+              </>
+            )}
+          </Button>
+        </div>
+        {/* Sign In Link */}
+        <p className="text-xs text-muted-foreground text-center mt-4">
+          Already have an account?{" "}
+          <Link
+            href={`/${countryCode}/login`}
+            className="text-foreground font-semibold underline hover:no-underline transition-all"
+          >
+            Sign In
+          </Link>
+        </p>
+      </form>
 
-        {/* Email field */}
-        <AuthInput
-          type="email"
-          placeholder="Email"
-          icon={<Mail className="h-3.5 w-3.5" />}
-          error={errors.email}
-          disabled={isSubmitting}
-          {...register("email")}
-        />
-
-        {/* Phone field */}
-        <AuthInput
-          type="text"
-          placeholder="Phone number"
-          icon={<Phone className="h-3.5 w-3.5" />}
-          error={errors.phone}
-          disabled={isSubmitting}
-          {...register("phone")}
-        />
-
-        {/* Password field */}
-        <AuthInput
-          type="password"
-          placeholder="Password"
-          icon={<Lock className="h-3.5 w-3.5" />}
-          error={errors.password}
-          disabled={isSubmitting}
-          {...register("password")}
-        />
-      </div>
-
-      {/* Submit Button */}
-      <div className="pt-1">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full h-10 rounded-full bg-[#6a35f2] hover:bg-[#5829d6] text-white font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer text-xs uppercase tracking-wider focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#6a35f2] border-none shadow-md shadow-purple-900/10"
-        >
-          {isSubmitting ? (
-            "Creating Account..."
-          ) : (
-            <>
-              Register
-              <SendHorizontal className="h-3 w-3 fill-white text-white" />
-            </>
-          )}
-        </Button>
-      </div>
-
-      {/* Sign In Link */}
-      <p className="text-xs text-muted-foreground text-center mt-4">
-        Already have an account?{" "}
-        <Link
-          href={`/${countryCode}/login`}
-          className="text-foreground font-semibold underline hover:no-underline transition-all"
-        >
-          Sign In
-        </Link>
-      </p>
-    </form>
+                <SocialLogin/>
+    </div>
   );
 }
