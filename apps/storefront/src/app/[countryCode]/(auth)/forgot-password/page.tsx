@@ -83,7 +83,8 @@ export default function ForgotPasswordPage({ params }: PageProps) {
           Reset password
         </h1>
         <p className="text-[11px] text-muted-foreground leading-relaxed">
-          Enter your email address and we&apos;ll send you a link to reset your password.
+          Enter your email address and we&apos;ll send you a link to reset your
+          password.
         </p>
       </div>
 

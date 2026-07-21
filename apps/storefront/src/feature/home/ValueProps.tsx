@@ -2,9 +2,21 @@ import { Truck, RotateCcw, Shield, Headphones } from "lucide-react";
 
 const ITEMS = [
   { icon: Truck, title: "Free Shipping", desc: "On orders over $80 worldwide" },
-  { icon: RotateCcw, title: "30-Day Returns", desc: "No-questions swap or refund" },
-  { icon: Shield, title: "Authentic Only", desc: "Officially licensed from source" },
-  { icon: Headphones, title: "24/7 Support", desc: "Real humans, usually under an hour" },
+  {
+    icon: RotateCcw,
+    title: "30-Day Returns",
+    desc: "No-questions swap or refund",
+  },
+  {
+    icon: Shield,
+    title: "Authentic Only",
+    desc: "Officially licensed from source",
+  },
+  {
+    icon: Headphones,
+    title: "24/7 Support",
+    desc: "Real humans, usually under an hour",
+  },
 ];
 
 export function ValueProps() {

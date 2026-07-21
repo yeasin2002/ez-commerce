@@ -8,29 +8,31 @@ export const BEST_SELLERS: Product[] = [
     price: 89.99,
     original: 119.99,
     discount: 25,
-    image: "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=800&q=80",
-      "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80"
+      "https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&q=80",
     ],
-    description: "The official FC Barcelona 2024/25 Home Jersey. Engineered with ultra-breathable moisture-wicking fabric and styled to match the team's iconic vertical stripes. Perfect for matchdays at Camp Nou or streetwear styling.",
+    description:
+      "The official FC Barcelona 2024/25 Home Jersey. Engineered with ultra-breathable moisture-wicking fabric and styled to match the team's iconic vertical stripes. Perfect for matchdays at Camp Nou or streetwear styling.",
     details: [
       "Dri-FIT technology ensures high moisture absorption and dry comfort.",
       "100% recycled polyester lightweight fabric.",
       "Embroidered club crest and brand logo.",
-      "Slim fit design tailored for athletic motion."
+      "Slim fit design tailored for athletic motion.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Lamine Yamal #19", label: "Lamine Yamal #19" },
-      { name: "Raphinha #11", label: "Raphinha #11" }
+      { name: "Raphinha #11", label: "Raphinha #11" },
     ],
     patches: ["Patch (Leave Patch Name At Checkout)", "No Patch"],
     rating: 4.9,
     reviewCount: 382,
     soldCount: 88,
-    viewingCount: 26
+    viewingCount: 26,
   },
   {
     id: "bs-2",
@@ -39,30 +41,32 @@ export const BEST_SELLERS: Product[] = [
     price: 74.99,
     original: 99.99,
     discount: 25,
-    image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
-      "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=800&q=80"
+      "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=800&q=80",
     ],
-    description: "Revisit the legendary 2006/07 season with this premium AC Milan Away Retro Jersey. Celebrating their historic Champions League victory in Athens, this jersey is a collector's dream with authentic gold accents and stitched detailing.",
+    description:
+      "Revisit the legendary 2006/07 season with this premium AC Milan Away Retro Jersey. Celebrating their historic Champions League victory in Athens, this jersey is a collector's dream with authentic gold accents and stitched detailing.",
     details: [
       "Authentic retro fit with vintage collared design.",
       "Embroidered classic golden star and club crest.",
       "Breathable double-knit fabric texture.",
-      "Premium heat-pressed sponsors."
+      "Premium heat-pressed sponsors.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Kaká #22", label: "Kaká #22" },
       { name: "Maldini #3", label: "Maldini #3" },
-      { name: "Pirlo #21", label: "Pirlo #21" }
+      { name: "Pirlo #21", label: "Pirlo #21" },
     ],
     patches: ["UCL 7-Time Winners Patch", "No Patch"],
     rating: 4.8,
     reviewCount: 295,
     soldCount: 54,
-    viewingCount: 15
+    viewingCount: 15,
   },
   {
     id: "bs-3",
@@ -71,29 +75,31 @@ export const BEST_SELLERS: Product[] = [
     price: 84.99,
     original: 109.99,
     discount: 22,
-    image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80",
-      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80"
+      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
     ],
-    description: "The long-sleeve version of AC Milan's historic 2006/07 away kit. Designed for colder matchdays, this vintage piece represents elegance and football prestige, complete with ribbed cuffs and official branding.",
+    description:
+      "The long-sleeve version of AC Milan's historic 2006/07 away kit. Designed for colder matchdays, this vintage piece represents elegance and football prestige, complete with ribbed cuffs and official branding.",
     details: [
       "Ribbed long sleeve cuffs for comfort and warmth.",
       "Authentic heavy-grade retro polyester build.",
       "Historically accurate sponsor alignment.",
-      "Machine washable retro fabrics."
+      "Machine washable retro fabrics.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Kaká #22", label: "Kaká #22" },
-      { name: "Inzaghi #9", label: "Inzaghi #9" }
+      { name: "Inzaghi #9", label: "Inzaghi #9" },
     ],
     patches: ["UCL Athens 2007 Final Patch", "No Patch"],
     rating: 4.9,
     reviewCount: 198,
     soldCount: 39,
-    viewingCount: 12
+    viewingCount: 12,
   },
   {
     id: "bs-4",
@@ -102,31 +108,37 @@ export const BEST_SELLERS: Product[] = [
     price: 79.99,
     original: 109.99,
     discount: 27,
-    image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
     images: [
       "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=800&q=80",
-      "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=800&q=80"
+      "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=800&q=80",
     ],
-    description: "Relive Cristiano Ronaldo's breakout Ballon d'Or campaign in the legendary 2007/08 Manchester United Home Jersey. Famous for the double-winning Premier League and Champions League season, this kit features the back white stripe and classic red hue.",
+    description:
+      "Relive Cristiano Ronaldo's breakout Ballon d'Or campaign in the legendary 2007/08 Manchester United Home Jersey. Famous for the double-winning Premier League and Champions League season, this kit features the back white stripe and classic red hue.",
     details: [
       "Distinctive vertical white mesh back stripe.",
       "Raised felt club crest and embroidered branding.",
       "Side ventilation inserts.",
-      "Lightweight retro styling structure."
+      "Lightweight retro styling structure.",
     ],
     sizes: ["S", "M", "L", "XL", "2XL"],
     players: [
       { name: "Patch Only", label: "Patch Only" },
       { name: "Ronaldo #7", label: "Ronaldo #7" },
       { name: "Rooney #10", label: "Rooney #10" },
-      { name: "Tevez #32", label: "Tevez #32" }
+      { name: "Tevez #32", label: "Tevez #32" },
     ],
-    patches: ["Premier League Gold Champions Patch", "UCL Starball Patch", "No Patch"],
+    patches: [
+      "Premier League Gold Champions Patch",
+      "UCL Starball Patch",
+      "No Patch",
+    ],
     rating: 4.9,
     reviewCount: 512,
     soldCount: 110,
-    viewingCount: 45
-  }
+    viewingCount: 45,
+  },
 ];
 
 export const NEW_ARRIVALS: Product[] = [

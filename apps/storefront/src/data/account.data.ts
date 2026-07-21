@@ -42,7 +42,8 @@ export const mockCustomerProfile = {
   dateJoined: "12 January 2024",
   dateOfBirth: "1998-01-12",
   gender: "male",
-  avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&q=80",
+  avatarUrl:
+    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&q=80",
 };
 
 export const mockOrders: MockOrder[] = [
@@ -59,7 +60,7 @@ export const mockOrders: MockOrder[] = [
         color: "Red",
         qty: 1,
         price: 2450,
-        image: "/mock-jersey-red.png"
+        image: "/mock-jersey-red.png",
       },
       {
         name: "Nike Dri-FIT Short Men's Shorts",
@@ -67,7 +68,7 @@ export const mockOrders: MockOrder[] = [
         color: "Black",
         qty: 1,
         price: 950,
-        image: "/mock-shorts-black.png"
+        image: "/mock-shorts-black.png",
       },
       {
         name: "Adidas Training Socks",
@@ -75,16 +76,41 @@ export const mockOrders: MockOrder[] = [
         color: "White",
         qty: 2,
         price: 850,
-        image: "/mock-socks-white.png"
-      }
+        image: "/mock-socks-white.png",
+      },
     ],
     timeline: [
-      { status: "Order Placed", date: "12 May 2025, 10:24 AM", description: "Your order has been successfully placed.", done: true },
-      { status: "Payment Confirmed", date: "12 May 2025, 10:25 AM", description: "Payment was successfully processed via Cash on Delivery.", done: true },
-      { status: "Order Processed", date: "13 May 2025, 09:12 AM", description: "Your package is prepared and ready for shipment.", done: true },
-      { status: "Shipped", date: "14 May 2025, 03:40 PM", description: "Carrier has picked up package. Tracking ID: TRK125467890", done: true },
-      { status: "Delivered", date: "16 May 2025, 11:15 AM", description: "Package was delivered to the shipping address.", done: true }
-    ]
+      {
+        status: "Order Placed",
+        date: "12 May 2025, 10:24 AM",
+        description: "Your order has been successfully placed.",
+        done: true,
+      },
+      {
+        status: "Payment Confirmed",
+        date: "12 May 2025, 10:25 AM",
+        description: "Payment was successfully processed via Cash on Delivery.",
+        done: true,
+      },
+      {
+        status: "Order Processed",
+        date: "13 May 2025, 09:12 AM",
+        description: "Your package is prepared and ready for shipment.",
+        done: true,
+      },
+      {
+        status: "Shipped",
+        date: "14 May 2025, 03:40 PM",
+        description: "Carrier has picked up package. Tracking ID: TRK125467890",
+        done: true,
+      },
+      {
+        status: "Delivered",
+        date: "16 May 2025, 11:15 AM",
+        description: "Package was delivered to the shipping address.",
+        done: true,
+      },
+    ],
   },
   {
     id: "EZC-2505-0009",
@@ -99,7 +125,7 @@ export const mockOrders: MockOrder[] = [
         color: "Pink",
         qty: 1,
         price: 2150,
-        image: "/mock-jersey-pink.png"
+        image: "/mock-jersey-pink.png",
       },
       {
         name: "Team Classic Training Cap",
@@ -107,16 +133,41 @@ export const mockOrders: MockOrder[] = [
         color: "Black",
         qty: 1,
         price: 700,
-        image: "/mock-cap-black.png"
-      }
+        image: "/mock-cap-black.png",
+      },
     ],
     timeline: [
-      { status: "Order Placed", date: "05 May 2025, 02:10 PM", description: "Your order has been successfully placed.", done: true },
-      { status: "Payment Confirmed", date: "05 May 2025, 02:12 PM", description: "Payment was successfully processed.", done: true },
-      { status: "Order Processed", date: "06 May 2025, 08:30 AM", description: "Your package is prepared.", done: true },
-      { status: "Shipped", date: "07 May 2025, 01:15 PM", description: "Carrier has picked up package.", done: true },
-      { status: "Delivered", date: "09 May 2025, 04:30 PM", description: "Package was delivered.", done: true }
-    ]
+      {
+        status: "Order Placed",
+        date: "05 May 2025, 02:10 PM",
+        description: "Your order has been successfully placed.",
+        done: true,
+      },
+      {
+        status: "Payment Confirmed",
+        date: "05 May 2025, 02:12 PM",
+        description: "Payment was successfully processed.",
+        done: true,
+      },
+      {
+        status: "Order Processed",
+        date: "06 May 2025, 08:30 AM",
+        description: "Your package is prepared.",
+        done: true,
+      },
+      {
+        status: "Shipped",
+        date: "07 May 2025, 01:15 PM",
+        description: "Carrier has picked up package.",
+        done: true,
+      },
+      {
+        status: "Delivered",
+        date: "09 May 2025, 04:30 PM",
+        description: "Package was delivered.",
+        done: true,
+      },
+    ],
   },
   {
     id: "EZC-2504-0032",
@@ -131,16 +182,41 @@ export const mockOrders: MockOrder[] = [
         color: "Blue/Red",
         qty: 1,
         price: 1350,
-        image: "/mock-jersey-fcb.png"
-      }
+        image: "/mock-jersey-fcb.png",
+      },
     ],
     timeline: [
-      { status: "Order Placed", date: "28 Apr 2025, 11:00 AM", description: "Your order has been successfully placed.", done: true },
-      { status: "Payment Confirmed", date: "28 Apr 2025, 11:05 AM", description: "Payment was successfully processed.", done: true },
-      { status: "Order Processed", date: "29 Apr 2025, 09:00 AM", description: "Your package is prepared.", done: true },
-      { status: "Shipped", date: "30 Apr 2025, 02:00 PM", description: "Carrier has picked up package. Tracking ID: TRK874392810", done: true },
-      { status: "Delivered", date: "Pending", description: "Package is currently in transit.", done: false }
-    ]
+      {
+        status: "Order Placed",
+        date: "28 Apr 2025, 11:00 AM",
+        description: "Your order has been successfully placed.",
+        done: true,
+      },
+      {
+        status: "Payment Confirmed",
+        date: "28 Apr 2025, 11:05 AM",
+        description: "Payment was successfully processed.",
+        done: true,
+      },
+      {
+        status: "Order Processed",
+        date: "29 Apr 2025, 09:00 AM",
+        description: "Your package is prepared.",
+        done: true,
+      },
+      {
+        status: "Shipped",
+        date: "30 Apr 2025, 02:00 PM",
+        description: "Carrier has picked up package. Tracking ID: TRK874392810",
+        done: true,
+      },
+      {
+        status: "Delivered",
+        date: "Pending",
+        description: "Package is currently in transit.",
+        done: false,
+      },
+    ],
   },
   {
     id: "EZC-2504-0021",
@@ -155,16 +231,41 @@ export const mockOrders: MockOrder[] = [
         color: "Orange",
         qty: 1,
         price: 2150,
-        image: "/mock-jersey-rm.png"
-      }
+        image: "/mock-jersey-rm.png",
+      },
     ],
     timeline: [
-      { status: "Order Placed", date: "18 Apr 2025, 04:12 PM", description: "Your order has been successfully placed.", done: true },
-      { status: "Payment Confirmed", date: "18 Apr 2025, 04:15 PM", description: "Payment was successfully processed.", done: true },
-      { status: "Order Processed", date: "Pending", description: "Your package is being prepared.", done: false },
-      { status: "Shipped", date: "Pending", description: "Carrier is waiting for pickup.", done: false },
-      { status: "Delivered", date: "Pending", description: "Package delivery pending.", done: false }
-    ]
+      {
+        status: "Order Placed",
+        date: "18 Apr 2025, 04:12 PM",
+        description: "Your order has been successfully placed.",
+        done: true,
+      },
+      {
+        status: "Payment Confirmed",
+        date: "18 Apr 2025, 04:15 PM",
+        description: "Payment was successfully processed.",
+        done: true,
+      },
+      {
+        status: "Order Processed",
+        date: "Pending",
+        description: "Your package is being prepared.",
+        done: false,
+      },
+      {
+        status: "Shipped",
+        date: "Pending",
+        description: "Carrier is waiting for pickup.",
+        done: false,
+      },
+      {
+        status: "Delivered",
+        date: "Pending",
+        description: "Package delivery pending.",
+        done: false,
+      },
+    ],
   },
   {
     id: "EZC-2504-0010",
@@ -179,13 +280,23 @@ export const mockOrders: MockOrder[] = [
         color: "White",
         qty: 1,
         price: 950,
-        image: "/mock-polo-arsenal.png"
-      }
+        image: "/mock-polo-arsenal.png",
+      },
     ],
     timeline: [
-      { status: "Order Placed", date: "10 Apr 2025, 01:20 PM", description: "Your order has been successfully placed.", done: true },
-      { status: "Cancelled", date: "10 Apr 2025, 02:45 PM", description: "Order was cancelled by the user.", done: true }
-    ]
+      {
+        status: "Order Placed",
+        date: "10 Apr 2025, 01:20 PM",
+        description: "Your order has been successfully placed.",
+        done: true,
+      },
+      {
+        status: "Cancelled",
+        date: "10 Apr 2025, 02:45 PM",
+        description: "Order was cancelled by the user.",
+        done: true,
+      },
+    ],
   },
   {
     id: "EZC-2503-0045",
@@ -200,15 +311,30 @@ export const mockOrders: MockOrder[] = [
         color: "Blue",
         qty: 1,
         price: 1780,
-        image: "/mock-jacket-italy.png"
-      }
+        image: "/mock-jacket-italy.png",
+      },
     ],
     timeline: [
-      { status: "Order Placed", date: "30 Mar 2025, 09:15 AM", description: "Your order has been successfully placed.", done: true },
-      { status: "Payment Confirmed", date: "30 Mar 2025, 09:20 AM", description: "Payment was successfully processed.", done: true },
-      { status: "Refunded", date: "02 Apr 2025, 11:30 AM", description: "Funds have been returned to original payment source.", done: true }
-    ]
-  }
+      {
+        status: "Order Placed",
+        date: "30 Mar 2025, 09:15 AM",
+        description: "Your order has been successfully placed.",
+        done: true,
+      },
+      {
+        status: "Payment Confirmed",
+        date: "30 Mar 2025, 09:20 AM",
+        description: "Payment was successfully processed.",
+        done: true,
+      },
+      {
+        status: "Refunded",
+        date: "02 Apr 2025, 11:30 AM",
+        description: "Funds have been returned to original payment source.",
+        done: true,
+      },
+    ],
+  },
 ];
 
 export const mockAddresses: MockAddress[] = [
@@ -222,7 +348,7 @@ export const mockAddresses: MockAddress[] = [
     country: "Bangladesh",
     phone: "+880 1712 345 678",
     isDefaultShipping: true,
-    type: "shipping"
+    type: "shipping",
   },
   {
     id: "addr-2",
@@ -234,7 +360,7 @@ export const mockAddresses: MockAddress[] = [
     country: "Bangladesh",
     phone: "+880 1712 345 678",
     isDefaultBilling: true,
-    type: "billing"
+    type: "billing",
   },
   {
     id: "addr-3",
@@ -245,8 +371,8 @@ export const mockAddresses: MockAddress[] = [
     postalCode: "1205",
     country: "Bangladesh",
     phone: "+880 1712 345 678",
-    type: "home"
-  }
+    type: "home",
+  },
 ];
 
 export interface MockNotification {
@@ -262,7 +388,8 @@ export const mockNotifications: MockNotification[] = [
   {
     id: "notif-1",
     title: "Order Shipped!",
-    message: "Your Barcelona Retro 1998/99 Home Jersey has been shipped. Follow the transit updates inside the order details page or copy tracking ID TRK874392810.",
+    message:
+      "Your Barcelona Retro 1998/99 Home Jersey has been shipped. Follow the transit updates inside the order details page or copy tracking ID TRK874392810.",
     date: "1 hour ago",
     read: false,
     type: "order",
@@ -270,7 +397,8 @@ export const mockNotifications: MockNotification[] = [
   {
     id: "notif-2",
     title: "New Season Collection Launch",
-    message: "Grab the latest 2025/26 kits before everyone else. Buy 2 and get free home delivery worldwide. Code: NEWKIT25.",
+    message:
+      "Grab the latest 2025/26 kits before everyone else. Buy 2 and get free home delivery worldwide. Code: NEWKIT25.",
     date: "1 day ago",
     read: false,
     type: "promo",
@@ -278,7 +406,8 @@ export const mockNotifications: MockNotification[] = [
   {
     id: "notif-3",
     title: "Password Updated Successfully",
-    message: "Your account credentials were changed recently. If you did not make this update, please change your password immediately or contact our support.",
+    message:
+      "Your account credentials were changed recently. If you did not make this update, please change your password immediately or contact our support.",
     date: "2 days ago",
     read: true,
     type: "security",
@@ -286,7 +415,8 @@ export const mockNotifications: MockNotification[] = [
   {
     id: "notif-4",
     title: "Welcome to EZ Commerce",
-    message: "Thank you for registering an account on our store. Complete your profile and add your address to experience seamless direct-to-consumer jerseys shopping.",
+    message:
+      "Thank you for registering an account on our store. Complete your profile and add your address to experience seamless direct-to-consumer jerseys shopping.",
     date: "5 days ago",
     read: true,
     type: "system",

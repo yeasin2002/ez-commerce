@@ -15,9 +15,15 @@ interface ProfileAvatarUploadProps {
   initialAvatarUrl?: string;
 }
 
-export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadProps) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(initialAvatarUrl || null);
-  const [uploadState, setUploadState] = useState<"idle" | "uploading" | "done">("idle");
+export function ProfileAvatarUpload({
+  initialAvatarUrl,
+}: ProfileAvatarUploadProps) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    initialAvatarUrl || null,
+  );
+  const [uploadState, setUploadState] = useState<"idle" | "uploading" | "done">(
+    "idle",
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +36,7 @@ export function ProfileAvatarUpload({ initialAvatarUrl }: ProfileAvatarUploadPro
 
     // Set uploading simulation
     setUploadState("uploading");
-    
+
     setTimeout(() => {
       setUploadState("done");
     }, 800); // Simulate network upload speed

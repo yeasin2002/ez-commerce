@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -6,7 +6,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import {

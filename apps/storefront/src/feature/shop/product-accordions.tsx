@@ -54,13 +54,17 @@ export const ProductAccordions = ({
                 {product.material && (
                   <>
                     <span className="text-mute font-medium">Material</span>
-                    <span className="text-ink font-semibold">{product.material}</span>
+                    <span className="text-ink font-semibold">
+                      {product.material}
+                    </span>
                   </>
                 )}
                 {product.weight && (
                   <>
                     <span className="text-mute font-medium">Weight</span>
-                    <span className="text-ink font-semibold">{product.weight}g</span>
+                    <span className="text-ink font-semibold">
+                      {product.weight}g
+                    </span>
                   </>
                 )}
                 {(product.length || product.width || product.height) && (
@@ -69,32 +73,43 @@ export const ProductAccordions = ({
                     <span className="text-ink font-semibold">
                       {[product.length, product.width, product.height]
                         .filter((v) => v !== null && v !== undefined)
-                        .join(" × ")} cm
+                        .join(" × ")}{" "}
+                      cm
                     </span>
                   </>
                 )}
                 {product.origin_country && (
                   <>
-                    <span className="text-mute font-medium">Origin Country</span>
-                    <span className="text-ink font-semibold">{product.origin_country}</span>
+                    <span className="text-mute font-medium">
+                      Origin Country
+                    </span>
+                    <span className="text-ink font-semibold">
+                      {product.origin_country}
+                    </span>
                   </>
                 )}
                 {product.hs_code && (
                   <>
                     <span className="text-mute font-medium">HS Code</span>
-                    <span className="text-ink font-semibold">{product.hs_code}</span>
+                    <span className="text-ink font-semibold">
+                      {product.hs_code}
+                    </span>
                   </>
                 )}
                 {product.collection?.title && (
                   <>
                     <span className="text-mute font-medium">Collection</span>
-                    <span className="text-ink font-semibold">{product.collection.title}</span>
+                    <span className="text-ink font-semibold">
+                      {product.collection.title}
+                    </span>
                   </>
                 )}
                 {product.type?.value && (
                   <>
                     <span className="text-mute font-medium">Type</span>
-                    <span className="text-ink font-semibold">{product.type.value}</span>
+                    <span className="text-ink font-semibold">
+                      {product.type.value}
+                    </span>
                   </>
                 )}
               </div>
@@ -119,10 +134,10 @@ export const ProductAccordions = ({
       title: "Refund Policies",
       content: (
         <p>
-          Refunds will be processed back to your original payment method once the
-          returned item is inspected and approved. Customized player jerseys (with
-          custom name/number) are final sale and cannot be returned unless there
-          is a manufacturer defect.
+          Refunds will be processed back to your original payment method once
+          the returned item is inspected and approved. Customized player jerseys
+          (with custom name/number) are final sale and cannot be returned unless
+          there is a manufacturer defect.
         </p>
       ),
     },

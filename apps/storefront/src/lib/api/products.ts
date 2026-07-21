@@ -1,5 +1,5 @@
-import { sdk } from "@lib/config"
-import { HttpTypes } from "@medusajs/types"
+import { sdk } from "@lib/config";
+import { HttpTypes } from "@medusajs/types";
 
 export const productsApi = {
   list: (queryParams?: Record<string, unknown>) =>
@@ -12,6 +12,6 @@ export const productsApi = {
             "*variants.calculated_price,+variants.inventory_quantity,*variants.images,*variants.options,+metadata,+tags,",
           ...queryParams,
         },
-      }
+      },
     ),
-}
+};

@@ -47,9 +47,7 @@ export default async function CheckoutLayout({
       </header>
 
       {/* Main layout container */}
-      <main className="flex-1 bg-cloud/10">
-        {children}
-      </main>
+      <main className="flex-1 bg-cloud/10">{children}</main>
     </div>
   );
 }

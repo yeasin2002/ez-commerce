@@ -4,7 +4,14 @@ import { AuthInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { SocialLogin } from "@/feature/auth/social-login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle, Lock, Mail, Phone, SendHorizontal, User } from "lucide-react";
+import {
+  CheckCircle,
+  Lock,
+  Mail,
+  Phone,
+  SendHorizontal,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,22 +19,14 @@ import * as z from "zod";
 
 // Form Validation Schema using Zod
 const registerSchema = z.object({
-  first_name: z
-    .string()
-    .min(1, "First name is required"),
-  last_name: z
-    .string()
-    .min(1, "Last name is required"),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
   email: z
     .string()
     .min(1, "Email is required")
     .email("Please enter a valid email address"),
-  phone: z
-    .string()
-    .min(1, "Phone number is required"),
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters long"),
+  phone: z.string().min(1, "Phone number is required"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -178,7 +177,7 @@ export default function RegisterPage({ params }: PageProps) {
         </p>
       </form>
 
-                <SocialLogin/>
+      <SocialLogin />
     </div>
   );
 }

@@ -34,10 +34,15 @@ export function FAQ() {
     <section className="border-t border-hairline-soft py-20">
       <div className="container-page grid gap-12 md:grid-cols-[1fr_2fr]">
         <div>
-          <span className="text-xs uppercase tracking-[0.3em] text-mute">Support</span>
-          <h2 className="mt-2 font-display text-4xl md:text-5xl uppercase">FAQ</h2>
+          <span className="text-xs uppercase tracking-[0.3em] text-mute">
+            Support
+          </span>
+          <h2 className="mt-2 font-display text-4xl md:text-5xl uppercase">
+            FAQ
+          </h2>
           <p className="mt-4 text-sm text-mute max-w-xs">
-            Everything you need to know before you check out. Still stuck? Message our team — we usually reply within an hour.
+            Everything you need to know before you check out. Still stuck?
+            Message our team — we usually reply within an hour.
           </p>
         </div>
 
@@ -51,12 +56,20 @@ export function FAQ() {
                   aria-expanded={isOpen}
                   className="flex w-full items-center justify-between gap-4 py-6 text-left"
                 >
-                  <span className="text-base md:text-lg font-medium text-ink">{f.q}</span>
-                  {isOpen ? <Minus className="h-5 w-5 shrink-0" /> : <Plus className="h-5 w-5 shrink-0" />}
+                  <span className="text-base md:text-lg font-medium text-ink">
+                    {f.q}
+                  </span>
+                  {isOpen ? (
+                    <Minus className="h-5 w-5 shrink-0" />
+                  ) : (
+                    <Plus className="h-5 w-5 shrink-0" />
+                  )}
                 </button>
                 <div
                   className={`grid transition-all duration-300 ${
-                    isOpen ? "grid-rows-[1fr] opacity-100 pb-6" : "grid-rows-[0fr] opacity-0"
+                    isOpen
+                      ? "grid-rows-[1fr] opacity-100 pb-6"
+                      : "grid-rows-[0fr] opacity-0"
                   }`}
                 >
                   <p className="overflow-hidden text-sm text-charcoal leading-relaxed max-w-2xl">

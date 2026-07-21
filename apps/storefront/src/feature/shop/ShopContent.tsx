@@ -15,11 +15,11 @@ interface ShopContentProps {
 export function ShopContent({ countryCode }: ShopContentProps) {
   const [viewMode, setViewMode] = useQueryState(
     "view",
-    parseAsString.withDefault("grid-4")
+    parseAsString.withDefault("grid-4"),
   );
   const [sortBy, setSortBy] = useQueryState(
     "sort",
-    parseAsString.withDefault("az")
+    parseAsString.withDefault("az"),
   );
   const [activeCategory] = useQueryState("category");
 
@@ -80,10 +80,10 @@ export function ShopContent({ countryCode }: ShopContentProps) {
       ) : (
         <>
           <ShopGrid products={sortedProducts} viewMode={viewMode} />
-          
+
           {/* Scroll Sentinel */}
           <div ref={sentinelRef} className="h-10 w-full" />
-          
+
           {/* Next Page Spinner */}
           {isFetchingNextPage && (
             <div className="mt-8 flex justify-center py-4">

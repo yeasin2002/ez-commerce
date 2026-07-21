@@ -28,7 +28,6 @@ export type Product = {
   rawProduct?: unknown;
 };
 
-
 export function ProductCard({
   product,
   layout = "grid",

@@ -1,37 +1,38 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  IconBell, 
-  IconShoppingBag, 
-  IconShield, 
-  IconUser, 
-  IconCheck, 
-  IconTrash, 
-  IconChecks 
+import {
+  IconBell,
+  IconShoppingBag,
+  IconShield,
+  IconUser,
+  IconCheck,
+  IconTrash,
+  IconChecks,
 } from "@tabler/icons-react";
 import { mockNotifications, MockNotification } from "@/data/account.data";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<MockNotification[]>(mockNotifications);
+  const [notifications, setNotifications] =
+    useState<MockNotification[]>(mockNotifications);
   const [filter, setFilter] = useState<"all" | "unread">("all");
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const toggleRead = (id: string) => {
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, read: !n.read } : n)
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: !n.read } : n)),
     );
   };
 
   const deleteNotification = (id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
   const getIcon = (type: string) => {
@@ -60,14 +61,13 @@ export default function NotificationsPage() {
     }
   };
 
-  const filteredNotifications = notifications.filter(n => {
+  const filteredNotifications = notifications.filter((n) => {
     if (filter === "unread") return !n.read;
     return true;
   });
 
   return (
     <div className="space-y-6">
-      
       {/* Header Info */}
       <div className="pb-4 border-b border-hairline-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -99,7 +99,7 @@ export default function NotificationsPage() {
             "px-5 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer font-sans",
             filter === "all"
               ? "border-ink dark:border-canvas text-ink dark:text-canvas"
-              : "border-transparent text-mute hover:text-ink dark:hover:text-canvas"
+              : "border-transparent text-mute hover:text-ink dark:hover:text-canvas",
           )}
         >
           All ({notifications.length})
@@ -110,7 +110,7 @@ export default function NotificationsPage() {
             "px-5 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer font-sans",
             filter === "unread"
               ? "border-ink dark:border-canvas text-ink dark:text-canvas"
-              : "border-transparent text-mute hover:text-ink dark:hover:text-canvas"
+              : "border-transparent text-mute hover:text-ink dark:hover:text-canvas",
           )}
         >
           Unread ({unreadCount})
@@ -125,25 +125,29 @@ export default function NotificationsPage() {
               key={notif.id}
               className={cn(
                 "bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-4 flex gap-4 transition-all relative",
-                !notif.read && "bg-cloud/5 dark:bg-zinc-900/10 border-hairline-soft/90"
+                !notif.read &&
+                  "bg-cloud/5 dark:bg-zinc-900/10 border-hairline-soft/90",
               )}
             >
-              
               {/* Type Icon indicator */}
-              <div className={cn(
-                "w-9 h-9 rounded-full border flex items-center justify-center shrink-0",
-                getTypeColor(notif.type)
-              )}>
+              <div
+                className={cn(
+                  "w-9 h-9 rounded-full border flex items-center justify-center shrink-0",
+                  getTypeColor(notif.type),
+                )}
+              >
                 {getIcon(notif.type)}
               </div>
 
               {/* Message Details */}
               <div className="flex-1 min-w-0 pr-8">
                 <div className="flex items-baseline gap-2 flex-wrap">
-                  <h4 className={cn(
-                    "text-xs font-bold text-ink dark:text-canvas font-sans",
-                    !notif.read && "font-extrabold"
-                  )}>
+                  <h4
+                    className={cn(
+                      "text-xs font-bold text-ink dark:text-canvas font-sans",
+                      !notif.read && "font-extrabold",
+                    )}
+                  >
                     {notif.title}
                   </h4>
                   {!notif.read && (
@@ -165,10 +169,14 @@ export default function NotificationsPage() {
                   title={notif.read ? "Mark as unread" : "Mark as read"}
                   className={cn(
                     "p-1.5 rounded-full border border-hairline-soft/80 hover:bg-cloud/50 dark:hover:bg-zinc-900 text-mute hover:text-ink dark:hover:text-canvas transition-colors cursor-pointer",
-                    !notif.read && "text-emerald-600 dark:text-emerald-400 hover:text-emerald-700"
+                    !notif.read &&
+                      "text-emerald-600 dark:text-emerald-400 hover:text-emerald-700",
                   )}
                 >
-                  <IconCheck size={14} className={cn(!notif.read && "stroke-[3]")} />
+                  <IconCheck
+                    size={14}
+                    className={cn(!notif.read && "stroke-[3]")}
+                  />
                 </button>
                 <button
                   onClick={() => deleteNotification(notif.id)}
@@ -178,7 +186,6 @@ export default function NotificationsPage() {
                   <IconTrash size={14} />
                 </button>
               </div>
-
             </div>
           ))}
         </div>
@@ -189,16 +196,17 @@ export default function NotificationsPage() {
             <IconBell size={20} className="opacity-60" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-sm font-bold text-ink dark:text-canvas font-sans">No notifications found</h3>
+            <h3 className="text-sm font-bold text-ink dark:text-canvas font-sans">
+              No notifications found
+            </h3>
             <p className="text-xs text-mute dark:text-zinc-400 font-sans max-w-xs mx-auto leading-relaxed">
-              {filter === "unread" 
-                ? "You have caught up with all updates. No unread messages here." 
+              {filter === "unread"
+                ? "You have caught up with all updates. No unread messages here."
                 : "You don't have any notifications at the moment."}
             </p>
           </div>
         </div>
       )}
-
     </div>
   );
 }

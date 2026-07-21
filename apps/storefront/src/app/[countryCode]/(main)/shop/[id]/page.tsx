@@ -63,7 +63,9 @@ export default async function ProductDetailsPage({
         {/* Product Details Section */}
         <div className="container-page grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 pb-16">
           <ProductGallery
-            images={dbProduct.images?.map((img) => img.url!) || [dbProduct.thumbnail!]}
+            images={
+              dbProduct.images?.map((img) => img.url!) || [dbProduct.thumbnail!]
+            }
             name={dbProduct.title || ""}
           />
           <ProductInfo product={dbProduct} />

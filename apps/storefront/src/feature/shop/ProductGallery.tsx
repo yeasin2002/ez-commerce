@@ -4,7 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { Maximize2 } from "lucide-react";
 
-export function ProductGallery({ images, name }: { images: string[]; name: string }) {
+export function ProductGallery({
+  images,
+  name,
+}: {
+  images: string[];
+  name: string;
+}) {
   const [activeIdx, setActiveIdx] = useState(0);
 
   const currentImage = images[activeIdx] || images[0];
@@ -18,7 +24,9 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
             key={idx}
             onClick={() => setActiveIdx(idx)}
             className={`relative aspect-[3/4] w-16 flex-shrink-0 overflow-hidden bg-cloud transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink md:w-20 ${
-              activeIdx === idx ? "ring-2 ring-ink" : "ring-1 ring-hairline-soft opacity-70 hover:opacity-100"
+              activeIdx === idx
+                ? "ring-2 ring-ink"
+                : "ring-1 ring-hairline-soft opacity-70 hover:opacity-100"
             }`}
           >
             <Image

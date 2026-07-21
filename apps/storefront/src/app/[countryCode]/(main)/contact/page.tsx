@@ -62,11 +62,16 @@ export default function ContactUsPage() {
         {/* Breadcrumb */}
         <div className="container-page border-b border-hairline-soft dark:border-border pb-4 mb-8 text-xs text-mute">
           <nav className="flex items-center gap-2">
-            <Link href="/" className="hover:text-ink dark:hover:text-foreground transition-colors">
+            <Link
+              href="/"
+              className="hover:text-ink dark:hover:text-foreground transition-colors"
+            >
               Home
             </Link>
             <span>/</span>
-            <span className="text-ink dark:text-foreground font-semibold">Contact Us</span>
+            <span className="text-ink dark:text-foreground font-semibold">
+              Contact Us
+            </span>
           </nav>
         </div>
 

@@ -26,17 +26,19 @@ export default function WishlistPage() {
       id: "wl-1",
       name: "AC Milan 1995/96 Home",
       team: "AC Milan",
-      price: 34.00,
-      originalPrice: 50.00,
-      image: "https://images.unsplash.com/photo-1541002442297-50348f9757e5?w=500&q=80",
+      price: 34.0,
+      originalPrice: 50.0,
+      image:
+        "https://images.unsplash.com/photo-1541002442297-50348f9757e5?w=500&q=80",
     },
     {
       id: "wl-2",
       name: "AC Milan 1998/99 Home",
       team: "AC Milan",
-      price: 34.00,
-      originalPrice: 50.00,
-      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&q=80",
+      price: 34.0,
+      originalPrice: 50.0,
+      image:
+        "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&q=80",
     },
     {
       id: "wl-3",
@@ -44,21 +46,23 @@ export default function WishlistPage() {
       team: "FC Barcelona",
       price: 89.99,
       originalPrice: 119.99,
-      image: "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=500&q=80",
+      image:
+        "https://images.unsplash.com/photo-1580087256394-dc596e1c8f4f?w=500&q=80",
     },
     {
       id: "wl-4",
       name: "Real Madrid 2024/25 Home Jersey",
       team: "Real Madrid",
-      price: 95.00,
-      image: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=500&q=80",
-    }
+      price: 95.0,
+      image:
+        "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=500&q=80",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col">
       <Header />
-      
+
       <main className="flex-1 py-10 md:py-16">
         <div className="container-page">
           {/* Breadcrumbs */}
@@ -85,12 +89,11 @@ export default function WishlistPage() {
                 Your wishlist is empty
               </h2>
               <p className="text-xs text-mute max-w-[280px] mb-8 leading-relaxed font-sans">
-                Add items you love to your wishlist to see them here and compare your options.
+                Add items you love to your wishlist to see them here and compare
+                your options.
               </p>
               <Link href="/shop" passHref legacyBehavior>
-                <Button 
-                  className="bg-ink hover:bg-charcoal text-canvas rounded-pill px-10 py-3 text-xs font-semibold uppercase tracking-wider cursor-pointer font-sans"
-                >
+                <Button className="bg-ink hover:bg-charcoal text-canvas rounded-pill px-10 py-3 text-xs font-semibold uppercase tracking-wider cursor-pointer font-sans">
                   Start Shopping
                 </Button>
               </Link>
@@ -99,7 +102,8 @@ export default function WishlistPage() {
             /* Populated Grid */
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
               {wishlistItems.map((item) => {
-                const onSale = item.originalPrice && item.originalPrice > item.price;
+                const onSale =
+                  item.originalPrice && item.originalPrice > item.price;
                 return (
                   <div key={item.id} className="group flex flex-col relative">
                     {/* Image Container */}
@@ -138,7 +142,9 @@ export default function WishlistPage() {
                         {item.name}
                       </h4>
                       <div className="mt-1 flex items-baseline gap-2 font-sans">
-                        <span className={`text-sm font-semibold ${onSale ? "text-sale" : "text-ink"}`}>
+                        <span
+                          className={`text-sm font-semibold ${onSale ? "text-sale" : "text-ink"}`}
+                        >
                           ${item.price.toFixed(2)}
                         </span>
                         {onSale && (

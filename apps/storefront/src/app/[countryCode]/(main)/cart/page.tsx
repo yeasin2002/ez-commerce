@@ -2,52 +2,65 @@
 
 import React, { use, useState } from "react";
 import Link from "next/link";
-import { 
-  Plus, 
-  Minus, 
-  Trash2, 
-  Tag, 
-  ShieldCheck, 
-  RefreshCw, 
-  Headphones, 
-  ShoppingBag, 
-  Truck, 
-  Lock 
+import {
+  Plus,
+  Minus,
+  Trash2,
+  Tag,
+  ShieldCheck,
+  RefreshCw,
+  Headphones,
+  ShoppingBag,
+  Truck,
+  Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Custom premium SVG Shirt Icon for Jersey previews
-const JerseyIcon = ({ 
-  color, 
-  collarColor = "#ffffff", 
-  accentColor = "transparent" 
-}: { 
-  color: string; 
-  collarColor?: string; 
-  accentColor?: string; 
+const JerseyIcon = ({
+  color,
+  collarColor = "#ffffff",
+  accentColor = "transparent",
+}: {
+  color: string;
+  collarColor?: string;
+  accentColor?: string;
 }) => (
-  <svg viewBox="0 0 100 100" className="w-12 h-12 select-none pointer-events-none drop-shadow-sm">
-    <path 
-      d="M 30 20 L 40 10 Q 50 15 60 10 L 70 20 L 88 28 L 82 46 L 72 42 L 72 90 L 28 90 L 28 42 L 18 46 L 12 28 Z" 
-      fill={color} 
+  <svg
+    viewBox="0 0 100 100"
+    className="w-12 h-12 select-none pointer-events-none drop-shadow-sm"
+  >
+    <path
+      d="M 30 20 L 40 10 Q 50 15 60 10 L 70 20 L 88 28 L 82 46 L 72 42 L 72 90 L 28 90 L 28 42 L 18 46 L 12 28 Z"
+      fill={color}
     />
-    <path 
-      d="M 40 10 Q 50 15 60 10 L 58 16 Q 50 20 42 16 Z" 
-      fill={collarColor} 
+    <path
+      d="M 40 10 Q 50 15 60 10 L 58 16 Q 50 20 42 16 Z"
+      fill={collarColor}
     />
     {accentColor !== "transparent" && (
-      <rect x="47" y="22" width="6" height="68" fill={accentColor} opacity="0.35" />
+      <rect
+        x="47"
+        y="22"
+        width="6"
+        height="68"
+        fill={accentColor}
+        opacity="0.35"
+      />
     )}
   </svg>
 );
 
 // Custom premium SVG Shorts Icon for apparel preview
 const ShortsIcon = ({ color }: { color: string }) => (
-  <svg viewBox="0 0 100 100" className="w-12 h-12 select-none pointer-events-none drop-shadow-sm">
+  <svg
+    viewBox="0 0 100 100"
+    className="w-12 h-12 select-none pointer-events-none drop-shadow-sm"
+  >
     <rect x="25" y="20" width="50" height="8" rx="2" fill="#222" />
-    <path 
-      d="M 25 28 L 75 28 L 80 75 L 53 75 L 50 55 L 47 75 L 20 75 Z" 
-      fill={color} 
+    <path
+      d="M 25 28 L 75 28 L 80 75 L 53 75 L 50 55 L 47 75 L 20 75 Z"
+      fill={color}
     />
     <path d="M 49 55 L 51 55 L 50 75 Z" fill="#111" opacity="0.4" />
   </svg>
@@ -73,7 +86,13 @@ export default function CartPage({ params }: PageProps) {
       originalPrice: 2800,
       price: 2450,
       qty: 1,
-      icon: <JerseyIcon color="#c21d24" collarColor="#ffffff" accentColor="#ffffff" />
+      icon: (
+        <JerseyIcon
+          color="#c21d24"
+          collarColor="#ffffff"
+          accentColor="#ffffff"
+        />
+      ),
     },
     {
       id: "cart-item-2",
@@ -84,7 +103,13 @@ export default function CartPage({ params }: PageProps) {
       originalPrice: 2450,
       price: 2150,
       qty: 1,
-      icon: <JerseyIcon color="#fca5a5" collarColor="#000000" accentColor="#000000" />
+      icon: (
+        <JerseyIcon
+          color="#fca5a5"
+          collarColor="#000000"
+          accentColor="#000000"
+        />
+      ),
     },
     {
       id: "cart-item-3",
@@ -95,39 +120,48 @@ export default function CartPage({ params }: PageProps) {
       originalPrice: 1200,
       price: 950,
       qty: 1,
-      icon: <ShortsIcon color="#18181b" />
-    }
+      icon: <ShortsIcon color="#18181b" />,
+    },
   ]);
 
   // Handle quantity adjustment
   const updateQty = (id: string, delta: number) => {
-    setItems(prevItems => 
-      prevItems.map(item => {
+    setItems((prevItems) =>
+      prevItems.map((item) => {
         if (item.id === id) {
           const newQty = Math.max(1, item.qty + delta);
           return { ...item, qty: newQty };
         }
         return item;
-      })
+      }),
     );
   };
 
   // Handle item removal
   const removeItem = (id: string) => {
-    setItems(prevItems => prevItems.filter(item => item.id !== id));
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
   // Calculation formulas matching the provided totals
-  const subtotalOriginal = items.reduce((acc, item) => acc + (item.originalPrice * item.qty), 0);
-  const subtotalDiscounted = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+  const subtotalOriginal = items.reduce(
+    (acc, item) => acc + item.originalPrice * item.qty,
+    0,
+  );
+  const subtotalDiscounted = items.reduce(
+    (acc, item) => acc + item.price * item.qty,
+    0,
+  );
   const discountTotal = subtotalOriginal - subtotalDiscounted;
-  
+
   const shippingCost = items.length > 0 ? 80 : 0;
   const finalTotal = subtotalDiscounted + shippingCost;
 
   const freeShippingThreshold = 6000;
   const remainingForFreeShipping = freeShippingThreshold - finalTotal;
-  const progressPercent = Math.min((finalTotal / freeShippingThreshold) * 100, 100);
+  const progressPercent = Math.min(
+    (finalTotal / freeShippingThreshold) * 100,
+    100,
+  );
 
   const formatCurrency = (val: number) => {
     return `৳ ${val.toLocaleString()}`;
@@ -136,17 +170,16 @@ export default function CartPage({ params }: PageProps) {
   return (
     <div className="container-page py-8 lg:py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        
         {/* LEFT COLUMN: Cart Items Listing */}
         <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-          
           {/* Header Title */}
           <div>
             <h1 className="text-4xl sm:text-5xl font-display font-normal uppercase tracking-wider text-ink">
               Your Cart
             </h1>
             <p className="text-xs text-mute mt-1 font-sans">
-              {items.length} {items.length === 1 ? "item" : "items"} in your cart.
+              {items.length} {items.length === 1 ? "item" : "items"} in your
+              cart.
             </p>
           </div>
 
@@ -154,7 +187,6 @@ export default function CartPage({ params }: PageProps) {
             <div className="space-y-4">
               {/* Product Listing Card/Table */}
               <div className="bg-canvas border border-hairline-soft rounded-xl overflow-hidden">
-                
                 {/* Desktop Headers */}
                 <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-cloud/20 border-b border-hairline-soft text-[11px] font-bold uppercase tracking-wider text-mute font-sans">
                   <div className="col-span-6">Product</div>
@@ -166,8 +198,10 @@ export default function CartPage({ params }: PageProps) {
                 {/* Items List */}
                 <div className="divide-y divide-hairline-soft/60">
                   {items.map((item) => (
-                    <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-5 md:p-6">
-                      
+                    <div
+                      key={item.id}
+                      className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-5 md:p-6"
+                    >
                       {/* Product details info (Jersey, details, size, in stock) */}
                       <div className="col-span-12 md:col-span-6 flex gap-4">
                         <div className="w-16 h-16 bg-cloud/50 border border-hairline-soft rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
@@ -201,7 +235,7 @@ export default function CartPage({ params }: PageProps) {
                       {/* Quantity Selector + Remove Link */}
                       <div className="col-span-4 md:col-span-2 flex flex-col items-start md:items-center gap-1.5">
                         <div className="inline-flex items-center border border-hairline bg-canvas rounded-full h-8 overflow-hidden select-none">
-                          <button 
+                          <button
                             type="button"
                             onClick={() => updateQty(item.id, -1)}
                             className="w-8 h-full flex items-center justify-center hover:bg-cloud/50 text-ink/75 transition-colors cursor-pointer text-xs font-bold"
@@ -211,7 +245,7 @@ export default function CartPage({ params }: PageProps) {
                           <span className="w-8 text-center text-xs font-bold font-sans text-ink">
                             {item.qty}
                           </span>
-                          <button 
+                          <button
                             type="button"
                             onClick={() => updateQty(item.id, 1)}
                             className="w-8 h-full flex items-center justify-center hover:bg-cloud/50 text-ink/75 transition-colors cursor-pointer text-xs font-bold"
@@ -219,8 +253,8 @@ export default function CartPage({ params }: PageProps) {
                             <Plus className="h-3 w-3" />
                           </button>
                         </div>
-                        
-                        <button 
+
+                        <button
                           type="button"
                           onClick={() => removeItem(item.id)}
                           className="inline-flex items-center gap-1 text-[10px] font-semibold text-mute hover:text-sale transition-colors cursor-pointer font-sans"
@@ -239,11 +273,9 @@ export default function CartPage({ params }: PageProps) {
                           {formatCurrency(item.price * item.qty)}
                         </span>
                       </div>
-
                     </div>
                   ))}
                 </div>
-
               </div>
 
               {/* Promo Code Box */}
@@ -263,12 +295,12 @@ export default function CartPage({ params }: PageProps) {
                 </div>
 
                 <div className="flex items-center gap-2 max-w-md w-full sm:w-auto">
-                  <input 
-                    type="text" 
-                    placeholder="Enter coupon code" 
+                  <input
+                    type="text"
+                    placeholder="Enter coupon code"
                     className="flex-1 sm:w-48 h-10 rounded-full border border-border bg-cloud/10 px-4 text-xs placeholder:text-mute focus:outline-none focus:border-ink transition-colors font-sans"
                   />
-                  <Button 
+                  <Button
                     type="button"
                     className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 h-10 text-xs font-semibold uppercase tracking-wider border-none cursor-pointer font-sans"
                   >
@@ -284,7 +316,9 @@ export default function CartPage({ params }: PageProps) {
                 <ShoppingBag className="h-5 w-5" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-sm font-bold text-ink font-sans">Your cart is empty</h3>
+                <h3 className="text-sm font-bold text-ink font-sans">
+                  Your cart is empty
+                </h3>
                 <p className="text-xs text-mute font-sans max-w-sm mx-auto leading-relaxed">
                   Looks like you haven&apos;t added anything to your cart yet.
                 </p>
@@ -365,12 +399,10 @@ export default function CartPage({ params }: PageProps) {
               </Link>
             </div>
           )}
-
         </div>
 
         {/* RIGHT COLUMN: Order Summary Card */}
         <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24 space-y-4">
-          
           <div className="bg-canvas border border-hairline-soft rounded-xl p-6">
             {/* Header */}
             <div className="border-b border-hairline-soft pb-4">
@@ -382,16 +414,24 @@ export default function CartPage({ params }: PageProps) {
             {/* Calculations Breakdown */}
             <div className="py-4 space-y-3 border-b border-hairline-soft">
               <div className="flex items-center justify-between text-xs text-ink/80 font-sans">
-                <span>Subtotal ({items.reduce((sum, i) => sum + i.qty, 0)} items)</span>
-                <span className="font-semibold text-ink">{formatCurrency(subtotalOriginal)}</span>
+                <span>
+                  Subtotal ({items.reduce((sum, i) => sum + i.qty, 0)} items)
+                </span>
+                <span className="font-semibold text-ink">
+                  {formatCurrency(subtotalOriginal)}
+                </span>
               </div>
               <div className="flex items-center justify-between text-xs font-sans">
                 <span className="text-sale">Discount</span>
-                <span className="font-bold text-sale">-{formatCurrency(discountTotal)}</span>
+                <span className="font-bold text-sale">
+                  -{formatCurrency(discountTotal)}
+                </span>
               </div>
               <div className="flex items-center justify-between text-xs text-ink/80 font-sans">
                 <span>Shipping</span>
-                <span className="font-semibold text-ink">{formatCurrency(shippingCost)}</span>
+                <span className="font-semibold text-ink">
+                  {formatCurrency(shippingCost)}
+                </span>
               </div>
             </div>
 
@@ -431,32 +471,35 @@ export default function CartPage({ params }: PageProps) {
                   ) : (
                     <>
                       <h4 className="text-xs font-bold text-ink font-sans">
-                        Free shipping on orders over {formatCurrency(freeShippingThreshold)}
+                        Free shipping on orders over{" "}
+                        {formatCurrency(freeShippingThreshold)}
                       </h4>
                       <p className="text-[10px] text-mute mt-0.5 font-sans leading-relaxed">
-                        Add {formatCurrency(remainingForFreeShipping)} more to get free shipping!
+                        Add {formatCurrency(remainingForFreeShipping)} more to
+                        get free shipping!
                       </p>
                     </>
                   )}
                 </div>
               </div>
-              
+
               <div className="w-full h-1.5 bg-cloud rounded-full overflow-hidden mt-3">
-                <div 
-                  className="h-full bg-[#0f766e] rounded-full transition-all duration-500" 
+                <div
+                  className="h-full bg-[#0f766e] rounded-full transition-all duration-500"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
 
               <div className="flex justify-end text-[9px] font-bold text-mute mt-1.5 font-sans tracking-wide">
-                {formatCurrency(finalTotal)} / {formatCurrency(freeShippingThreshold)}
+                {formatCurrency(finalTotal)} /{" "}
+                {formatCurrency(freeShippingThreshold)}
               </div>
             </div>
 
             {/* PROCEED TO CHECKOUT Pill Button */}
             <div className="mt-6">
               <Link href={`/${countryCode}/checkout`} className="w-full block">
-                <Button 
+                <Button
                   disabled={items.length === 0}
                   className="w-full rounded-full bg-ink hover:bg-charcoal text-canvas py-4 text-xs font-bold uppercase tracking-wider border-none cursor-pointer font-sans h-12 flex items-center justify-center"
                 >
@@ -486,27 +529,32 @@ export default function CartPage({ params }: PageProps) {
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* Secure details points list */}
           <div className="space-y-3.5 px-2">
             <div className="flex items-center gap-3 text-xs text-ink/80 font-sans">
               <ShieldCheck className="h-4 w-4 text-mute shrink-0" />
-              <span><strong>100% Authentic Products</strong> &nbsp;Sourced from official brands</span>
+              <span>
+                <strong>100% Authentic Products</strong> &nbsp;Sourced from
+                official brands
+              </span>
             </div>
             <div className="flex items-center gap-3 text-xs text-ink/80 font-sans">
               <Truck className="h-4 w-4 text-mute shrink-0" />
-              <span><strong>Fast Delivery</strong> &nbsp;Delivery within 2-4 business days</span>
+              <span>
+                <strong>Fast Delivery</strong> &nbsp;Delivery within 2-4
+                business days
+              </span>
             </div>
             <div className="flex items-center gap-3 text-xs text-ink/80 font-sans">
               <Lock className="h-4 w-4 text-mute shrink-0" />
-              <span><strong>Safe & Secure Payments</strong> &nbsp;Powered by Stripe</span>
+              <span>
+                <strong>Safe & Secure Payments</strong> &nbsp;Powered by Stripe
+              </span>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
   );

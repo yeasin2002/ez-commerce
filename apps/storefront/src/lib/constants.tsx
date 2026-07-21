@@ -1,8 +1,8 @@
-import { CreditCard } from "@medusajs/icons"
-import Bancontact from "@modules/common/icons/bancontact"
-import Ideal from "@modules/common/icons/ideal"
-import PayPal from "@modules/common/icons/paypal"
-import React from "react"
+import { CreditCard } from "@medusajs/icons";
+import Bancontact from "@modules/common/icons/bancontact";
+import Ideal from "@modules/common/icons/ideal";
+import PayPal from "@modules/common/icons/paypal";
+import React from "react";
 
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
@@ -34,21 +34,21 @@ export const paymentInfoMap: Record<
     icon: <CreditCard />,
   },
   // Add more payment providers here
-}
+};
 
 // This only checks if it is native stripe or medusa payments for card payments, it ignores the other stripe-based providers
 export const isStripeLike = (providerId?: string) => {
   return (
     providerId?.startsWith("pp_stripe_") || providerId?.startsWith("pp_medusa-")
-  )
-}
+  );
+};
 
 export const isPaypal = (providerId?: string) => {
-  return providerId?.startsWith("pp_paypal")
-}
+  return providerId?.startsWith("pp_paypal");
+};
 export const isManual = (providerId?: string) => {
-  return providerId?.startsWith("pp_system_default")
-}
+  return providerId?.startsWith("pp_system_default");
+};
 
 // Add currencies that don't need to be divided by 100
 export const noDivisionCurrencies = [
@@ -71,4 +71,4 @@ export const noDivisionCurrencies = [
   "xag",
   "xdr",
   "xau",
-]
+];

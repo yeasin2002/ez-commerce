@@ -15,17 +15,28 @@ export function InstagramGrid() {
     <section className="py-16">
       <div className="container-page mb-8 flex items-end justify-between">
         <div>
-          <span className="text-xs uppercase tracking-[0.3em] text-mute">@footystylehub</span>
-          <h2 className="mt-2 font-display text-4xl md:text-5xl uppercase">On the Feed</h2>
+          <span className="text-xs uppercase tracking-[0.3em] text-mute">
+            @footystylehub
+          </span>
+          <h2 className="mt-2 font-display text-4xl md:text-5xl uppercase">
+            On the Feed
+          </h2>
         </div>
-        <a href="#" className="inline-flex items-center gap-2 text-sm font-medium underline underline-offset-4">
+        <a
+          href="#"
+          className="inline-flex items-center gap-2 text-sm font-medium underline underline-offset-4"
+        >
           <IconBrandInstagram className="h-4 w-4" /> Follow
         </a>
       </div>
 
       <div className="grid grid-cols-2 gap-1 md:grid-cols-6">
         {POSTS.map((src, i) => (
-          <a key={i} href="#" className="group relative aspect-square overflow-hidden bg-cloud">
+          <a
+            key={i}
+            href="#"
+            className="group relative aspect-square overflow-hidden bg-cloud"
+          >
             <Image
               src={src}
               alt={`Instagram post ${i + 1}`}

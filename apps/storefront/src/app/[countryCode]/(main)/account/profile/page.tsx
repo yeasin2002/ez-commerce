@@ -56,7 +56,6 @@ export default function ProfileSettingsPage() {
 
   return (
     <div className="space-y-8">
-      
       {/* Title */}
       <div className="pb-4 border-b border-hairline-soft">
         <h1 className="text-4xl font-display uppercase tracking-wider text-ink dark:text-canvas">
@@ -68,21 +67,22 @@ export default function ProfileSettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        
         {/* Left Side: Forms */}
-        <form onSubmit={handleSubmit(onSubmit)} className="md:col-span-8 order-2 md:order-1 space-y-5">
-          
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="md:col-span-8 order-2 md:order-1 space-y-5"
+        >
           {/* Full Name & Phone Number */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <CommonInput 
-              label="Full Name" 
-              placeholder="Enter your name" 
+            <CommonInput
+              label="Full Name"
+              placeholder="Enter your name"
               error={errors.fullName}
               {...register("fullName")}
             />
-            <CommonInput 
-              label="Phone Number" 
-              placeholder="Enter phone number" 
+            <CommonInput
+              label="Phone Number"
+              placeholder="Enter phone number"
               error={errors.phone}
               {...register("phone")}
             />
@@ -90,16 +90,16 @@ export default function ProfileSettingsPage() {
 
           {/* Email Address & Date of Birth */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <CommonInput 
-              label="Email Address" 
-              type="email" 
-              placeholder="Enter email address" 
+            <CommonInput
+              label="Email Address"
+              type="email"
+              placeholder="Enter email address"
               error={errors.email}
               {...register("email")}
             />
-            <CommonInput 
-              label="Date of Birth" 
-              type="date" 
+            <CommonInput
+              label="Date of Birth"
+              type="date"
               error={errors.dateOfBirth}
               {...register("dateOfBirth")}
             />
@@ -111,13 +111,12 @@ export default function ProfileSettingsPage() {
               Gender
             </label>
             <div className="flex gap-6">
-              
               {/* Male option */}
               <label className="flex items-center group cursor-pointer select-none">
                 <div className="relative flex items-center justify-center">
-                  <input 
-                    type="radio" 
-                    name="gender" 
+                  <input
+                    type="radio"
+                    name="gender"
                     value="male"
                     checked={selectedGender === "male"}
                     onChange={() => setValue("gender", "male")}
@@ -133,9 +132,9 @@ export default function ProfileSettingsPage() {
               {/* Female option */}
               <label className="flex items-center group cursor-pointer select-none">
                 <div className="relative flex items-center justify-center">
-                  <input 
-                    type="radio" 
-                    name="gender" 
+                  <input
+                    type="radio"
+                    name="gender"
                     value="female"
                     checked={selectedGender === "female"}
                     onChange={() => setValue("gender", "female")}
@@ -147,7 +146,6 @@ export default function ProfileSettingsPage() {
                   Female
                 </span>
               </label>
-
             </div>
             {errors.gender && (
               <span className="text-[10px] font-semibold text-sale block mt-1 font-sans">
@@ -158,23 +156,22 @@ export default function ProfileSettingsPage() {
 
           {/* Save Button */}
           <div className="pt-4 border-t border-hairline-soft/80 flex justify-start">
-            <Button 
+            <Button
               type="submit"
               className="rounded-full bg-ink hover:bg-charcoal text-canvas px-7 py-3 text-xs font-semibold uppercase tracking-wider border-none h-11 cursor-pointer font-sans"
             >
               Save Changes
             </Button>
           </div>
-
         </form>
 
         {/* Right Side: Photo widget (Circular) */}
         <div className="md:col-span-4 order-1 md:order-2 flex justify-center py-6 md:py-4 border border-hairline-soft/60 md:border-none rounded-xl md:rounded-none bg-cloud/5 md:bg-transparent">
-          <ProfileAvatarUpload initialAvatarUrl={mockCustomerProfile.avatarUrl} />
+          <ProfileAvatarUpload
+            initialAvatarUrl={mockCustomerProfile.avatarUrl}
+          />
         </div>
-
       </div>
-
     </div>
   );
 }

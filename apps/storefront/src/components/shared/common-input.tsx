@@ -19,13 +19,22 @@ export interface CommonInputProps {
   className?: string;
 }
 
-export const CommonInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, CommonInputProps>(
-  ({ label, error, textarea, type = "text", placeholder, className, ...props }, ref) => {
+export const CommonInput = React.forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  CommonInputProps
+>(
+  (
+    { label, error, textarea, type = "text", placeholder, className, ...props },
+    ref,
+  ) => {
     const hasError = !!error;
 
     return (
       <div className="space-y-1.5 w-full">
-        <label htmlFor={props.id || props.name} className="text-[11px] font-bold uppercase tracking-wider text-mute">
+        <label
+          htmlFor={props.id || props.name}
+          className="text-[11px] font-bold uppercase tracking-wider text-mute"
+        >
           {label}
         </label>
 
@@ -37,8 +46,10 @@ export const CommonInput = React.forwardRef<HTMLInputElement | HTMLTextAreaEleme
             {...(props as React.ComponentPropsWithoutRef<"textarea">)}
             className={cn(
               "w-full rounded-2xl border px-5 py-4 text-xs focus:outline-none transition-colors min-h-[160px] resize-none border-hairline-soft bg-cloud/10 focus:border-ink",
-              hasError ? "border-sale bg-sale/5 focus:border-sale focus-visible:border-sale focus-visible:ring-0" : "",
-              className
+              hasError
+                ? "border-sale bg-sale/5 focus:border-sale focus-visible:border-sale focus-visible:ring-0"
+                : "",
+              className,
             )}
           />
         ) : (
@@ -50,8 +61,10 @@ export const CommonInput = React.forwardRef<HTMLInputElement | HTMLTextAreaEleme
             {...(props as React.ComponentPropsWithoutRef<"input">)}
             className={cn(
               "w-full h-11 rounded-full border px-5 py-3 text-xs focus:outline-none transition-colors border-hairline-soft bg-cloud/10 focus:border-ink",
-              hasError ? "border-sale bg-sale/5 focus:border-sale focus-visible:border-sale focus-visible:ring-0" : "",
-              className
+              hasError
+                ? "border-sale bg-sale/5 focus:border-sale focus-visible:border-sale focus-visible:ring-0"
+                : "",
+              className,
             )}
           />
         )}
@@ -64,7 +77,7 @@ export const CommonInput = React.forwardRef<HTMLInputElement | HTMLTextAreaEleme
         )}
       </div>
     );
-  }
+  },
 );
 
 CommonInput.displayName = "CommonInput";

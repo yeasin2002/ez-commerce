@@ -98,7 +98,8 @@ export function Sidebar({ countryCode }: SidebarProps) {
   };
 
   // Find active item name for mobile header preview
-  const activeItem = menuItems.find(item => isActive(item.href, item.exact)) || menuItems[0];
+  const activeItem =
+    menuItems.find((item) => isActive(item.href, item.exact)) || menuItems[0];
 
   const renderSidebarContent = () => (
     <div className="flex flex-col h-full bg-canvas text-ink font-sans">
@@ -112,9 +113,9 @@ export function Sidebar({ countryCode }: SidebarProps) {
               onClick={() => setIsOpen(false)}
               className={cn(
                 "flex items-center justify-between w-full h-11 px-4 text-xs font-semibold uppercase tracking-wider rounded-full transition-colors",
-                active 
-                  ? "bg-ink text-canvas font-bold" 
-                  : "text-ink/70 hover:bg-cloud/50 hover:text-ink"
+                active
+                  ? "bg-ink text-canvas font-bold"
+                  : "text-ink/70 hover:bg-cloud/50 hover:text-ink",
               )}
             >
               <div className="flex items-center gap-3.5">
@@ -122,10 +123,12 @@ export function Sidebar({ countryCode }: SidebarProps) {
                 <span>{item.name}</span>
               </div>
               {item.badge !== undefined && (
-                <span className={cn(
-                  "flex items-center justify-center min-w-5 h-5 px-1 rounded-full text-[10px] font-bold",
-                  active ? "bg-canvas text-ink" : "bg-cloud text-ink/80"
-                )}>
+                <span
+                  className={cn(
+                    "flex items-center justify-center min-w-5 h-5 px-1 rounded-full text-[10px] font-bold",
+                    active ? "bg-canvas text-ink" : "bg-cloud text-ink/80",
+                  )}
+                >
                   {item.badge}
                 </span>
               )}
@@ -164,9 +167,7 @@ export function Sidebar({ countryCode }: SidebarProps) {
       {/* MOBILE COLLAPSIBLE RESPONSIVE BAR */}
       <div className="lg:hidden w-full bg-canvas border-b border-hairline-soft p-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-mute shrink-0">
-            {activeItem.icon}
-          </div>
+          <div className="text-mute shrink-0">{activeItem.icon}</div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-widest text-mute font-sans block leading-none">
               Account Menu
@@ -179,15 +180,18 @@ export function Sidebar({ countryCode }: SidebarProps) {
 
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button 
-              variant="outline" 
-              size="icon" 
+            <Button
+              variant="outline"
+              size="icon"
               className="rounded-full h-10 w-10 border-hairline hover:bg-cloud/50 text-ink cursor-pointer"
             >
               <IconMenu2 size={20} />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-[280px] p-6 bg-canvas border-r border-hairline-soft">
+          <SheetContent
+            side="left"
+            className="w-[280px] p-6 bg-canvas border-r border-hairline-soft"
+          >
             <SheetHeader className="text-left border-b border-hairline-soft pb-4 mb-2">
               <SheetTitle className="text-lg font-display uppercase tracking-wider text-ink">
                 My Account

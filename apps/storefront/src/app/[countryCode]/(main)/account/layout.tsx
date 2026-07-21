@@ -10,7 +10,10 @@ interface AccountLayoutProps {
   }>;
 }
 
-export default function AccountLayout({ children, params }: AccountLayoutProps) {
+export default function AccountLayout({
+  children,
+  params,
+}: AccountLayoutProps) {
   const { countryCode } = use(params);
 
   return (
@@ -21,17 +24,13 @@ export default function AccountLayout({ children, params }: AccountLayoutProps) 
       {/* Main Account Dashboard Shell */}
       <main className="flex-1 container-page py-6 lg:py-12 animate-in fade-in duration-300">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
-          
           {/* Collapsible Responsive Sidebar */}
           <div className="lg:col-span-3">
             <Sidebar countryCode={countryCode} />
           </div>
 
           {/* Children Sub-pages Content Pane */}
-          <div className="lg:col-span-9">
-            {children}
-          </div>
-
+          <div className="lg:col-span-9">{children}</div>
         </div>
       </main>
 

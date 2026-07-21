@@ -1,8 +1,7 @@
 export function PromoMarquee() {
-  const items = Array(15).fill([
-    "Buy 3 Get 1 Free",
-    "Free Shipping on 3+ Items",
-  ]).flat();
+  const items = Array(15)
+    .fill(["Buy 3 Get 1 Free", "Free Shipping on 3+ Items"])
+    .flat();
 
   return (
     <div className="w-full overflow-hidden border-y border-hairline-soft bg-cloud py-3 text-xs uppercase tracking-[0.25em] font-medium text-ink">

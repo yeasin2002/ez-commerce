@@ -2,23 +2,16 @@
 
 import { getProductPrice } from "@lib/util/get-product-price";
 import { HttpTypes } from "@medusajs/types";
-import {
-  Heart,
-  HelpCircle,
-  Minus,
-  Plus,
-  Share2,
-} from "lucide-react";
+import { Heart, HelpCircle, Minus, Plus, Share2 } from "lucide-react";
 import { useState } from "react";
 import ShippingAndDeliveryCard from "./shipping-and-delivery.card";
 import { ProductAccordions } from "./product-accordions";
-import {
-  getProductSoldCount,
-  getProductViewingCount,
-} from "@lib/util/product";
+import { getProductSoldCount, getProductViewingCount } from "@lib/util/product";
 
 export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() => {
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<string, string>
+  >(() => {
     const initial: Record<string, string> = {};
     product.options?.forEach((opt) => {
       if (opt.values?.[0]?.value) {
@@ -38,9 +31,11 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
   // const [customName, setCustomName] = useState("");
   // const [selectedPatch, setSelectedPatch] = useState(patches?.[0] || "No Patch");
   const [quantity, setQuantity] = useState(1);
-  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
-    description: true,
-  });
+  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
+    {
+      description: true,
+    },
+  );
 
   const toggleAccordion = (key: string) => {
     setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -48,7 +43,7 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
 
   // Find active variant matching selected options
   const selectedVariant = product.variants?.find((v) =>
-    v.options?.every((opt) => selectedOptions[opt.option_id!] === opt.value)
+    v.options?.every((opt) => selectedOptions[opt.option_id!] === opt.value),
   );
 
   // Retrieve pricing for currently selected variant
@@ -106,9 +101,7 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
       {/* Real-time viewers */}
       <div className="text-xs text-charcoal flex items-center gap-2">
         <span className="inline-block h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-        <span>
-          {viewingCount || 35} people are viewing this right now
-        </span>
+        <span>{viewingCount || 35} people are viewing this right now</span>
       </div>
 
       {/* Dynamic Options Selector (Size, Color, etc.) */}

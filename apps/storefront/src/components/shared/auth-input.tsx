@@ -24,8 +24,10 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
             placeholder={placeholder}
             className={cn(
               "w-full h-10 rounded-full border border-border bg-muted/20 dark:bg-[#121212]/60 pl-10 pr-4 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-muted-foreground/60 focus:ring-1 focus:ring-muted-foreground/60 transition-all font-sans",
-              hasError ? "border-sale bg-sale/5 focus:border-sale focus:ring-sale/30" : "",
-              className
+              hasError
+                ? "border-sale bg-sale/5 focus:border-sale focus:ring-sale/30"
+                : "",
+              className,
             )}
             {...props}
           />
@@ -39,7 +41,7 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 AuthInput.displayName = "AuthInput";

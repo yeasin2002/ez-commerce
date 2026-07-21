@@ -39,7 +39,6 @@ export default function OrderHistoryPage({ params }: PageProps) {
 
   return (
     <div className="space-y-8">
-      
       {/* Page Title */}
       <div className="pb-4 border-b border-hairline-soft">
         <h1 className="text-4xl font-display uppercase tracking-wider text-ink dark:text-canvas">
@@ -52,7 +51,6 @@ export default function OrderHistoryPage({ params }: PageProps) {
 
       {/* Orders Table Container */}
       <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl overflow-hidden">
-        
         {/* Table Headers (Desktop) */}
         <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-cloud/20 dark:bg-zinc-900/40 border-b border-hairline-soft text-[11px] font-bold uppercase tracking-wider text-mute font-sans">
           <div className="col-span-3">Order</div>
@@ -65,11 +63,10 @@ export default function OrderHistoryPage({ params }: PageProps) {
         {/* Orders rows list */}
         <div className="divide-y divide-hairline-soft/60">
           {mockOrders.map((order) => (
-            <div 
-              key={order.id} 
+            <div
+              key={order.id}
               className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-5 md:p-6 hover:bg-cloud/5 dark:hover:bg-zinc-900/10 transition-colors"
             >
-              
               {/* Column 1: Order ID */}
               <div className="col-span-12 md:col-span-3 flex items-center justify-between md:block">
                 <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-mute font-sans">
@@ -95,10 +92,12 @@ export default function OrderHistoryPage({ params }: PageProps) {
                 <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-mute font-sans">
                   Status
                 </span>
-                <span className={cn(
-                  "inline-block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans",
-                  getStatusStyle(order.status)
-                )}>
+                <span
+                  className={cn(
+                    "inline-block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans",
+                    getStatusStyle(order.status),
+                  )}
+                >
                   {order.status}
                 </span>
               </div>
@@ -115,22 +114,22 @@ export default function OrderHistoryPage({ params }: PageProps) {
 
               {/* Column 5: Actions button (View Detail link) */}
               <div className="col-span-12 md:col-span-2 flex justify-end">
-                <Link href={`/${countryCode}/account/orders/details/${order.id}`} className="w-full md:w-auto">
-                  <Button 
-                    variant="outline" 
+                <Link
+                  href={`/${countryCode}/account/orders/details/${order.id}`}
+                  className="w-full md:w-auto"
+                >
+                  <Button
+                    variant="outline"
                     className="w-full md:w-auto rounded-full border-hairline hover:bg-cloud/50 hover:text-ink dark:hover:bg-zinc-900 text-xs font-semibold px-5 py-1.5 h-8 cursor-pointer font-sans"
                   >
                     View
                   </Button>
                 </Link>
               </div>
-
             </div>
           ))}
         </div>
-
       </div>
-
     </div>
   );
 }

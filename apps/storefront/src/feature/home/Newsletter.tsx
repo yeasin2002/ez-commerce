@@ -5,17 +5,27 @@ export function Newsletter() {
     <section className="bg-ink py-20 text-canvas">
       <div className="container-page grid gap-12 md:grid-cols-2 md:items-end">
         <div>
-          <span className="text-xs uppercase tracking-[0.3em] text-stone">Join the club</span>
+          <span className="text-xs uppercase tracking-[0.3em] text-stone">
+            Join the club
+          </span>
           <h2 className="mt-3 font-display text-5xl md:text-6xl uppercase leading-[0.9]">
-            First to know.<br />First to wear.
+            First to know.
+            <br />
+            First to wear.
           </h2>
           <p className="mt-6 max-w-md text-canvas/70">
-            Kit drops, restocks, and members-only pricing — dropped in your inbox before they hit the site.
+            Kit drops, restocks, and members-only pricing — dropped in your
+            inbox before they hit the site.
           </p>
         </div>
 
-        <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-          <label className="text-xs uppercase tracking-[0.2em] text-stone">Email address</label>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <label className="text-xs uppercase tracking-[0.2em] text-stone">
+            Email address
+          </label>
           <div className="flex h-14 items-center rounded-pill bg-canvas/10 pl-6 pr-2 ring-1 ring-canvas/20 focus-within:ring-canvas/60">
             <input
               type="email"

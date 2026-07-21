@@ -1,11 +1,11 @@
-"use server"
+"use server";
 
-import { sdk } from "@lib/config"
-import medusaError from "@lib/util/medusa-error"
-import { HttpTypes } from "@medusajs/types"
-import { FetchError } from "@medusajs/js-sdk"
-import { revalidateTag } from "next/cache"
-import { redirect } from "next/navigation"
+import { sdk } from "@lib/config";
+import medusaError from "@lib/util/medusa-error";
+import { HttpTypes } from "@medusajs/types";
+import { FetchError } from "@medusajs/js-sdk";
+import { revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 import {
   getAuthHeaders,
   getCacheOptions,
@@ -17,13 +17,13 @@ import {
   removePendingCustomer,
   setAuthToken,
   setPendingCustomer,
-} from "./cookies"
+} from "./cookies";
 
 export type CustomerAuthState =
   | { state: "error"; error: string }
   | { state: "verification_required"; email: string }
   | { state: "success" }
-  | null
+  | null;
 
 // Requests a verification email for the given customer. The request must be
 // authenticated with a token tied to the auth identity (the token returned by
@@ -36,23 +36,23 @@ async function requestVerificationEmail(email: string, token: string) {
     },
     {
       authorization: `Bearer ${token}`,
-    }
-  )
+    },
+  );
 }
 
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
-    const authHeaders = await getAuthHeaders()
+    const authHeaders = await getAuthHeaders();
 
-    if (!authHeaders) return null
+    if (!authHeaders) return null;
 
     const headers = {
       ...authHeaders,
-    }
+    };
 
     const next = {
       ...(await getCacheOptions("customers")),
-    }
+    };
 
     return await sdk.client
       .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
@@ -65,44 +65,44 @@ export const retrieveCustomer =
         cache: "force-cache",
       })
       .then(({ customer }) => customer)
-      .catch(() => null)
-  }
+      .catch(() => null);
+  };
 
 export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   const headers = {
     ...(await getAuthHeaders()),
-  }
+  };
 
   const updateRes = await sdk.store.customer
     .update(body, {}, headers)
     .then(({ customer }) => customer)
-    .catch(medusaError)
+    .catch(medusaError);
 
-  const cacheTag = await getCacheTag("customers")
-  revalidateTag(cacheTag)
+  const cacheTag = await getCacheTag("customers");
+  revalidateTag(cacheTag);
 
-  return updateRes
-}
+  return updateRes;
+};
 
 export async function signup(
   _currentState: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<CustomerAuthState> {
-  const password = formData.get("password") as string
+  const password = formData.get("password") as string;
   const customerForm = {
     email: formData.get("email") as string,
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
     phone: formData.get("phone") as string,
-  }
+  };
 
   try {
     await sdk.auth.register("customer", "emailpass", {
       email: customerForm.email,
       password,
-    })
+    });
   } catch (error) {
-    const fetchError = error as FetchError
+    const fetchError = error as FetchError;
     // An existing identity (for example, an admin user with the same email) is
     // expected and handled: the customer can still log in to link a customer
     // record. Any other error is surfaced.
@@ -110,28 +110,28 @@ export async function signup(
       fetchError.statusText !== "Unauthorized" ||
       fetchError.message !== "Identity with email already exists"
     ) {
-      return { state: "error", error: String(error) }
+      return { state: "error", error: String(error) };
     }
   }
 
   // Persist the extra signup fields. The customer record is created during
   // login, which is deferred until after email verification when the backend
   // requires it.
-  await setPendingCustomer(customerForm)
+  await setPendingCustomer(customerForm);
 
   // Continue by logging in. The login response tells us whether the backend
   // requires email verification — we don't need a storefront-side flag.
-  return completeLogin(customerForm.email, password)
+  return completeLogin(customerForm.email, password);
 }
 
 export async function login(
   _currentState: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<CustomerAuthState> {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-  return completeLogin(email, password)
+  return completeLogin(email, password);
 }
 
 // Logs the customer in and reconciles the customer record. The behavior is
@@ -139,14 +139,14 @@ export async function login(
 // email verification is enabled.
 async function completeLogin(
   email: string,
-  password: string
+  password: string,
 ): Promise<CustomerAuthState> {
-  let result: Awaited<ReturnType<typeof sdk.auth.login>>
+  let result: Awaited<ReturnType<typeof sdk.auth.login>>;
 
   try {
-    result = await sdk.auth.login("customer", "emailpass", { email, password })
+    result = await sdk.auth.login("customer", "emailpass", { email, password });
   } catch (error) {
-    return { state: "error", error: String(error) }
+    return { state: "error", error: String(error) };
   }
 
   // A `location` is returned by third-party auth providers, which this flow
@@ -155,7 +155,7 @@ async function completeLogin(
     return {
       state: "error",
       error: "This login method isn't supported by the storefront.",
-    }
+    };
   }
 
   // The backend requires email verification and the customer hasn't verified
@@ -166,21 +166,21 @@ async function completeLogin(
     result.verification_required
   ) {
     try {
-      await requestVerificationEmail(email, result.token)
+      await requestVerificationEmail(email, result.token);
     } catch {
       // Ignore: the customer can resend from the verification page.
     }
-    return { state: "verification_required", email }
+    return { state: "verification_required", email };
   }
 
   if (typeof result !== "string") {
     return {
       state: "error",
       error: "Authentication requires additional steps that aren't supported.",
-    }
+    };
   }
 
-  let token = result
+  let token = result;
 
   // The token may not be tied to a customer record yet — right after
   // registration, or after verifying a brand-new account. Ask the backend:
@@ -190,10 +190,10 @@ async function completeLogin(
   const customerExists = await sdk.store.customer
     .retrieve({}, { authorization: `Bearer ${token}` })
     .then(() => true)
-    .catch(() => false)
+    .catch(() => false);
 
   if (!customerExists) {
-    const pending = await getPendingCustomer()
+    const pending = await getPendingCustomer();
 
     try {
       await sdk.store.customer.create(
@@ -204,32 +204,32 @@ async function completeLogin(
           phone: pending?.phone,
         },
         {},
-        { authorization: `Bearer ${token}` }
-      )
+        { authorization: `Bearer ${token}` },
+      );
 
       token = (await sdk.auth.login("customer", "emailpass", {
         email,
         password,
-      })) as string
+      })) as string;
     } catch (error) {
-      return { state: "error", error: String(error) }
+      return { state: "error", error: String(error) };
     }
 
-    await removePendingCustomer()
+    await removePendingCustomer();
   }
 
-  await setAuthToken(token)
+  await setAuthToken(token);
 
-  const customerCacheTag = await getCacheTag("customers")
-  revalidateTag(customerCacheTag)
+  const customerCacheTag = await getCacheTag("customers");
+  revalidateTag(customerCacheTag);
 
   try {
-    await transferCart()
+    await transferCart();
   } catch (error) {
-    return { state: "error", error: String(error) }
+    return { state: "error", error: String(error) };
   }
 
-  return { state: "success" }
+  return { state: "success" };
 }
 
 // Confirms a customer's email using the token from the verification link.
@@ -237,53 +237,54 @@ async function completeLogin(
 // The confirm route doesn't require authentication, so this works even when the
 // customer opens the link on a different device than the one they signed up on.
 export async function confirmEmailVerification(
-  token: string
+  token: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    await sdk.auth.verification.confirm({ code: token })
-    return { success: true }
+    await sdk.auth.verification.confirm({ code: token });
+    return { success: true };
   } catch (error) {
-    return { success: false, error: String(error) }
+    return { success: false, error: String(error) };
   }
 }
 
 export async function signout(countryCode: string) {
-  await sdk.auth.logout()
+  await sdk.auth.logout();
 
-  await removeAuthToken()
+  await removeAuthToken();
 
-  const customerCacheTag = await getCacheTag("customers")
-  revalidateTag(customerCacheTag)
+  const customerCacheTag = await getCacheTag("customers");
+  revalidateTag(customerCacheTag);
 
-  await removeCartId()
+  await removeCartId();
 
-  const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  const cartCacheTag = await getCacheTag("carts");
+  revalidateTag(cartCacheTag);
 
-  redirect(`/${countryCode}/account`)
+  redirect(`/${countryCode}/account`);
 }
 
 export async function transferCart() {
-  const cartId = await getCartId()
+  const cartId = await getCartId();
 
   if (!cartId) {
-    return
+    return;
   }
 
-  const headers = await getAuthHeaders()
+  const headers = await getAuthHeaders();
 
-  await sdk.store.cart.transferCart(cartId, {}, headers)
+  await sdk.store.cart.transferCart(cartId, {}, headers);
 
-  const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  const cartCacheTag = await getCacheTag("carts");
+  revalidateTag(cartCacheTag);
 }
 
 export const addCustomerAddress = async (
   currentState: Record<string, unknown>,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ success: boolean; error: string | null }> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
+  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false;
+  const isDefaultShipping =
+    (currentState.isDefaultShipping as boolean) || false;
 
   const address = {
     first_name: formData.get("first_name") as string,
@@ -298,52 +299,52 @@ export const addCustomerAddress = async (
     phone: formData.get("phone") as string,
     is_default_billing: isDefaultBilling,
     is_default_shipping: isDefaultShipping,
-  }
+  };
 
   const headers = {
     ...(await getAuthHeaders()),
-  }
+  };
 
   return sdk.store.customer
     .createAddress(address, {}, headers)
     .then(async () => {
-      const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      const customerCacheTag = await getCacheTag("customers");
+      revalidateTag(customerCacheTag);
+      return { success: true, error: null };
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
-    })
-}
+      return { success: false, error: err.toString() };
+    });
+};
 
 export const deleteCustomerAddress = async (
-  addressId: string
+  addressId: string,
 ): Promise<void> => {
   const headers = {
     ...(await getAuthHeaders()),
-  }
+  };
 
   await sdk.store.customer
     .deleteAddress(addressId, headers)
     .then(async () => {
-      const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      const customerCacheTag = await getCacheTag("customers");
+      revalidateTag(customerCacheTag);
+      return { success: true, error: null };
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
-    })
-}
+      return { success: false, error: err.toString() };
+    });
+};
 
 export const updateCustomerAddress = async (
   currentState: Record<string, unknown>,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ success: boolean; error: string | null }> => {
   const addressId =
-    (currentState.addressId as string) || (formData.get("addressId") as string)
+    (currentState.addressId as string) || (formData.get("addressId") as string);
 
   if (!addressId) {
-    return { success: false, error: "Address ID is required" }
+    return { success: false, error: "Address ID is required" };
   }
 
   const address = {
@@ -356,26 +357,26 @@ export const updateCustomerAddress = async (
     postal_code: formData.get("postal_code") as string,
     province: formData.get("province") as string,
     country_code: formData.get("country_code") as string,
-  } as HttpTypes.StoreUpdateCustomerAddress
+  } as HttpTypes.StoreUpdateCustomerAddress;
 
-  const phone = formData.get("phone") as string
+  const phone = formData.get("phone") as string;
 
   if (phone) {
-    address.phone = phone
+    address.phone = phone;
   }
 
   const headers = {
     ...(await getAuthHeaders()),
-  }
+  };
 
   return sdk.store.customer
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
-      const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      const customerCacheTag = await getCacheTag("customers");
+      revalidateTag(customerCacheTag);
+      return { success: true, error: null };
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
-    })
-}
+      return { success: false, error: err.toString() };
+    });
+};

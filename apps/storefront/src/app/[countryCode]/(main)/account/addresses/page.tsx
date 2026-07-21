@@ -4,7 +4,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { IconMapPin, IconPlus, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
+import {
+  IconMapPin,
+  IconPlus,
+  IconEdit,
+  IconTrash,
+  IconX,
+} from "@tabler/icons-react";
 import { mockAddresses, MockAddress } from "@/data/account.data";
 import { CommonInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
@@ -42,7 +48,9 @@ type AddressFormData = z.infer<typeof addressSchema>;
 export default function AddressesPage() {
   const [addresses, setAddresses] = useState<MockAddress[]>(mockAddresses);
   const [isEditing, setIsEditing] = useState(false);
-  const [editingAddress, setEditingAddress] = useState<MockAddress | null>(null);
+  const [editingAddress, setEditingAddress] = useState<MockAddress | null>(
+    null,
+  );
 
   const {
     register,
@@ -90,32 +98,29 @@ export default function AddressesPage() {
   const onSubmit = (data: AddressFormData) => {
     if (editingAddress) {
       // Mock update
-      setAddresses(prev => 
-        prev.map(addr => 
-          addr.id === editingAddress.id 
-            ? { ...addr, ...data } 
-            : addr
-        )
+      setAddresses((prev) =>
+        prev.map((addr) =>
+          addr.id === editingAddress.id ? { ...addr, ...data } : addr,
+        ),
       );
     } else {
       // Mock append new
       const newAddress: MockAddress = {
         id: generateId(),
         ...data,
-        type: "home"
+        type: "home",
       };
-      setAddresses(prev => [...prev, newAddress]);
+      setAddresses((prev) => [...prev, newAddress]);
     }
     setIsEditing(false);
   };
 
   const handleDeleteClick = (id: string) => {
-    setAddresses(prev => prev.filter(addr => addr.id !== id));
+    setAddresses((prev) => prev.filter((addr) => addr.id !== id));
   };
 
   return (
     <div className="space-y-8">
-      
       {/* Title */}
       <div className="pb-4 border-b border-hairline-soft flex items-center justify-between gap-4">
         <div>
@@ -127,7 +132,7 @@ export default function AddressesPage() {
           </p>
         </div>
         {!isEditing && (
-          <Button 
+          <Button
             onClick={handleAddNewClick}
             className="rounded-full bg-ink hover:bg-charcoal text-canvas px-4 py-2 text-xs font-semibold uppercase tracking-wider border-none h-10 cursor-pointer font-sans flex items-center gap-1.5"
           >
@@ -144,7 +149,7 @@ export default function AddressesPage() {
             <h3 className="text-sm font-bold uppercase tracking-wider text-ink dark:text-canvas font-sans">
               {editingAddress ? "Edit Address" : "Add New Address"}
             </h3>
-            <button 
+            <button
               onClick={() => setIsEditing(false)}
               className="text-mute hover:text-ink dark:hover:text-canvas transition-colors cursor-pointer"
             >
@@ -155,15 +160,15 @@ export default function AddressesPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Full Name & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <CommonInput 
-                label="Full Name" 
-                placeholder="Receiver name" 
+              <CommonInput
+                label="Full Name"
+                placeholder="Receiver name"
                 error={errors.fullName}
                 {...register("fullName")}
               />
-              <CommonInput 
-                label="Phone Number" 
-                placeholder="Receiver phone number" 
+              <CommonInput
+                label="Phone Number"
+                placeholder="Receiver phone number"
                 error={errors.phone}
                 {...register("phone")}
               />
@@ -171,15 +176,15 @@ export default function AddressesPage() {
 
             {/* Address Line 1 & Line 2 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <CommonInput 
-                label="Address Line 1" 
-                placeholder="House, road, block, area" 
+              <CommonInput
+                label="Address Line 1"
+                placeholder="House, road, block, area"
                 error={errors.address1}
                 {...register("address1")}
               />
-              <CommonInput 
-                label="Address Line 2 (Optional)" 
-                placeholder="Apartment, unit, suite" 
+              <CommonInput
+                label="Address Line 2 (Optional)"
+                placeholder="Apartment, unit, suite"
                 error={errors.address2}
                 {...register("address2")}
               />
@@ -187,30 +192,30 @@ export default function AddressesPage() {
 
             {/* City, State/Division, Postcode */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <CommonInput 
-                label="City" 
-                placeholder="City" 
+              <CommonInput
+                label="City"
+                placeholder="City"
                 error={errors.city}
                 {...register("city")}
               />
-              <CommonInput 
-                label="State / Division" 
-                placeholder="State or Division" 
+              <CommonInput
+                label="State / Division"
+                placeholder="State or Division"
                 error={errors.state}
                 {...register("state")}
               />
-              <CommonInput 
-                label="Postal Code" 
-                placeholder="Postcode" 
+              <CommonInput
+                label="Postal Code"
+                placeholder="Postcode"
                 error={errors.postalCode}
                 {...register("postalCode")}
               />
             </div>
 
             {/* Country */}
-            <CommonInput 
-              label="Country" 
-              placeholder="Country" 
+            <CommonInput
+              label="Country"
+              placeholder="Country"
               error={errors.country}
               {...register("country")}
             />
@@ -218,8 +223,8 @@ export default function AddressesPage() {
             {/* Options boxes */}
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <label className="flex items-center group cursor-pointer select-none">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   className="peer h-4.5 w-4.5 appearance-none rounded border border-border bg-canvas checked:bg-ink checked:border-ink focus:outline-none transition-all cursor-pointer"
                   {...register("isDefaultShipping")}
                 />
@@ -229,8 +234,8 @@ export default function AddressesPage() {
               </label>
 
               <label className="flex items-center group cursor-pointer select-none">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   className="peer h-4.5 w-4.5 appearance-none rounded border border-border bg-canvas checked:bg-ink checked:border-ink focus:outline-none transition-all cursor-pointer"
                   {...register("isDefaultBilling")}
                 />
@@ -242,13 +247,13 @@ export default function AddressesPage() {
 
             {/* Actions button */}
             <div className="flex gap-3 pt-4 border-t border-hairline-soft/85">
-              <Button 
+              <Button
                 type="submit"
                 className="rounded-full bg-ink hover:bg-charcoal text-canvas px-6 py-2.5 text-xs font-semibold uppercase tracking-wider border-none h-11 cursor-pointer font-sans"
               >
                 Save Address
               </Button>
-              <Button 
+              <Button
                 type="button"
                 onClick={() => setIsEditing(false)}
                 className="rounded-full bg-cloud dark:bg-zinc-900 text-ink dark:text-canvas hover:bg-cloud/70 dark:hover:bg-zinc-800 px-6 py-2.5 text-xs font-semibold uppercase tracking-wider border-none h-11 cursor-pointer font-sans"
@@ -256,18 +261,16 @@ export default function AddressesPage() {
                 Cancel
               </Button>
             </div>
-
           </form>
         </div>
       ) : (
         /* Addresses Grid List */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {addresses.map((address) => (
-            <div 
-              key={address.id} 
+            <div
+              key={address.id}
               className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-4 flex flex-col justify-between"
             >
-              
               {/* Card content address details */}
               <div className="space-y-3">
                 <div className="flex flex-wrap gap-2">
@@ -289,10 +292,14 @@ export default function AddressesPage() {
                 </div>
 
                 <div className="text-xs text-ink/80 dark:text-canvas/80 font-sans leading-relaxed space-y-0.5">
-                  <p className="font-bold text-ink dark:text-canvas">{address.fullName}</p>
+                  <p className="font-bold text-ink dark:text-canvas">
+                    {address.fullName}
+                  </p>
                   <p>{address.address1}</p>
                   {address.address2 && <p>{address.address2}</p>}
-                  <p>{address.city}, {address.state} {address.postalCode}</p>
+                  <p>
+                    {address.city}, {address.state} {address.postalCode}
+                  </p>
                   <p>{address.country}</p>
                   <p className="mt-1 text-mute">{address.phone}</p>
                 </div>
@@ -300,14 +307,14 @@ export default function AddressesPage() {
 
               {/* Action buttons (Edit/Delete) */}
               <div className="flex items-center gap-4 pt-3 border-t border-hairline-soft/60">
-                <button 
+                <button
                   onClick={() => handleEditClick(address)}
                   className="flex items-center gap-1.5 text-xs font-semibold text-mute hover:text-ink dark:hover:text-canvas transition-colors font-sans cursor-pointer"
                 >
                   <IconEdit size={14} />
                   <span>Edit</span>
                 </button>
-                <button 
+                <button
                   onClick={() => handleDeleteClick(address.id)}
                   className="flex items-center gap-1.5 text-xs font-semibold text-sale hover:text-red-700 transition-colors font-sans cursor-pointer"
                 >
@@ -315,31 +322,30 @@ export default function AddressesPage() {
                   <span>Delete</span>
                 </button>
               </div>
-
             </div>
           ))}
 
           {/* Dotted empty placeholder to quickly add card */}
-          <div 
+          <div
             onClick={handleAddNewClick}
             className="border-2 border-dashed border-hairline-soft hover:border-ink dark:hover:border-canvas rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-colors text-mute hover:text-ink dark:hover:text-canvas gap-2 py-10"
           >
             <IconMapPin size={24} className="opacity-60" />
             <div className="space-y-0.5">
               <p className="text-xs font-bold font-sans">Add new address</p>
-              <p className="text-[10px] opacity-75 font-sans leading-tight">Make checking out faster</p>
+              <p className="text-[10px] opacity-75 font-sans leading-tight">
+                Make checking out faster
+              </p>
             </div>
-            <Button 
-              type="button" 
+            <Button
+              type="button"
               className="mt-2 rounded-full h-8 px-4 text-[10px] font-bold uppercase tracking-wider bg-ink hover:bg-charcoal text-canvas border-none"
             >
               Add Address
             </Button>
           </div>
-
         </div>
       )}
-
     </div>
   );
 }

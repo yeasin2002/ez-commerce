@@ -1,13 +1,13 @@
-"use server"
+"use server";
 
-import { sdk } from "@lib/config"
-import { HttpTypes } from "@medusajs/types"
-import { getCacheOptions } from "./cookies"
+import { sdk } from "@lib/config";
+import { HttpTypes } from "@medusajs/types";
+import { getCacheOptions } from "./cookies";
 
 export const listRegions = async () => {
   const next = {
     ...(await getCacheOptions("regions")),
-  }
+  };
 
   return await sdk.client
     .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
@@ -15,13 +15,13 @@ export const listRegions = async () => {
       next,
       cache: "force-cache",
     })
-    .then(({ regions }) => regions)
-}
+    .then(({ regions }) => regions);
+};
 
 export const retrieveRegion = async (id: string) => {
   const next = {
     ...(await getCacheOptions(["regions", id].join("-"))),
-  }
+  };
 
   return await sdk.client
     .fetch<{ region: HttpTypes.StoreRegion }>(`/store/regions/${id}`, {
@@ -29,35 +29,33 @@ export const retrieveRegion = async (id: string) => {
       next,
       cache: "force-cache",
     })
-    .then(({ region }) => region)
-}
+    .then(({ region }) => region);
+};
 
-const regionMap = new Map<string, HttpTypes.StoreRegion>()
+const regionMap = new Map<string, HttpTypes.StoreRegion>();
 
 export const getRegion = async (countryCode: string) => {
   if (regionMap.has(countryCode)) {
-    return regionMap.get(countryCode)
+    return regionMap.get(countryCode);
   }
 
-  const regions = await listRegions()
+  const regions = await listRegions();
 
   if (!regions) {
-    return null
+    return null;
   }
 
   regions.forEach((region) => {
     region.countries?.forEach((c) => {
-      regionMap.set(c?.iso_2 ?? "", region)
-    })
-  })
+      regionMap.set(c?.iso_2 ?? "", region);
+    });
+  });
 
-  let region = countryCode
-    ? regionMap.get(countryCode)
-    : regionMap.get("us")
+  let region = countryCode ? regionMap.get(countryCode) : regionMap.get("us");
 
   if (!region && regions && regions.length > 0) {
-    region = regions[0]
+    region = regions[0];
   }
 
-  return region
-}
+  return region;
+};

@@ -16,9 +16,7 @@ import {
 
 // Form Validation Schema using Zod
 const otpSchema = z.object({
-  otp: z
-    .string()
-    .length(6, "Verification code must be exactly 6 digits"),
+  otp: z.string().length(6, "Verification code must be exactly 6 digits"),
 });
 
 type OtpFormData = z.infer<typeof otpSchema>;
@@ -103,15 +101,33 @@ export default function OtpPage({ params }: PageProps) {
                   disabled={isSubmitting}
                 >
                   <InputOTPGroup>
-                    <InputOTPSlot index={0} className="size-10 text-sm md:text-base border-border" />
-                    <InputOTPSlot index={1} className="size-10 text-sm md:text-base border-border" />
-                    <InputOTPSlot index={2} className="size-10 text-sm md:text-base border-border" />
+                    <InputOTPSlot
+                      index={0}
+                      className="size-10 text-sm md:text-base border-border"
+                    />
+                    <InputOTPSlot
+                      index={1}
+                      className="size-10 text-sm md:text-base border-border"
+                    />
+                    <InputOTPSlot
+                      index={2}
+                      className="size-10 text-sm md:text-base border-border"
+                    />
                   </InputOTPGroup>
                   <InputOTPSeparator className="text-muted-foreground/40 mx-1" />
                   <InputOTPGroup>
-                    <InputOTPSlot index={3} className="size-10 text-sm md:text-base border-border" />
-                    <InputOTPSlot index={4} className="size-10 text-sm md:text-base border-border" />
-                    <InputOTPSlot index={5} className="size-10 text-sm md:text-base border-border" />
+                    <InputOTPSlot
+                      index={3}
+                      className="size-10 text-sm md:text-base border-border"
+                    />
+                    <InputOTPSlot
+                      index={4}
+                      className="size-10 text-sm md:text-base border-border"
+                    />
+                    <InputOTPSlot
+                      index={5}
+                      className="size-10 text-sm md:text-base border-border"
+                    />
                   </InputOTPGroup>
                 </InputOTP>
               </div>

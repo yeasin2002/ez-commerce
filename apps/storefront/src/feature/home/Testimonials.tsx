@@ -8,7 +8,8 @@ const REVIEWS = [
     quote:
       "The stitching, the crest, the fabric weight — feels exactly like the on-pitch kit. Shipped in three days.",
     product: "Real Madrid 2024/25 Home",
-    avatar: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=200&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=200&q=80",
   },
   {
     name: "Priya S.",
@@ -16,14 +17,17 @@ const REVIEWS = [
     quote:
       "Ordered a retro Milan 06 shirt. Ridiculous quality for the price. My uncle almost cried.",
     product: "AC Milan 2006/07 Away",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80",
   },
   {
     name: "Diego R.",
     location: "Buenos Aires, AR",
-    quote: "Custom name & number came out perfect. This is now my everyday jersey.",
+    quote:
+      "Custom name & number came out perfect. This is now my everyday jersey.",
     product: "Argentina 2022 Home",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
   },
 ];
 

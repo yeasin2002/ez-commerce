@@ -5,14 +5,21 @@ interface ShopGridProps {
   viewMode?: string;
 }
 
-export function ProductSkeletonGrid({ viewMode = "grid-3" }: { viewMode?: string }) {
+export function ProductSkeletonGrid({
+  viewMode = "grid-3",
+}: {
+  viewMode?: string;
+}) {
   const isListView = viewMode === "list";
-  const gridClasses = {
-    "grid-2": "grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6",
-    "grid-3": "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6",
-    "grid-4": "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6",
-    "list": "flex flex-col gap-8 w-full",
-  }[viewMode] || "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6";
+  const gridClasses =
+    {
+      "grid-2": "grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6",
+      "grid-3": "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6",
+      "grid-4":
+        "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6",
+      list: "flex flex-col gap-8 w-full",
+    }[viewMode] ||
+    "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6";
 
   const skeletonCount = 8;
 
@@ -41,7 +48,9 @@ export function ProductSkeletonGrid({ viewMode = "grid-3" }: { viewMode?: string
               <div className="h-3 bg-cloud rounded w-5/6 hidden sm:block" />
             )}
             <div className="h-4 bg-cloud rounded w-1/3" />
-            {isListView && <div className="h-9 bg-cloud rounded-pill w-24 mt-2.5" />}
+            {isListView && (
+              <div className="h-9 bg-cloud rounded-pill w-24 mt-2.5" />
+            )}
           </div>
         </div>
       ))}
@@ -59,12 +68,15 @@ export function ShopGrid({ products, viewMode = "grid-3" }: ShopGridProps) {
   }
 
   const isListView = viewMode === "list";
-  const gridClasses = {
-    "grid-2": "grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6",
-    "grid-3": "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6",
-    "grid-4": "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6",
-    "list": "flex flex-col gap-8 w-full",
-  }[viewMode] || "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6";
+  const gridClasses =
+    {
+      "grid-2": "grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-6",
+      "grid-3": "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6",
+      "grid-4":
+        "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6",
+      list: "flex flex-col gap-8 w-full",
+    }[viewMode] ||
+    "grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6";
 
   return (
     <div className={gridClasses}>

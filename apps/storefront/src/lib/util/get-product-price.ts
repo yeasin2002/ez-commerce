@@ -1,21 +1,21 @@
-import { HttpTypes } from "@medusajs/types"
-import { getPercentageDiff } from "./get-percentage-diff"
-import { convertToLocale } from "./money"
+import { HttpTypes } from "@medusajs/types";
+import { getPercentageDiff } from "./get-percentage-diff";
+import { convertToLocale } from "./money";
 
 type VariantWithPrice = HttpTypes.StoreProductVariant & {
   calculated_price?: {
-    calculated_amount: number
-    original_amount: number
-    currency_code: string
+    calculated_amount: number;
+    original_amount: number;
+    currency_code: string;
     calculated_price: {
-      price_list_type: string
-    }
-  }
-}
+      price_list_type: string;
+    };
+  };
+};
 
 export const getPricesForVariant = (variant: VariantWithPrice) => {
   if (!variant?.calculated_price?.calculated_amount) {
-    return null
+    return null;
   }
 
   return {
@@ -33,25 +33,25 @@ export const getPricesForVariant = (variant: VariantWithPrice) => {
     price_type: variant.calculated_price.calculated_price.price_list_type,
     percentage_diff: getPercentageDiff(
       variant.calculated_price.original_amount,
-      variant.calculated_price.calculated_amount
+      variant.calculated_price.calculated_amount,
     ),
-  }
-}
+  };
+};
 
 export function getProductPrice({
   product,
   variantId,
 }: {
-  product: HttpTypes.StoreProduct
-  variantId?: string
+  product: HttpTypes.StoreProduct;
+  variantId?: string;
 }) {
   if (!product || !product.id) {
-    throw new Error("No product provided")
+    throw new Error("No product provided");
   }
 
   const cheapestPrice = () => {
     if (!product || !product.variants?.length) {
-      return null
+      return null;
     }
 
     const cheapestVariant = (product.variants as VariantWithPrice[])
@@ -60,31 +60,31 @@ export function getProductPrice({
         return (
           (a.calculated_price?.calculated_amount ?? 0) -
           (b.calculated_price?.calculated_amount ?? 0)
-        )
-      })[0]
+        );
+      })[0];
 
-    return getPricesForVariant(cheapestVariant)
-  }
+    return getPricesForVariant(cheapestVariant);
+  };
 
   const variantPrice = () => {
     if (!product || !variantId) {
-      return null
+      return null;
     }
 
     const variant = product.variants?.find(
-      (v) => v.id === variantId || v.sku === variantId
-    ) as VariantWithPrice | undefined
+      (v) => v.id === variantId || v.sku === variantId,
+    ) as VariantWithPrice | undefined;
 
     if (!variant) {
-      return null
+      return null;
     }
 
-    return getPricesForVariant(variant)
-  }
+    return getPricesForVariant(variant);
+  };
 
   return {
     product,
     cheapestPrice: cheapestPrice(),
     variantPrice: variantPrice(),
-  }
+  };
 }

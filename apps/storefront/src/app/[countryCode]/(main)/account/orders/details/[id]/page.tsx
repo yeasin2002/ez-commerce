@@ -17,13 +17,15 @@ export default function OrderDetailsPage({ params }: PageProps) {
   const { countryCode, id } = use(params);
 
   // Find matching order or fallback to the first one
-  const order = mockOrders.find(o => o.id === id) || mockOrders[0];
+  const order = mockOrders.find((o) => o.id === id) || mockOrders[0];
 
   // Specific hardcoded pricing for order EZC-2505-0012 to match the mock design image exactly
   const isTargetOrder = order.id === "EZC-2505-0012";
-  const subtotal = isTargetOrder ? 6200 : order.items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+  const subtotal = isTargetOrder
+    ? 6200
+    : order.items.reduce((acc, item) => acc + item.price * item.qty, 0);
   const discount = isTargetOrder ? 700 : 0;
-  const shipping = isTargetOrder ? 80 : (order.total > 4000 ? 0 : 80);
+  const shipping = isTargetOrder ? 80 : order.total > 4000 ? 0 : 80;
   const total = isTargetOrder ? 5580 : order.total;
 
   const formatCurrency = (val: number) => {
@@ -49,10 +51,9 @@ export default function OrderDetailsPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6">
-      
       {/* Back to list navigation */}
       <div>
-        <Link 
+        <Link
           href={`/${countryCode}/account/orders`}
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-mute hover:text-ink dark:hover:text-canvas transition-colors font-sans"
         >
@@ -68,10 +69,12 @@ export default function OrderDetailsPage({ params }: PageProps) {
             <h1 className="text-3xl sm:text-4xl font-display uppercase tracking-wider text-ink dark:text-canvas">
               Order #{order.id}
             </h1>
-            <span className={cn(
-              "text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans",
-              getStatusStyle(order.status)
-            )}>
+            <span
+              className={cn(
+                "text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans",
+                getStatusStyle(order.status),
+              )}
+            >
               {order.status}
             </span>
           </div>
@@ -83,10 +86,8 @@ export default function OrderDetailsPage({ params }: PageProps) {
 
       {/* Detailed Columns Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
         {/* Left Column: Timeline, Items list, Addresses, Payment */}
         <div className="lg:col-span-8 space-y-6">
-          
           {/* Timeline Tracking */}
           <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6">
             <h3 className="text-sm font-bold uppercase tracking-wider text-ink dark:text-canvas border-b border-hairline-soft/80 pb-3 mb-6 font-sans">
@@ -96,7 +97,10 @@ export default function OrderDetailsPage({ params }: PageProps) {
             {/* Vertical timeline steps */}
             <div className="relative border-l border-hairline pl-6 ml-3 space-y-8">
               {order.timeline.map((step, idx) => {
-                const isCurrent = step.done && (idx === order.timeline.length - 1 || !order.timeline[idx + 1].done);
+                const isCurrent =
+                  step.done &&
+                  (idx === order.timeline.length - 1 ||
+                    !order.timeline[idx + 1].done);
                 return (
                   <div key={idx} className="relative">
                     {/* Circle Bullet icon */}
@@ -151,11 +155,16 @@ export default function OrderDetailsPage({ params }: PageProps) {
 
             <div className="divide-y divide-hairline-soft/60">
               {order.items.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 py-4 first:pt-1 last:pb-1">
-                  
+                <div
+                  key={index}
+                  className="flex items-center gap-4 py-4 first:pt-1 last:pb-1"
+                >
                   {/* Jersey Mock Miniature */}
                   <div className="w-14 h-14 bg-cloud/50 dark:bg-zinc-900 border border-hairline-soft rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
-                    <svg viewBox="0 0 100 100" className="w-9 h-9 fill-ink/65 dark:fill-canvas/75 select-none pointer-events-none">
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="w-9 h-9 fill-ink/65 dark:fill-canvas/75 select-none pointer-events-none"
+                    >
                       <path d="M 30 20 L 40 10 Q 50 15 60 10 L 70 20 L 88 28 L 82 46 L 72 42 L 72 90 L 28 90 L 28 42 L 18 46 L 12 28 Z" />
                     </svg>
                   </div>
@@ -177,7 +186,6 @@ export default function OrderDetailsPage({ params }: PageProps) {
                       {formatCurrency(item.price)}
                     </span>
                   </div>
-
                 </div>
               ))}
             </div>
@@ -185,18 +193,23 @@ export default function OrderDetailsPage({ params }: PageProps) {
 
           {/* Shipping & Payment Grid row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            
             {/* Shipping Address Box */}
             <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-5 space-y-2">
               <h4 className="text-[10px] font-extrabold uppercase tracking-widest text-mute font-sans">
                 Shipping Address
               </h4>
               <div className="text-xs text-ink/80 dark:text-canvas/80 font-sans leading-relaxed">
-                <p className="font-bold text-ink dark:text-canvas">Rifat Ahmed</p>
+                <p className="font-bold text-ink dark:text-canvas">
+                  Rifat Ahmed
+                </p>
                 <p>House 12, Road 5, Dhanmondi</p>
                 <p>Dhaka, Dhaka 1205</p>
                 <p>Bangladesh</p>
-                <p className="mt-1 text-mute">{order.id === "EZC-2505-0012" ? "+880 1712 345 678" : "+880 1712 345 678"}</p>
+                <p className="mt-1 text-mute">
+                  {order.id === "EZC-2505-0012"
+                    ? "+880 1712 345 678"
+                    : "+880 1712 345 678"}
+                </p>
               </div>
             </div>
 
@@ -207,23 +220,22 @@ export default function OrderDetailsPage({ params }: PageProps) {
               </h4>
               <div className="text-xs text-ink/80 dark:text-canvas/80 font-sans leading-relaxed">
                 <p className="font-bold text-ink dark:text-canvas">
-                  {order.id === "EZC-2505-0012" ? "Cash on Delivery" : "Online Payment (Stripe)"}
+                  {order.id === "EZC-2505-0012"
+                    ? "Cash on Delivery"
+                    : "Online Payment (Stripe)"}
                 </p>
                 <p className="text-mute mt-1 leading-relaxed">
-                  {order.id === "EZC-2505-0012" 
-                    ? "Pay with cash upon delivery of your items." 
+                  {order.id === "EZC-2505-0012"
+                    ? "Pay with cash upon delivery of your items."
                     : "Payment authorized via Stripe secure checkout."}
                 </p>
               </div>
             </div>
-
           </div>
-
         </div>
 
         {/* Right Column: Order Summary Pricing breakdown */}
         <div className="lg:col-span-4 lg:sticky lg:top-24">
-          
           <div className="bg-canvas dark:bg-zinc-950 border border-hairline-soft rounded-xl p-6">
             <h3 className="text-base font-display uppercase tracking-wider text-ink dark:text-canvas border-b border-hairline-soft pb-3.5 mb-4">
               Order Summary
@@ -232,15 +244,21 @@ export default function OrderDetailsPage({ params }: PageProps) {
             <div className="space-y-3.5 pb-4 border-b border-hairline-soft text-xs text-ink/80 dark:text-canvas/80 font-sans">
               <div className="flex items-center justify-between">
                 <span>Subtotal</span>
-                <span className="font-semibold text-ink dark:text-canvas">{formatCurrency(subtotal)}</span>
+                <span className="font-semibold text-ink dark:text-canvas">
+                  {formatCurrency(subtotal)}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sale">Discount</span>
-                <span className="font-bold text-sale">-{formatCurrency(discount)}</span>
+                <span className="font-bold text-sale">
+                  -{formatCurrency(discount)}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Shipping</span>
-                <span className="font-semibold text-ink dark:text-canvas">{formatCurrency(shipping)}</span>
+                <span className="font-semibold text-ink dark:text-canvas">
+                  {formatCurrency(shipping)}
+                </span>
               </div>
             </div>
 
@@ -258,11 +276,8 @@ export default function OrderDetailsPage({ params }: PageProps) {
               </span>
             </div>
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
