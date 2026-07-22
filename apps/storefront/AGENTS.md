@@ -213,6 +213,91 @@ pnpm lint
 
 
 
+<!-- BEGIN:API-workflow -->
+# API Layer Workflow (Medusa SDK + TanStack Query)
+when working on API Integration should follow these processes, for mow check `/docs/API-workflow.md` this docs. 
+
+## Architecture
+The API layer is divided into **2 separate layers**:
+
+1. **API Wrappers (`src/lib/api/`)**
+   - Wrap Medusa SDK and custom endpoints.
+   - No React, hooks, or UI code.
+   - Use `sdk.store.*` for built-in APIs.
+   - Use `sdk.client.fetch()` for custom APIs.
+   - Never use `JSON.stringify()` for request bodies.
+   - Export one `<module>Api` object per file.
+
+2. **API Hooks (`src/lib/hooks/api/`)**
+   - Wrap API layer using TanStack Query.
+   - `useQuery` → GET requests.
+   - `useMutation` → POST, PATCH, PUT, DELETE.
+   - Define `*_KEYS` at the top.
+   - Show success/error toasts.
+   - Invalidate related queries after mutations.
+
+## Folder Structure
+
+src/
+└── lib/
+├── api/
+│ ├── <module>.ts
+│ └── admin/
+└── hooks/
+└── api/
+├── use-<module>.ts
+└── admin/
+
+## Naming
+- API: `<module>Api`
+- Hooks: `use<Module>()`
+- Types:
+  - `<Entity>`
+  - `<Entity>Response`
+  - `<Entity>ListResponse`
+  - `Create<Entity>Data`
+  - `Update<Entity>Data`
+  - `<Entity>QueryParams`
+
+## Query Keys
+
+- Keep all query keys in a `*_KEYS` constant.
+- Use hierarchical keys.
+- Prefix admin keys with `"admin"`.
+
+## Workflow
+
+1. Create API wrapper.
+2. Create React Query hooks.
+3. Use hooks inside UI components.
+
+## Boundaries
+
+### API Layer
+- Medusa SDK calls
+- Custom endpoints
+- API types
+- Query keys
+- Cache invalidation
+- Toasts
+
+### Not Allowed
+- UI components
+- Routing
+- Form validation
+- Business logic
+- Global state
+
+## Best Practices
+
+- Keep API and UI separated.
+- Use Medusa SDK instead of raw `fetch()`.
+- SDK returns parsed JSON directly.
+- Never manually stringify request bodies.
+- Disable buttons while mutations are pending.
+- Keep code type-safe and consistent.
+
+<!-- END:API-workflow -->
 
 
 <!-- BEGIN:nextjs-agent-rules -->

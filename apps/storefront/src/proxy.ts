@@ -121,6 +121,23 @@ export async function proxy(request: NextRequest) {
   const urlHasCountry = firstPathSegment === country.toLowerCase();
 
   if (urlHasCountry) {
+    const token = request.cookies.get("_medusa_jwt")?.value;
+    const segments = request.nextUrl.pathname.split("/");
+    const isAccountPage = segments[2]?.toLowerCase() === "account";
+    const isAuthPage =
+      segments[2]?.toLowerCase() === "login" ||
+      segments[2]?.toLowerCase() === "register";
+
+    if (isAccountPage && !token) {
+      const redirectUrl = `${request.nextUrl.origin}/${country}/login`;
+      return NextResponse.redirect(redirectUrl, 307);
+    }
+
+    if (isAuthPage && token) {
+      const redirectUrl = `${request.nextUrl.origin}/${country}/account`;
+      return NextResponse.redirect(redirectUrl, 307);
+    }
+
     if (!cacheIdCookie) {
       const response = NextResponse.next();
       response.cookies.set("_medusa_cache_id", cacheId, {

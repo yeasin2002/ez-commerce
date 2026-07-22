@@ -16,6 +16,7 @@ import Link from "next/link";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { signup } from "@/lib/data/customer";
 
 // Form Validation Schema using Zod
 const registerSchema = z.object({
@@ -40,6 +41,8 @@ interface PageProps {
 export default function RegisterPage({ params }: PageProps) {
   const { countryCode } = use(params);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [isVerificationRequired, setIsVerificationRequired] = useState(false);
 
   const {
     register,
@@ -58,16 +61,37 @@ export default function RegisterPage({ params }: PageProps) {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    // Simulate register API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Registration form submitted:", data);
-    setIsSubmitted(true);
-    reset();
+    setApiError(null);
+    const formData = new FormData();
+    formData.append("first_name", data.first_name);
+    formData.append("last_name", data.last_name);
+    formData.append("email", data.email);
+    formData.append("phone", data.phone);
+    formData.append("password", data.password);
 
-    // Mock redirect to login page after success
-    setTimeout(() => {
-      window.location.href = `/${countryCode}/login`;
-    }, 2000);
+    try {
+      const res = await signup(null, formData);
+      if (res && res.state === "error") {
+        setApiError(res.error || "An error occurred during registration");
+      } else if (res && res.state === "verification_required") {
+        setIsVerificationRequired(true);
+        setIsSubmitted(true);
+        reset();
+        setTimeout(() => {
+          window.location.href = `/${countryCode}/login`;
+        }, 3000);
+      } else {
+        setIsSubmitted(true);
+        reset();
+        setTimeout(() => {
+          window.location.href = `/${countryCode}/account`;
+        }, 1500);
+      }
+    } catch (e) {
+      setApiError(
+        e instanceof Error ? e.message : "An unexpected error occurred",
+      );
+    }
   };
 
   if (isSubmitted) {
@@ -79,11 +103,19 @@ export default function RegisterPage({ params }: PageProps) {
         <h2 className="font-display text-3xl uppercase tracking-tight text-foreground">
           Success!
         </h2>
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          Your account has been created successfully.
-          <br />
-          Redirecting to login page...
-        </p>
+        {isVerificationRequired ? (
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Your account has been created. A verification email has been sent.
+            <br />
+            Redirecting to login page...
+          </p>
+        ) : (
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Your account has been created successfully.
+            <br />
+            Redirecting to account dashboard...
+          </p>
+        )}
       </div>
     );
   }
@@ -148,6 +180,11 @@ export default function RegisterPage({ params }: PageProps) {
             {...register("password")}
           />
         </div>
+        {apiError && (
+          <div className="text-[10px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300 font-sans">
+            {apiError}
+          </div>
+        )}
         {/* Submit Button */}
         <div className="pt-1">
           <Button

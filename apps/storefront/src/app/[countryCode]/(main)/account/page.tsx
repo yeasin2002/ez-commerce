@@ -1,16 +1,14 @@
-"use client";
-
-import React, { use } from "react";
-import Link from "next/link";
-import {
-  IconShoppingBag,
-  IconMapPin,
-  IconUser,
-  IconChevronRight,
-  IconArrowRight,
-} from "@tabler/icons-react";
-import { mockCustomerProfile, mockOrders } from "@/data/account.data";
+import { mockOrders } from "@/data/account.data";
+import { retrieveCustomer } from "@/lib/data/customer";
 import { cn } from "@/lib/utils";
+import {
+  IconArrowRight,
+  IconChevronRight,
+  IconMapPin,
+  IconShoppingBag,
+  IconUser,
+} from "@tabler/icons-react";
+import Link from "next/link";
 
 interface PageProps {
   params: Promise<{
@@ -18,8 +16,10 @@ interface PageProps {
   }>;
 }
 
-export default function AccountOverviewPage({ params }: PageProps) {
-  const { countryCode } = use(params);
+export default async function AccountOverviewPage({ params }: PageProps) {
+  const { countryCode } = await params;
+  const customer = await retrieveCustomer();
+  const customerName = `${customer?.first_name} ${customer?.last_name}`;
 
   // Take the first 3 recent orders for dashboard summary
   const recentOrders = mockOrders.slice(0, 3);
@@ -50,8 +50,8 @@ export default function AccountOverviewPage({ params }: PageProps) {
     <div className="space-y-8">
       {/* Welcome Banner */}
       <div className="pb-4 border-b border-hairline-soft">
-        <h1 className="text-4xl font-display uppercase tracking-wider text-ink dark:text-canvas">
-          Welcome back, {mockCustomerProfile.fullName.split(" ")[0]}!
+        <h1 className="text-4xl font-display uppercase tracking-wider text-ink dark:text-canvas ">
+          Welcome back, <span className="font-bold">{customerName}</span>!
         </h1>
         <p className="text-xs text-mute mt-1 font-sans">
           Here&apos;s what is happening with your account today.
@@ -114,7 +114,7 @@ export default function AccountOverviewPage({ params }: PageProps) {
               Profile
             </span>
             <span className="text-base font-bold text-ink dark:text-canvas block truncate">
-              {mockCustomerProfile.fullName}
+              {customerName}
             </span>
             <Link
               href={`/${countryCode}/account/profile`}

@@ -11,8 +11,6 @@ import { PromoMarquee } from "@/feature/shop/PromoMarquee";
 import { RelatedProducts } from "@/feature/shop/RelatedProducts";
 import { retrieveProduct } from "@lib/data/products";
 
-
-
 export default async function ProductDetailsPage({
   params,
 }: {

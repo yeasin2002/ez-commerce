@@ -1,7 +1,9 @@
-import React, { use } from "react";
+import React from "react";
 import { Header } from "@/feature/home/Header";
 import { Footer } from "@/feature/home/Footer";
 import { Sidebar } from "@/feature/account/sidebar";
+import { retrieveCustomer } from "@/lib/data/customer";
+import { redirect } from "next/navigation";
 
 interface AccountLayoutProps {
   children: React.ReactNode;
@@ -10,11 +12,16 @@ interface AccountLayoutProps {
   }>;
 }
 
-export default function AccountLayout({
+export default async function AccountLayout({
   children,
   params,
 }: AccountLayoutProps) {
-  const { countryCode } = use(params);
+  const { countryCode } = await params;
+
+  const customer = await retrieveCustomer();
+  if (!customer) {
+    redirect(`/${countryCode}/login`);
+  }
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col">

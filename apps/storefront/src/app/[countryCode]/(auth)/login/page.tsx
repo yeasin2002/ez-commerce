@@ -9,6 +9,7 @@ import Link from "next/link";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { login } from "@/lib/data/customer";
 
 // Form Validation Schema using Zod
 const loginSchema = z.object({
@@ -30,6 +31,7 @@ interface PageProps {
 export default function LoginPage({ params }: PageProps) {
   const { countryCode } = use(params);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const {
     register,
@@ -45,16 +47,29 @@ export default function LoginPage({ params }: PageProps) {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    // Simulate login API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Login form submitted:", data);
-    setIsSubmitted(true);
-    reset();
+    setApiError(null);
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
 
-    // Mock redirect to homepage after success
-    setTimeout(() => {
-      window.location.href = `/${countryCode}`;
-    }, 2000);
+    try {
+      const res = await login(null, formData);
+      if (res && res.state === "error") {
+        setApiError(res.error || "Invalid email or password");
+      } else if (res && res.state === "verification_required") {
+        setApiError("Email verification is required. Please check your inbox.");
+      } else {
+        setIsSubmitted(true);
+        reset();
+        setTimeout(() => {
+          window.location.href = `/${countryCode}/account`;
+        }, 1500);
+      }
+    } catch (e) {
+      setApiError(
+        e instanceof Error ? e.message : "An unexpected error occurred",
+      );
+    }
   };
 
   if (isSubmitted) {
@@ -69,7 +84,7 @@ export default function LoginPage({ params }: PageProps) {
         <p className="text-xs text-muted-foreground leading-relaxed">
           Welcome back! You have logged in successfully.
           <br />
-          Redirecting to homepage...
+          Redirecting to account dashboard...
         </p>
       </div>
     );
@@ -114,6 +129,11 @@ export default function LoginPage({ params }: PageProps) {
             </Link>
           </div>
         </div>
+        {apiError && (
+          <div className="text-[10px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300">
+            {apiError}
+          </div>
+        )}
         {/* Submit Button */}
         <div className="pt-1">
           <Button
