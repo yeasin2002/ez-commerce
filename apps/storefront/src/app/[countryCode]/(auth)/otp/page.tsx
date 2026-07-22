@@ -1,6 +1,7 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -13,6 +14,10 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import {
+  verifyRegistrationOtp,
+  resendRegistrationOtp,
+} from "@/lib/data/auth-verification";
 
 // Form Validation Schema using Zod
 const otpSchema = z.object({
@@ -29,7 +34,24 @@ interface PageProps {
 
 export default function OtpPage({ params }: PageProps) {
   const { countryCode } = use(params);
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email") || "";
+
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [resendStatus, setResendStatus] = useState<string | null>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [isResending, setIsResending] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (resendCooldown > 0) {
+      timer = setInterval(() => {
+        setResendCooldown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   const {
     control,
@@ -44,16 +66,56 @@ export default function OtpPage({ params }: PageProps) {
   });
 
   const onSubmit = async (data: OtpFormData) => {
-    // Simulate OTP verification API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("OTP verification code submitted:", data);
-    setIsSubmitted(true);
-    reset();
+    setApiError(null);
+    setResendStatus(null);
 
-    // Mock redirect to home page after success
-    setTimeout(() => {
-      window.location.href = `/${countryCode}`;
-    }, 2000);
+    if (!email) {
+      setApiError(
+        "Email address missing from verification request. Please register again."
+      );
+      return;
+    }
+
+    try {
+      const res = await verifyRegistrationOtp(email, data.otp);
+      if (!res.success) {
+        setApiError(res.error || "Verification failed");
+      } else {
+        setIsSubmitted(true);
+        reset();
+        setTimeout(() => {
+          window.location.href = `/${countryCode}/account`;
+        }, 1500);
+      }
+    } catch (e) {
+      setApiError(
+        e instanceof Error ? e.message : "An unexpected error occurred"
+      );
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (resendCooldown > 0 || isResending || !email) return;
+
+    setIsResending(true);
+    setApiError(null);
+    setResendStatus(null);
+
+    try {
+      const res = await resendRegistrationOtp(email);
+      if (!res.success) {
+        setApiError(res.error || "Failed to resend code");
+      } else {
+        setResendStatus(res.message || "A new code has been sent!");
+        setResendCooldown(60); // 60s cooldown
+      }
+    } catch (e) {
+      setApiError(
+        e instanceof Error ? e.message : "Failed to resend verification code"
+      );
+    } finally {
+      setIsResending(false);
+    }
   };
 
   if (isSubmitted) {
@@ -66,9 +128,9 @@ export default function OtpPage({ params }: PageProps) {
           Verified!
         </h2>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Your security code has been verified.
+          Your email address has been verified and your account is ready.
           <br />
-          Redirecting to home page...
+          Redirecting to your account dashboard...
         </p>
       </div>
     );
@@ -79,10 +141,14 @@ export default function OtpPage({ params }: PageProps) {
       {/* Header Title */}
       <div className="space-y-1">
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-          Security code
+          Verify email
         </h1>
         <p className="text-[11px] text-muted-foreground leading-relaxed">
-          Please enter the 6-digit verification code sent to your device.
+          Please enter the 6-digit verification code sent to{" "}
+          <span className="font-semibold text-foreground">
+            {email || "your email"}
+          </span>
+          .
         </p>
       </div>
 
@@ -142,14 +208,31 @@ export default function OtpPage({ params }: PageProps) {
           )}
         />
 
+        {resendStatus && (
+          <div className="text-[10px] text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full text-center font-medium animate-in fade-in duration-300">
+            {resendStatus}
+          </div>
+        )}
+
+        {apiError && (
+          <div className="text-[10px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-full text-center font-medium animate-in fade-in duration-300 font-sans">
+            {apiError}
+          </div>
+        )}
+
         {/* Resend Code Link */}
         <div className="flex justify-end mt-1">
           <button
             type="button"
-            onClick={() => console.log("Resend OTP clicked")}
-            className="text-[10px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            onClick={handleResendCode}
+            disabled={resendCooldown > 0 || isResending}
+            className="text-[10px] text-muted-foreground hover:text-foreground disabled:opacity-50 transition-colors cursor-pointer"
           >
-            Resend Code?
+            {resendCooldown > 0
+              ? `Resend Code in ${resendCooldown}s`
+              : isResending
+              ? "Sending code..."
+              : "Resend Code?"}
           </button>
         </div>
       </div>

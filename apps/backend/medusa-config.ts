@@ -15,6 +15,9 @@ module.exports = defineConfig({
     }
   },
   modules: {
+    emailVerification: {
+      resolve: "./src/modules/email-verification",
+    },
     [Modules.FILE]: {
       resolve: "@medusajs/medusa/file",
       options: {

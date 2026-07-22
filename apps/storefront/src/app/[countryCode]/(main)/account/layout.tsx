@@ -20,7 +20,7 @@ export default async function AccountLayout({
 
   const customer = await retrieveCustomer();
   if (!customer) {
-    redirect(`/${countryCode}/login`);
+    redirect(`/${countryCode}/login?expired=true`);
   }
 
   return (

@@ -134,6 +134,11 @@ export async function proxy(request: NextRequest) {
     }
 
     if (isAuthPage && token) {
+      if (request.nextUrl.searchParams.has("expired")) {
+        const response = NextResponse.next();
+        response.cookies.delete("_medusa_jwt");
+        return response;
+      }
       const redirectUrl = `${request.nextUrl.origin}/${country}/account`;
       return NextResponse.redirect(redirectUrl, 307);
     }

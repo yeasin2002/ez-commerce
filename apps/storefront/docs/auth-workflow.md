@@ -179,7 +179,7 @@ export default function AuthCallbackPage({ params }: { params: Promise<{ country
   }, [token, countryCode, router])
 
   return (
-    <div className="flex items-center justify-center min-h-[300px]">
+    <div className="flex items-center justify-center min-h-75">
       <p className="text-sm text-muted-foreground animate-pulse">Completing sign in...</p>
     </div>
   )

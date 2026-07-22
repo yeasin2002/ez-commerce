@@ -16,7 +16,7 @@ import Link from "next/link";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { signup } from "@/lib/data/customer";
+import { requestRegistrationOtp } from "@/lib/data/auth-verification";
 
 // Form Validation Schema using Zod
 const registerSchema = z.object({
@@ -70,22 +70,17 @@ export default function RegisterPage({ params }: PageProps) {
     formData.append("password", data.password);
 
     try {
-      const res = await signup(null, formData);
-      if (res && res.state === "error") {
+      const res = await requestRegistrationOtp(null, formData);
+      if (!res.success) {
         setApiError(res.error || "An error occurred during registration");
-      } else if (res && res.state === "verification_required") {
-        setIsVerificationRequired(true);
-        setIsSubmitted(true);
-        reset();
-        setTimeout(() => {
-          window.location.href = `/${countryCode}/login`;
-        }, 3000);
       } else {
         setIsSubmitted(true);
         reset();
         setTimeout(() => {
-          window.location.href = `/${countryCode}/account`;
-        }, 1500);
+          window.location.href = `/${countryCode}/otp?email=${encodeURIComponent(
+            data.email,
+          )}`;
+        }, 1200);
       }
     } catch (e) {
       setApiError(
@@ -103,19 +98,11 @@ export default function RegisterPage({ params }: PageProps) {
         <h2 className="font-display text-3xl uppercase tracking-tight text-foreground">
           Success!
         </h2>
-        {isVerificationRequired ? (
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Your account has been created. A verification email has been sent.
-            <br />
-            Redirecting to login page...
-          </p>
-        ) : (
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Your account has been created successfully.
-            <br />
-            Redirecting to account dashboard...
-          </p>
-        )}
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Verification code sent to your email address.
+          <br />
+          Redirecting to verification page...
+        </p>
       </div>
     );
   }

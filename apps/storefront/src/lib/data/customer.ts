@@ -2,8 +2,8 @@
 
 import { sdk } from "@lib/config";
 import medusaError from "@lib/util/medusa-error";
-import { HttpTypes } from "@medusajs/types";
 import { FetchError } from "@medusajs/js-sdk";
+import { HttpTypes } from "@medusajs/types";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -212,7 +212,13 @@ async function completeLogin(
         password,
       })) as string;
     } catch (error) {
-      return { state: "error", error: String(error) };
+      const errStr = String(error);
+      if (
+        !errStr.includes("already has an account") &&
+        !errStr.includes("already exists")
+      ) {
+        return { state: "error", error: errStr };
+      }
     }
 
     await removePendingCustomer();
