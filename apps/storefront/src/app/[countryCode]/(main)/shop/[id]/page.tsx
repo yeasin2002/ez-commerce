@@ -11,6 +11,8 @@ import { PromoMarquee } from "@/feature/shop/PromoMarquee";
 import { RelatedProducts } from "@/feature/shop/RelatedProducts";
 import { retrieveProduct } from "@lib/data/products";
 
+
+
 export default async function ProductDetailsPage({
   params,
 }: {
@@ -26,9 +28,7 @@ export default async function ProductDetailsPage({
     notFound();
   }
 
-  if (!dbProduct) {
-    notFound();
-  }
+  if (!dbProduct) return notFound();
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col justify-between">

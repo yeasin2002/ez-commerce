@@ -1,6 +1,6 @@
-import React from "react";
-import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { IconBrandFacebook, IconBrandGoogle } from "@tabler/icons-react";
+import React from "react";
 
 export const SocialLogin = () => {
   return (
@@ -24,7 +24,7 @@ export const SocialLogin = () => {
           variant="outline"
           className="w-full rounded-full border-border hover:bg-muted font-medium flex items-center justify-center gap-2 h-10"
         >
-          <IconBrandGoogle className="size-5" />
+          <IconBrandGoogle className="size-5 " />
           <span>Google</span>
         </Button>
         <Button

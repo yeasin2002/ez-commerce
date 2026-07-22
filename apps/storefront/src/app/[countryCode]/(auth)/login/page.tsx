@@ -2,7 +2,7 @@
 
 import { AuthInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { SocialLogin } from "@/feature/auth/social-login";
+import { SocialLogin } from "@/feature/auth/social-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, Lock, Mail, SendHorizontal } from "lucide-react";
 import Link from "next/link";

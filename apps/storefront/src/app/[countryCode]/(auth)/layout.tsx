@@ -1,6 +1,6 @@
 "use client";
 
-import { SocialLogin } from "@/feature/auth/social-login";
+import { SocialLogin } from "@/feature/auth/social-auth";
 import Image from "next/image";
 import React from "react";
 
