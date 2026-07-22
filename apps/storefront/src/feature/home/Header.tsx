@@ -17,6 +17,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { BRANDING } from "@/config";
+import Image from "next/image";
 
 const NAV = [
   { label: "Home", to: "/" },
@@ -60,9 +62,17 @@ export function Header() {
       <div className="border-b border-hairline-soft">
         <div className="container-page flex h-16 items-center gap-6">
           <Link href={`/${countryCode}`} className="flex items-center gap-2">
-            <span className="font-display text-2xl tracking-wider">
+            <Image
+              width={200}
+              height={200}
+              src={BRANDING.logo}
+              alt={BRANDING.title}
+              priority
+            />
+
+            {/* <span className="font-display text-2xl tracking-wider">
               FOOTY<span className="text-mute">STYLE</span>HUB
-            </span>
+            </span> */}
           </Link>
 
           <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex">
