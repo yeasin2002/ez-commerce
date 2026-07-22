@@ -1,3 +1,14 @@
+<!-- 0. Reference -->
+# 0. Reference for more details
+Here are additional documentations, whenever needed about these details make sure to read them. 
+
+- @BRD-Ecommerce-Platform.md 
+- @docs/common-ecoomence-plan.md
+- @docs/FUTURE-PAGES-DRAFTS.MD
+- @docs/MEDUSA_SETUP.md
+
+
+
 <!-- 1.Product -->
 # Product
 
