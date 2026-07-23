@@ -1,6 +1,39 @@
-import { ArrowRight } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { sdk } from "@lib/config";
 
 export function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!email || submitting) return;
+
+    setSubmitting(true);
+    setStatus("idle");
+    setMessage("");
+
+    try {
+      await sdk.client.fetch("/store/newsletter", {
+        method: "POST",
+        body: { email },
+      });
+      setStatus("success");
+      setMessage("Thank you for subscribing! You are now on the VIP list.");
+      setEmail("");
+    } catch (err: any) {
+      setStatus("error");
+      setMessage(err?.message || "Failed to subscribe. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section className="bg-ink py-20 text-canvas">
       <div className="container-page grid gap-12 md:grid-cols-2 md:items-end">
@@ -19,10 +52,7 @@ export function Newsletter() {
           </p>
         </div>
 
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={(e) => e.preventDefault()}
-        >
+        <form className="flex flex-col gap-4" onSubmit={submitHandler}>
           <label className="text-xs uppercase tracking-[0.2em] text-stone">
             Email address
           </label>
@@ -31,15 +61,46 @@ export function Newsletter() {
               type="email"
               required
               placeholder="you@somewhere.com"
-              className="flex-1 bg-transparent text-canvas placeholder:text-stone outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={submitting}
+              className="flex-1 bg-transparent text-canvas placeholder:text-stone outline-none disabled:opacity-50"
             />
-            <button className="inline-flex h-11 items-center gap-2 rounded-pill bg-canvas px-6 text-sm font-semibold text-ink transition-transform hover:scale-[1.02]">
-              Subscribe <ArrowRight className="h-4 w-4" />
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex h-11 items-center gap-2 rounded-pill bg-canvas px-6 text-sm font-semibold text-ink transition-transform hover:scale-[1.02] disabled:opacity-50"
+            >
+              {submitting ? (
+                <>
+                  Subscribing <Loader2 className="h-4 w-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  Subscribe <ArrowRight className="h-4 w-4" />
+                </>
+              )}
             </button>
           </div>
-          <p className="text-xs text-stone">
-            By subscribing you agree to our privacy policy. Unsubscribe anytime.
-          </p>
+
+          {status === "success" && (
+            <p className="flex items-center gap-2 text-sm text-emerald-400 font-medium">
+              <CheckCircle2 className="h-4 w-4" />
+              {message}
+            </p>
+          )}
+
+          {status === "error" && (
+            <p className="text-sm text-red-400 font-medium">
+              {message}
+            </p>
+          )}
+
+          {status === "idle" && (
+            <p className="text-xs text-stone">
+              By subscribing you agree to our privacy policy. Unsubscribe anytime.
+            </p>
+          )}
         </form>
       </div>
     </section>

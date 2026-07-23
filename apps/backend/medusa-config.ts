@@ -15,6 +15,9 @@ module.exports = defineConfig({
     }
   },
   modules: {
+    newsletter: {
+      resolve: "./src/modules/newsletter",
+    },
     [Modules.FILE]: {
       resolve: "@medusajs/medusa/file",
       options: {
