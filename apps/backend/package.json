@@ -25,7 +25,11 @@
     "db:up": "docker compose up -d postgres",
     "redis:up": "docker compose up -d redis",
     "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down"
+    "docker:down": "docker compose down",
+    "podman:up": "podman compose up -d",
+    "podman:down": "podman compose down",
+    "podman:db:up": "podman compose up -d postgres",
+    "podman:redis:up": "podman compose up -d redis"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.17.2",
