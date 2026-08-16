@@ -13,3 +13,6 @@ allowBuilds:
 overrides:
   "@types/react": "19.0.5"
   "@types/react-dom": "19.0.5"
+  "@mikro-orm/core": "6.6.14"
+  "@mikro-orm/knex": "6.6.14"
+  "@mikro-orm/postgresql": "6.6.14"

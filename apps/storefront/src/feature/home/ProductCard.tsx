@@ -26,7 +26,11 @@ export type Product = {
   soldCount?: number;
   viewingCount?: number;
   rawProduct?: unknown;
+  variantId?: string;
 };
+
+import { useAddToCart } from "@lib/hooks/api/use-cart";
+import { Loader2 } from "lucide-react";
 
 export function ProductCard({
   product,
@@ -38,9 +42,28 @@ export function ProductCard({
   priority?: boolean;
 }) {
   const params = useParams();
-  const countryCode = (params?.countryCode as string) || "bn";
+  const countryCode = (params?.countryCode as string) || "us";
   const productLink = `/${countryCode}/shop/${product.handle || product.id}`;
   const onSale = product.original && product.original > product.price;
+
+  const addToCartMutation = useAddToCart();
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const targetVariantId = product.variantId;
+    if (!targetVariantId) {
+      console.warn("No variant ID available for product:", product.name);
+      return;
+    }
+
+    addToCartMutation.mutate({
+      variantId: targetVariantId,
+      quantity: 1,
+      countryCode,
+    });
+  };
 
   if (layout === "list") {
     return (
@@ -93,8 +116,18 @@ export function ProductCard({
             ) : null}
           </div>
           <div className="mt-2.5">
-            <button className="h-9 px-5 rounded-pill bg-ink text-[11px] font-semibold uppercase tracking-wider text-canvas hover:bg-charcoal transition-colors cursor-pointer border-0">
-              Quick Add
+            <button
+              onClick={handleQuickAdd}
+              disabled={addToCartMutation.isPending}
+              className="h-9 px-5 rounded-pill bg-ink text-[11px] font-semibold uppercase tracking-wider text-canvas hover:bg-charcoal transition-colors cursor-pointer border-0 flex items-center justify-center gap-2"
+            >
+              {addToCartMutation.isPending ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : addToCartMutation.isSuccess ? (
+                "Added!"
+              ) : (
+                "Quick Add"
+              )}
             </button>
           </div>
         </div>
@@ -117,6 +150,10 @@ export function ProductCard({
 
         <button
           aria-label="Add to wishlist"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-pill bg-canvas/90 text-ink opacity-0 backdrop-blur transition-opacity hover:bg-canvas group-hover:opacity-100"
         >
           <Heart className="h-4 w-4" />
@@ -132,8 +169,18 @@ export function ProductCard({
         />
 
         <div className="absolute inset-x-3 bottom-3 z-10 translate-y-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          <button className="h-10 w-full rounded-pill bg-ink text-xs font-semibold uppercase tracking-wider text-canvas">
-            Quick Add
+          <button
+            onClick={handleQuickAdd}
+            disabled={addToCartMutation.isPending}
+            className="h-10 w-full rounded-pill bg-ink text-xs font-semibold uppercase tracking-wider text-canvas flex items-center justify-center gap-2 cursor-pointer border-0"
+          >
+            {addToCartMutation.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : addToCartMutation.isSuccess ? (
+              "Added!"
+            ) : (
+              "Quick Add"
+            )}
           </button>
         </div>
       </div>

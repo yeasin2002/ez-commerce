@@ -23,5 +23,7 @@ export function mapStoreProductToProduct(
     description: product.description || undefined,
     images: product.images?.map((img) => img.url) || [],
     soldCount: (product.metadata?.sold_count as number) || 0,
+    variantId: product.variants?.[0]?.id,
+    rawProduct: product,
   };
 }

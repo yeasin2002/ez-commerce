@@ -3,6 +3,7 @@
 import { AuthInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { SocialLogin } from "@/feature/auth/social-auth";
+import { signup } from "@/lib/data/customer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CheckCircle,
@@ -13,10 +14,9 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import React, { use, useState } from "react";
+import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { signup } from "@/lib/data/customer";
 
 // Form Validation Schema using Zod
 const registerSchema = z.object({

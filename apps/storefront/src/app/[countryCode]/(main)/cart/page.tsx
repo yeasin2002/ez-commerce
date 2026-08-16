@@ -2,6 +2,7 @@
 
 import React, { use, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Plus,
   Minus,
@@ -13,58 +14,16 @@ import {
   ShoppingBag,
   Truck,
   Lock,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// Custom premium SVG Shirt Icon for Jersey previews
-const JerseyIcon = ({
-  color,
-  collarColor = "#ffffff",
-  accentColor = "transparent",
-}: {
-  color: string;
-  collarColor?: string;
-  accentColor?: string;
-}) => (
-  <svg
-    viewBox="0 0 100 100"
-    className="w-12 h-12 select-none pointer-events-none drop-shadow-sm"
-  >
-    <path
-      d="M 30 20 L 40 10 Q 50 15 60 10 L 70 20 L 88 28 L 82 46 L 72 42 L 72 90 L 28 90 L 28 42 L 18 46 L 12 28 Z"
-      fill={color}
-    />
-    <path
-      d="M 40 10 Q 50 15 60 10 L 58 16 Q 50 20 42 16 Z"
-      fill={collarColor}
-    />
-    {accentColor !== "transparent" && (
-      <rect
-        x="47"
-        y="22"
-        width="6"
-        height="68"
-        fill={accentColor}
-        opacity="0.35"
-      />
-    )}
-  </svg>
-);
-
-// Custom premium SVG Shorts Icon for apparel preview
-const ShortsIcon = ({ color }: { color: string }) => (
-  <svg
-    viewBox="0 0 100 100"
-    className="w-12 h-12 select-none pointer-events-none drop-shadow-sm"
-  >
-    <rect x="25" y="20" width="50" height="8" rx="2" fill="#222" />
-    <path
-      d="M 25 28 L 75 28 L 80 75 L 53 75 L 50 55 L 47 75 L 20 75 Z"
-      fill={color}
-    />
-    <path d="M 49 55 L 51 55 L 50 75 Z" fill="#111" opacity="0.4" />
-  </svg>
-);
+import {
+  useCart,
+  useUpdateLineItem,
+  useDeleteLineItem,
+  useApplyPromotion,
+} from "@lib/hooks/api/use-cart";
+import { convertToLocale } from "@lib/util/money";
 
 interface PageProps {
   params: Promise<{
@@ -75,97 +34,62 @@ interface PageProps {
 export default function CartPage({ params }: PageProps) {
   const { countryCode } = use(params);
 
-  // Mock cart items state to support dynamic quantity changes and removals
-  const [items, setItems] = useState([
-    {
-      id: "cart-item-1",
-      name: "Manchester United Home Jersey 2024/25",
-      size: "M",
-      color: "Red",
-      inStock: true,
-      originalPrice: 2800,
-      price: 2450,
-      qty: 1,
-      icon: (
-        <JerseyIcon
-          color="#c21d24"
-          collarColor="#ffffff"
-          accentColor="#ffffff"
-        />
-      ),
-    },
-    {
-      id: "cart-item-2",
-      name: "Inter Miami Away Jersey 2024/25",
-      size: "L",
-      color: "Pink",
-      inStock: true,
-      originalPrice: 2450,
-      price: 2150,
-      qty: 1,
-      icon: (
-        <JerseyIcon
-          color="#fca5a5"
-          collarColor="#000000"
-          accentColor="#000000"
-        />
-      ),
-    },
-    {
-      id: "cart-item-3",
-      name: "Nike Dri-FIT Short Men's Training Shorts",
-      size: "M",
-      color: "Black",
-      inStock: true,
-      originalPrice: 1200,
-      price: 950,
-      qty: 1,
-      icon: <ShortsIcon color="#18181b" />,
-    },
-  ]);
+  const { data: cart, isLoading } = useCart();
+  const updateLineItem = useUpdateLineItem();
+  const deleteLineItem = useDeleteLineItem();
+  const applyPromotion = useApplyPromotion();
 
-  // Handle quantity adjustment
-  const updateQty = (id: string, delta: number) => {
-    setItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.id === id) {
-          const newQty = Math.max(1, item.qty + delta);
-          return { ...item, qty: newQty };
-        }
-        return item;
-      }),
-    );
+  const [promoCodeInput, setPromoCodeInput] = useState("");
+  const [promoError, setPromoError] = useState<string | null>(null);
+
+  const items = cart?.items || [];
+  const currencyCode = cart?.currency_code || "usd";
+
+  const handleUpdateQty = (lineId: string, currentQty: number, delta: number) => {
+    const newQty = currentQty + delta;
+    if (newQty <= 0) {
+      deleteLineItem.mutate(lineId);
+    } else {
+      updateLineItem.mutate({ lineId, quantity: newQty });
+    }
   };
 
-  // Handle item removal
-  const removeItem = (id: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const handleRemoveItem = (lineId: string) => {
+    deleteLineItem.mutate(lineId);
   };
 
-  // Calculation formulas matching the provided totals
-  const subtotalOriginal = items.reduce(
-    (acc, item) => acc + item.originalPrice * item.qty,
-    0,
-  );
-  const subtotalDiscounted = items.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0,
-  );
-  const discountTotal = subtotalOriginal - subtotalDiscounted;
+  const handleApplyPromo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!promoCodeInput.trim()) return;
+    setPromoError(null);
+    applyPromotion.mutate(promoCodeInput.trim(), {
+      onError: (err: any) => {
+        setPromoError(err?.message || "Failed to apply promotion code");
+      },
+      onSuccess: () => {
+        setPromoCodeInput("");
+      },
+    });
+  };
 
-  const shippingCost = items.length > 0 ? 80 : 0;
-  const finalTotal = subtotalDiscounted + shippingCost;
+  // Cart Calculations
+  const subtotal = cart?.subtotal ?? 0;
+  const discountTotal = cart?.discount_total ?? 0;
+  const shippingCost = cart?.shipping_total ?? 0;
+  const finalTotal = cart?.total ?? subtotal;
 
-  const freeShippingThreshold = 6000;
-  const remainingForFreeShipping = freeShippingThreshold - finalTotal;
+  const freeShippingThreshold = 100; // Free shipping on orders over $100
+  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - finalTotal);
   const progressPercent = Math.min(
     (finalTotal / freeShippingThreshold) * 100,
     100,
   );
 
   const formatCurrency = (val: number) => {
-    return `৳ ${val.toLocaleString()}`;
+    return convertToLocale({ amount: val, currency_code: currencyCode });
   };
+
+  const totalItemsCount = items.reduce((acc, i) => acc + i.quantity, 0);
 
   return (
     <div className="container-page py-8 lg:py-12">
@@ -178,12 +102,17 @@ export default function CartPage({ params }: PageProps) {
               Your Cart
             </h1>
             <p className="text-xs text-mute mt-1 font-sans">
-              {items.length} {items.length === 1 ? "item" : "items"} in your
+              {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"} in your
               cart.
             </p>
           </div>
 
-          {items.length > 0 ? (
+          {isLoading ? (
+            <div className="bg-canvas border border-hairline-soft rounded-xl p-12 text-center flex flex-col items-center justify-center gap-3">
+              <Loader2 className="w-6 h-6 animate-spin text-mute" />
+              <p className="text-xs text-mute font-sans">Loading cart items...</p>
+            </div>
+          ) : items.length > 0 ? (
             <div className="space-y-4">
               {/* Product Listing Card/Table */}
               <div className="bg-canvas border border-hairline-soft rounded-xl overflow-hidden">
@@ -197,89 +126,105 @@ export default function CartPage({ params }: PageProps) {
 
                 {/* Items List */}
                 <div className="divide-y divide-hairline-soft/60">
-                  {items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-5 md:p-6"
-                    >
-                      {/* Product details info (Jersey, details, size, in stock) */}
-                      <div className="col-span-12 md:col-span-6 flex gap-4">
-                        <div className="w-16 h-16 bg-cloud/50 border border-hairline-soft rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
-                          {item.icon}
-                        </div>
-                        <div className="space-y-1 min-w-0">
-                          <h3 className="text-sm font-bold text-ink leading-tight font-sans">
-                            {item.name}
-                          </h3>
-                          <p className="text-[11px] text-mute font-sans">
-                            Size: {item.size} &nbsp;•&nbsp; Color: {item.color}
-                          </p>
-                          {item.inStock && (
+                  {items.map((item) => {
+                    const thumbnail =
+                      item.thumbnail ||
+                      item.product?.thumbnail ||
+                      "https://images.unsplash.com/photo-1541002442297-50348f9757e5?w=300&q=80";
+                    const title = item.product_title || item.title || "Product";
+                    const variantTitle = item.variant_title || item.variant?.title;
+                    const itemTotal = item.total ?? item.unit_price * item.quantity;
+
+                    return (
+                      <div
+                        key={item.id}
+                        className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-5 md:p-6"
+                      >
+                        {/* Product details info */}
+                        <div className="col-span-12 md:col-span-6 flex gap-4">
+                          <div className="w-16 h-16 bg-cloud/50 border border-hairline-soft rounded-lg flex items-center justify-center shrink-0 overflow-hidden relative">
+                            <Image
+                              src={thumbnail}
+                              alt={title}
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="space-y-1 min-w-0">
+                            <h3 className="text-sm font-bold text-ink leading-tight font-sans">
+                              {title}
+                            </h3>
+                            {variantTitle && (
+                              <p className="text-[11px] text-mute font-sans">
+                                Variant: {variantTitle}
+                              </p>
+                            )}
                             <span className="inline-block text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wider font-sans border border-emerald-100">
                               In Stock
                             </span>
-                          )}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Prices (Single Item) */}
-                      <div className="col-span-4 md:col-span-2 text-left md:text-center flex md:block items-baseline gap-2">
-                        <span className="text-[10px] text-mute line-through block md:inline-block md:mb-0.5 font-sans">
-                          {formatCurrency(item.originalPrice)}
-                        </span>
-                        <span className="text-xs font-bold text-sale block font-sans">
-                          {formatCurrency(item.price)}
-                        </span>
-                      </div>
-
-                      {/* Quantity Selector + Remove Link */}
-                      <div className="col-span-4 md:col-span-2 flex flex-col items-start md:items-center gap-1.5">
-                        <div className="inline-flex items-center border border-hairline bg-canvas rounded-full h-8 overflow-hidden select-none">
-                          <button
-                            type="button"
-                            onClick={() => updateQty(item.id, -1)}
-                            className="w-8 h-full flex items-center justify-center hover:bg-cloud/50 text-ink/75 transition-colors cursor-pointer text-xs font-bold"
-                          >
-                            <Minus className="h-3 w-3" />
-                          </button>
-                          <span className="w-8 text-center text-xs font-bold font-sans text-ink">
-                            {item.qty}
+                        {/* Price (Single Item) */}
+                        <div className="col-span-4 md:col-span-2 text-left md:text-center flex md:block items-baseline gap-2">
+                          <span className="text-xs font-bold text-ink block font-sans">
+                            {formatCurrency(item.unit_price)}
                           </span>
+                        </div>
+
+                        {/* Quantity Selector + Remove Link */}
+                        <div className="col-span-4 md:col-span-2 flex flex-col items-start md:items-center gap-1.5">
+                          <div className="inline-flex items-center border border-hairline bg-canvas rounded-full h-8 overflow-hidden select-none">
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateQty(item.id, item.quantity, -1)}
+                              disabled={updateLineItem.isPending || deleteLineItem.isPending}
+                              className="w-8 h-full flex items-center justify-center hover:bg-cloud/50 text-ink/75 transition-colors cursor-pointer text-xs font-bold border-0 bg-transparent"
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span className="w-8 text-center text-xs font-bold font-sans text-ink">
+                              {item.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateQty(item.id, item.quantity, 1)}
+                              disabled={updateLineItem.isPending}
+                              className="w-8 h-full flex items-center justify-center hover:bg-cloud/50 text-ink/75 transition-colors cursor-pointer text-xs font-bold border-0 bg-transparent"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
+                          </div>
+
                           <button
                             type="button"
-                            onClick={() => updateQty(item.id, 1)}
-                            className="w-8 h-full flex items-center justify-center hover:bg-cloud/50 text-ink/75 transition-colors cursor-pointer text-xs font-bold"
+                            onClick={() => handleRemoveItem(item.id)}
+                            disabled={deleteLineItem.isPending}
+                            className="inline-flex items-center gap-1 text-[10px] font-semibold text-mute hover:text-sale transition-colors cursor-pointer font-sans border-0 bg-transparent"
                           >
-                            <Plus className="h-3 w-3" />
+                            <Trash2 className="h-3 w-3" />
+                            <span>Remove</span>
                           </button>
                         </div>
 
-                        <button
-                          type="button"
-                          onClick={() => removeItem(item.id)}
-                          className="inline-flex items-center gap-1 text-[10px] font-semibold text-mute hover:text-sale transition-colors cursor-pointer font-sans"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                          <span>Remove</span>
-                        </button>
+                        {/* Total Price for line item */}
+                        <div className="col-span-4 md:col-span-2 text-right flex md:block items-baseline justify-end gap-2">
+                          <span className="text-xs font-bold text-sale block font-sans">
+                            {formatCurrency(itemTotal)}
+                          </span>
+                        </div>
                       </div>
-
-                      {/* Total Prices (Item multiplied by quantity) */}
-                      <div className="col-span-4 md:col-span-2 text-right flex md:block items-baseline justify-end gap-2">
-                        <span className="text-[10px] text-mute line-through block md:inline-block md:mb-0.5 font-sans">
-                          {formatCurrency(item.originalPrice * item.qty)}
-                        </span>
-                        <span className="text-xs font-bold text-sale block font-sans">
-                          {formatCurrency(item.price * item.qty)}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Promo Code Box */}
-              <div className="bg-canvas border border-hairline-soft rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <form
+                onSubmit={handleApplyPromo}
+                className="bg-canvas border border-hairline-soft rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-cloud/50 flex items-center justify-center text-ink/70">
                     <Tag className="h-4.5 w-4.5" />
@@ -291,26 +236,38 @@ export default function CartPage({ params }: PageProps) {
                     <p className="text-[10px] text-mute mt-0.5 font-sans">
                       Enter it here to apply discount
                     </p>
+                    {promoError && (
+                      <p className="text-[10px] text-sale font-medium mt-1 font-sans">
+                        {promoError}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 max-w-md w-full sm:w-auto">
                   <input
                     type="text"
-                    placeholder="Enter coupon code"
+                    value={promoCodeInput}
+                    onChange={(e) => setPromoCodeInput(e.target.value)}
+                    placeholder="Enter promo code"
                     className="flex-1 sm:w-48 h-10 rounded-full border border-border bg-cloud/10 px-4 text-xs placeholder:text-mute focus:outline-none focus:border-ink transition-colors font-sans"
                   />
                   <Button
-                    type="button"
-                    className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 h-10 text-xs font-semibold uppercase tracking-wider border-none cursor-pointer font-sans"
+                    type="submit"
+                    disabled={applyPromotion.isPending || !promoCodeInput.trim()}
+                    className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 h-10 text-xs font-semibold uppercase tracking-wider border-none cursor-pointer font-sans flex items-center gap-1.5"
                   >
-                    Apply
+                    {applyPromotion.isPending ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      "Apply"
+                    )}
                   </Button>
                 </div>
-              </div>
+              </form>
             </div>
           ) : (
-            /* Items list Cleared fallback block */
+            /* Empty Cart State */
             <div className="bg-canvas border border-hairline-soft rounded-xl p-8 text-center space-y-4 animate-in fade-in duration-300">
               <div className="w-12 h-12 rounded-full bg-cloud/80 text-mute flex items-center justify-center mx-auto">
                 <ShoppingBag className="h-5 w-5" />
@@ -375,30 +332,6 @@ export default function CartPage({ params }: PageProps) {
               </div>
             </div>
           </div>
-
-          {/* Bottom Box empty cart template shown explicitly as mock decoration */}
-          {items.length > 0 && (
-            <div className="bg-canvas border border-hairline-soft rounded-xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 opacity-55 hover:opacity-100 transition-opacity mt-4 border-dashed">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-cloud/50 flex items-center justify-center text-mute">
-                  <ShoppingBag className="h-4.5 w-4.5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-ink font-sans">
-                    Your cart is empty
-                  </h4>
-                  <p className="text-[10px] text-mute mt-0.5 font-sans">
-                    Looks like you haven&apos;t added anything to your cart yet.
-                  </p>
-                </div>
-              </div>
-              <Link href={`/${countryCode}/shop`}>
-                <Button className="rounded-full bg-ink hover:bg-charcoal text-canvas px-5 py-2 text-xs font-semibold uppercase tracking-wider border-none cursor-pointer font-sans whitespace-nowrap">
-                  Continue Shopping
-                </Button>
-              </Link>
-            </div>
-          )}
         </div>
 
         {/* RIGHT COLUMN: Order Summary Card */}
@@ -415,22 +348,24 @@ export default function CartPage({ params }: PageProps) {
             <div className="py-4 space-y-3 border-b border-hairline-soft">
               <div className="flex items-center justify-between text-xs text-ink/80 font-sans">
                 <span>
-                  Subtotal ({items.reduce((sum, i) => sum + i.qty, 0)} items)
+                  Subtotal ({totalItemsCount} {totalItemsCount === 1 ? "item" : "items"})
                 </span>
                 <span className="font-semibold text-ink">
-                  {formatCurrency(subtotalOriginal)}
+                  {formatCurrency(subtotal)}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-xs font-sans">
-                <span className="text-sale">Discount</span>
-                <span className="font-bold text-sale">
-                  -{formatCurrency(discountTotal)}
-                </span>
-              </div>
+              {discountTotal > 0 && (
+                <div className="flex items-center justify-between text-xs font-sans">
+                  <span className="text-sale">Discount</span>
+                  <span className="font-bold text-sale">
+                    -{formatCurrency(discountTotal)}
+                  </span>
+                </div>
+              )}
               <div className="flex items-center justify-between text-xs text-ink/80 font-sans">
                 <span>Shipping</span>
                 <span className="font-semibold text-ink">
-                  {formatCurrency(shippingCost)}
+                  {shippingCost > 0 ? formatCurrency(shippingCost) : "Free"}
                 </span>
               </div>
             </div>
