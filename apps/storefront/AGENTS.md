@@ -1,402 +1,302 @@
 <!-- 0. Reference -->
 # 0. Reference for more details
-Here are additional documentations, whenever needed about these details make sure to read them. 
+Here are additional documentations, whenever needed about these details make sure to read them:
 
-- @BRD-Ecommerce-Platform.md 
+- @BRD-Ecommerce-Platform.md
+- @DESIGN.md
 - @docs/common-ecoomence-plan.md
 - @docs/FUTURE-PAGES-DRAFTS.MD
 - @docs/MEDUSA_SETUP.md
-
-
+- @docs/API-workflow.md
+- @docs/auth-workflow.md
+- @docs/mobile-apps/MOBILE_APP_GUIDE.md
+- @docs/mobile-apps/Design a Mobile High-Speed Capacitor Architecture.md
+- @docs/mobile-apps/Converting an Existing Next.js Website into a Mobile App with Capacitor.md
 
 <!-- 1.Product -->
 # Product
 
-**ez-commerce storefront** is a multi-category e-commerce storefront built for a business that initially sells football jerseys and sportswear but is architected to support any product category (apparel, electronics, accessories, etc.).
+**EzCommerce Storefront** is a high-performance, production-ready direct-to-consumer (DTC) e-commerce storefront. While initially styled and seeded for sports apparel and football jerseys, it is architected as an extensible, multi-category storefront supporting apparel, electronics, accessories, and any physical goods.
 
-## What It Does
+It operates seamlessly as both a **responsive web application** and a **native mobile application** (Android & iOS) packaged with Capacitor.
 
-- Customers browse products across categories, view product detail pages, add to cart, and complete checkout.
-- Supports guest checkout and registered customer accounts.
-- Handles regional routing — all URLs are prefixed with a country code (e.g. `/bn/shop`).
-- Integrates with a Medusa v2 backend for products, cart, orders, payments, and regions.
-- Supports Cash on Delivery and Stripe online payments.
-- Displays promotional pricing (sale badges, strikethrough original prices, discount percentages).
+## Core Customer Features
 
-## Target Users
+- **Storefront & Discovery**:
+  - Dynamic homepage with hero banners, category strip, featured banners, product grids, editorial tiles, value props, testimonials, Instagram grid, and newsletter.
+  - Product Listing Page (PLP) with multi-criteria filtering (category, price, size, color, brand), sorting, and search refinement.
+  - Product Detail Page (PDP) with interactive image galleries, variant selection, accordion specs, stock indicators, related products, and recently viewed tracking.
+- **Cart & Wishlist**:
+  - Slide-over cart sheet and dedicated cart page (`/cart`).
+  - Real-time line item updates, promo/discount codes, and free shipping progress tracker.
+  - Wishlist management (`/wishlist`).
+- **Checkout & Payments**:
+  - Multi-step checkout flow (`/checkout`) supporting both guest and registered shoppers.
+  - Region-aware shipping rates and tax calculations via Medusa backend.
+  - Support for Cash on Delivery (COD) and Stripe credit/debit card payments.
+- **Customer Account Portal**:
+  - Full account center (`/account`) with dedicated subpages:
+    - Overview (`/account`)
+    - Order History & Order Details (`/account/orders`, `/account/orders/details`)
+    - Saved Addresses (`/account/addresses`)
+    - Profile Information & Avatar Upload (`/account/profile`)
+    - Security & Password Management (`/account/security`)
+    - Notification Preferences (`/account/notifications`)
+- **Authentication**:
+  - Dedicated auth route group (`(auth)`) supporting Login, Register, Forgot Password, OTP Verification, Email Verification, Phone Verification, and Social Auth buttons.
+- **Multi-Region & Localization**:
+  - URL-prefixed country routing (e.g. `/[countryCode]/shop`, default `gb` or `bn`).
+  - Region detection via URL segment, edge headers (Cloudflare `cf.country`, Vercel `x-vercel-ip-country`), and cookies.
+- **Mobile-First & Native Experience**:
+  - Native mobile app integration via **Capacitor 7**.
+  - Hardware back button handling, haptic feedback, safe area insets (`pt-safe`, `pb-safe`), theme-synced status bar, and splash screen management.
+  - Mobile bottom navigation bar (`BottomNav`) for seamless app-like navigation.
 
-- Guest shoppers and registered customers
-- Mobile-first audience — the majority of traffic is expected on phones
+## Brand & Design Direction
 
-## Key Business Rules
+- **Editorial Near-Monochrome Aesthetic**: High-contrast black-and-white visual identity (`--ink`, `--canvas`, `--cloud`, `--hairline`, `--charcoal`, `--mute`), photography-first with a single semantic accent color (`--sale` orange-red) for promotions and discounts.
+- **Pill-Shaped Buttons**: **All buttons must use pill shape (`rounded-full` / `rounded-pill` / `border-radius: 9999px`)**. This is a non-negotiable brand requirement.
+- **Typography**: `Instrument Sans` (`--font-sans`) for crisp body text and `Bebas Neue` (`--font-display`) for bold editorial display headings.
+- **Price Presentation**: Discounted items display the sale price in `--sale` accent with original price struck through and discount percentage badge.
 
-- All buttons must use pill shape (`rounded-pill` / `border-radius: 9999px`) — this is a non-negotiable brand requirement.
-- Sale/discount prices are shown in the `--sale` accent color with the original price struck through.
-- The design follows a near-monochrome editorial style: black ink on white canvas, with the sale orange-red as the only semantic accent.
-
-
-<!-- 2.structure -->
+<!-- 2.Structure -->
 # Project Structure
 
-## Top-Level Layout
-
 ```
-src/
-├── app/                  # Next.js App Router pages and layouts
-├── components/           # Reusable, generic components
-├── data/                 # Static mock/seed data (not Medusa API calls)
-├── feature/              # Page-level feature components, grouped by route
-├── lib/                  # Shared utilities, hooks, config, and server data functions
-├── modules/              # Self-contained feature modules (icons, store refinement)
-└── types/                # Shared TypeScript types
-```
-
-## `src/app/` — Routes
-
-All customer-facing routes live under the `[countryCode]` dynamic segment. The middleware in `src/middleware.ts` handles detection and redirection to the correct country prefix.
-
-```
-app/
-├── layout.tsx              # Root layout (fonts, global CSS)
-├── globals.css             # Design tokens and Tailwind base styles
-└── [countryCode]/
-    ├── page.tsx            # Homepage
-    ├── shop/
-    │   ├── page.tsx        # Product listing page (PLP)
-    │   └── [id]/page.tsx   # Product detail page (PDP)
-    └── contact/page.tsx
-```
-
-## `src/feature/` — Page Feature Components
-
-Feature components are co-located by the page/route they belong to. They are not generic — they are purpose-built for a specific page section.
-
-```
-feature/
-├── home/       # Homepage sections: Hero, Header, Footer, ProductCard, ProductGrid, FAQ, etc.
-└── shop/       # Shop page sections: ShopGrid, ShopSidebar, ProductInfo, ProductGallery, etc.
-```
-
-- Feature components can be Server or Client Components depending on their needs.
-- Add `"use client"` only when the component requires interactivity or browser APIs.
-
-## `src/components/` — Shared UI Components
-
-```
-components/
-├── ui/         # shadcn/ui primitives: Button, Input, Textarea, InputGroup
-└── shared/     # Project-specific shared components (e.g. CommonInput)
-```
-
-- `ui/` components are generic and unstyled beyond the design system tokens.
-- `shared/` components are thin wrappers that compose `ui/` components with project-specific defaults.
-- Always export shared components through `shared/index.ts`.
-
-## `src/lib/` — Utilities and Data Layer
-
-```
-lib/
-├── config.ts           # Medusa SDK client initialization
-├── utils.ts            # cn() helper (clsx + tailwind-merge)
-├── constants.tsx       # App-wide constants
-├── context/            # React context providers (e.g. modal-context)
-├── hooks/              # Custom React hooks (use-in-view, use-toggle-state)
-├── data/               # Server Actions for Medusa API calls
-│   ├── products.ts
-│   ├── cart.ts
-│   ├── orders.ts
-│   ├── regions.ts
-│   ├── customer.ts
-│   ├── payment.ts
-│   └── ...
-└── util/               # Pure utility functions (formatting, sorting, price calc)
+apps/storefront/
+├── capacitor.config.ts        # Capacitor 7 mobile app configuration
+├── check-env-variables.ts     # Startup environment variable validation
+├── next.config.ts             # Next.js 16 configuration (compiler, images, remote patterns)
+├── package.json
+├── docs/                      # Technical guides (API, Auth, Mobile, Medusa setup)
+└── src/
+    ├── app/                   # Next.js App Router pages and layouts
+    │   ├── globals.css        # Tailwind v4 theme, design tokens, safe area utilities
+    │   ├── layout.tsx         # Root layout with fonts, RootWrapper, metadata, viewport
+    │   └── [countryCode]/     # Region-scoped dynamic route segment
+    │       ├── page.tsx       # Storefront homepage
+    │       ├── (auth)/        # Authentication route group
+    │       │   ├── layout.tsx
+    │       │   ├── login/
+    │       │   ├── register/
+    │       │   ├── forgot-password/
+    │       │   ├── otp/
+    │       │   ├── verify-email/
+    │       │   └── verify-phone/
+    │       ├── (checkout)/    # Checkout flow route group
+    │       │   ├── layout.tsx
+    │       │   └── checkout/
+    │       └── (main)/        # Standard browsing route group
+    │           ├── account/   # Customer portal (addresses, orders, profile, security, notifications)
+    │           ├── cart/      # Dedicated cart page
+    │           ├── shop/      # PLP (`page.tsx`) & PDP (`[id]/page.tsx`)
+    │           ├── wishlist/  # Wishlist page
+    │           └── contact/   # Contact Us page
+    ├── components/
+    │   ├── ui/                # Base shadcn/ui primitives (button, input, select, sheet, dialog, etc.)
+    │   └── shared/            # Cross-cutting project components:
+    │                          # - `bottom-nav.tsx` (Mobile bottom navigation bar)
+    │                          # - `mobile-initializer.tsx` (Capacitor status bar & back button)
+    │                          # - `root-wrapper.tsx` (TanStack Query, NextThemes, Nuqs provider wrapper)
+    │                          # - `common-input.tsx`, `auth-input.tsx`
+    ├── config/                # App-level constants & metadata
+    │   ├── branding.tsx       # Brand name, logo, slogan, social contact links
+    │   └── index.ts
+    ├── data/                  # Static mock/seed data (used for prototypes & fallback displays)
+    ├── feature/               # Page-specific feature sections:
+    │   ├── account/           # Account sidebar, profile avatar upload
+    │   ├── auth/              # Social auth buttons & auth forms
+    │   ├── home/              # Hero, Header, Footer, CategoryStrip, ProductGrid, ProductCard,
+    │   │                      # FeatureBanner, EditorialTiles, ValueProps, Testimonials, FAQ,
+    │   │                      # Marquee, Newsletter, show-carts
+    │   └── shop/              # ProductGallery, ProductInfo, ShopGrid, ShopSidebar, ShopToolbar,
+    │                          # ShopContent, RelatedProducts, RecentlyViewed, product-accordions
+    ├── lib/
+    │   ├── api/               # API client wrapper modules (Medusa SDK / custom endpoints)
+    │   │   ├── products.ts
+    │   │   ├── categories.ts
+    │   │   └── regions.ts
+    │   ├── capacitor/         # Capacitor native utilities (haptics, back button, status bar, splash)
+    │   ├── config.ts          # Medusa JS SDK client singleton initialization
+    │   ├── constants.tsx      # App-wide constants
+    │   ├── context/           # React contexts (e.g. modal-context)
+    │   ├── data/              # Server Actions for Medusa API calls ("use server")
+    │   │   ├── cart.ts, customer.ts, products.ts, orders.ts, regions.ts,
+    │   │   ├── collections.ts, categories.ts, fulfillment.ts, payment.ts,
+    │   │   ├── locales.ts, locale-actions.ts, cookies.ts, onboarding.ts, variants.ts
+    │   ├── font.ts            # Google fonts configuration (Instrument Sans, Bebas Neue)
+    │   ├── hooks/             # Custom React hooks (use-in-view, use-toggle-state)
+    │   │   └── api/           # TanStack Query API hooks (use-cart, use-products, use-categories, use-regions)
+    │   ├── util/              # Pure utility functions (money, get-product-price, sort-products, etc.)
+    │   └── utils.ts           # cn() helper (clsx + tailwind-merge)
+    ├── modules/               # Self-contained modules (common icons, refinement-list)
+    ├── proxy.ts               # Next.js middleware proxy (region detection, auth guard, caching)
+    └── types/                 # Shared TypeScript interfaces (global.ts, icon.ts)
 ```
 
-- Every file in `lib/data/` must have `"use server"` at the top — these are Server Actions only.
-- Pure helpers (no I/O, no server deps) belong in `lib/util/`.
+## Key Architectural Conventions
 
-## `src/modules/` — Self-Contained Feature Modules
-
-Used for more complex, self-contained UI features that bundle their own components.
-
-```
-modules/
-├── common/icons/       # SVG icon components (Bancontact, iDEAL, PayPal)
-└── store/components/refinement-list/   # Product sort/filter UI
-```
-
-## `src/types/` — Shared Types
-
-- `global.ts` — shared types like `VariantPrice`, `FeaturedProduct`, `StoreFreeShippingPrice`
-- `icon.ts` — icon prop types
-
-## Path Aliases
-
-Configured in `tsconfig.json`. Use these instead of relative paths:
-
-| Alias | Resolves to |
-|---|---|
-| `@/*` | `src/*` |
-| `@lib/*` | `src/lib/*` |
-| `@modules/*` | `src/modules/*` |
-| `@feature/*` | `src/feature/*` |
-
-## Key Conventions
-
-- **New pages** go under `src/app/[countryCode]/`.
-- **New page sections** go in the matching `src/feature/<page>/` directory.
-- **New reusable primitives** go in `src/components/ui/` (generic) or `src/components/shared/` (project-specific).
-- **New Medusa data calls** go in `src/lib/data/` as Server Actions (`"use server"`).
-- **New utility functions** (pure, no I/O) go in `src/lib/util/`.
-- **Static/mock data** used for prototyping goes in `src/data/`.
-
+1. **All Customer Routes are Scoped**: Every route resides under `src/app/[countryCode]/`. Never create top-level un-scoped customer pages.
+2. **Proxy / Middleware Routing (`src/proxy.ts`)**:
+   - Resolves country code from path, edge geo headers, or fallback (`NEXT_PUBLIC_DEFAULT_REGION`).
+   - Handles route guards: redirects unauthenticated users accessing `/account` to `/[countryCode]/login`, and redirects logged-in users away from auth pages to `/[countryCode]/account`.
+3. **Data Fetching Paradigm**:
+   - **Server Components & Server Actions (`src/lib/data/`)**: Always marked `"use server"`. Used for SSR data fetching, cart modifications, customer mutations, and order creation.
+   - **Client-side TanStack Query (`src/lib/api/` + `src/lib/hooks/api/`)**: Used for rich client interactivity, dynamic filtering, category queries, and instant updates.
+   - **Medusa SDK singleton (`src/lib/config.ts`)**: Always use the shared `sdk` instance for Medusa API requests. Never make raw `fetch` calls to `/store/*`.
+4. **Mobile & Capacitor Awareness**:
+   - Use safe area utilities (`pt-safe`, `pb-safe`, `min-h-screen-safe`) on sticky headers, bottom navigation, and full-screen views.
+   - Use `triggerHaptic()` from `@/lib/capacitor` for tactile feedback on key actions (adding to cart, toggling wishlist, tab switching).
+   - Use `useIsNative()` or `isNativePlatform()` to conditionally adjust behavior for mobile apps vs web.
+5. **Path Aliases**:
+   - Always use aliases: `@/*` (`src/*`), `@lib/*` (`src/lib/*`), `@modules/*` (`src/modules/*`), `@feature/*` (`src/feature/*`), `@types/*` (`src/types/*`).
 
 <!-- 3.Tech -->
 # Tech Stack
 
-## Core Framework
-- **Next.js 16** (App Router) with React 19
-- **TypeScript 5** — `ignoreBuildErrors: true` in next.config.ts (do not rely on build-time type errors catching issues)
-- **React Compiler** enabled (`reactCompiler: true`)
+## Core Technologies
+- **Framework**: Next.js 16.2.x (App Router)
+- **React**: React 19.2.x + React Compiler (`babel-plugin-react-compiler`)
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`, `tw-animate-css`)
+- **Icons**: Lucide React (`lucide-react`) + Tabler Icons (`@tabler/icons-react`)
+- **State & Data**: TanStack React Query v5 (`@tanstack/react-query`) + `nuqs` (URL query state)
+- **Forms & Validation**: `react-hook-form` + `@hookform/resolvers` + `zod`
+- **Theming**: `next-themes` (Dark/Light support)
+- **Payments**: Stripe (`@stripe/react-stripe-js`, `@stripe/stripe-js`)
 
-## Backend Integration
-- **Medusa v2** (`@medusajs/js-sdk` 2.17.2) — headless commerce backend
-- The SDK client is initialized in `src/lib/config.ts` and extended to inject `x-medusa-locale` headers on every request
-- All data-fetching functions in `src/lib/data/` are **Server Actions** (`"use server"`) — never import them in client components directly
-- Cache is handled via Next.js `fetch` tags (`getCacheOptions`) and `force-cache`
+## Backend & Commerce
+- **Commerce Engine**: Medusa v2 (`@medusajs/js-sdk` 2.17.2, `@medusajs/types` 2.17.2)
+- **Backend URL**: `http://localhost:9000` (default)
+- **Storefront Dev Port**: `http://localhost:8000` (`--port 8000`)
 
-## Styling
-- **Tailwind CSS v4** with `@tailwindcss/postcss`
-- **Design tokens** are defined as CSS custom properties in `src/app/globals.css` using `oklch` color space — never hardcode hex values in components
-- Key semantic tokens: `--ink`, `--canvas`, `--cloud`, `--mute`, `--sale`, `--hairline-soft`
-- `rounded-pill` (9999px) is defined as a custom radius token — use it for all buttons
-- `container-page` is a custom `@utility` for the max-width page wrapper (1440px, responsive padding)
-- **shadcn/ui** components live in `src/components/ui/` — use `cn()` from `src/lib/utils.ts` for class merging
-
-## UI Libraries
-- `radix-ui` — primitives used by shadcn components
-- `class-variance-authority` (CVA) — variant definitions for UI components
-- `clsx` + `tailwind-merge` — via the `cn()` helper
-- `lucide-react` + `@tabler/icons-react` — icon sets
-- `react-hook-form` + `zod` — forms and validation
-- `@stripe/react-stripe-js` + `@stripe/stripe-js` — payment UI
-
-## Fonts
-- **Instrument Sans** — `--font-sans`, used for body text
-- **Bebas Neue** — `--font-display`, used for headings (`h1`–`h6`)
-- Both loaded via `next/font/google`
+## Mobile & Capacitor Stack
+- **Capacitor Core**: `@capacitor/core` ^7.0.1, `@capacitor/cli` ^7.0.1
+- **Platforms**: `@capacitor/android` ^7.0.1, `@capacitor/ios` ^7.0.1
+- **Plugins**:
+  - `@capacitor/app` (App state & minimize)
+  - `@capacitor/haptics` (Impact & notification haptic vibrations)
+  - `@capacitor/keyboard` (Keyboard display & viewport resizing)
+  - `@capacitor/splash-screen` (Native splash launch & dismiss)
+  - `@capacitor/status-bar` (Native status bar styling & theming)
 
 ## Environment Variables
-- `NEXT_PUBLIC_MEDUSA_BACKEND_URL` — Medusa backend URL (defaults to `http://localhost:9000`)
-- `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` — Medusa publishable API key
-- `NEXT_PUBLIC_DEFAULT_REGION` — fallback country code for regional routing (defaults to `"bn"`)
-- `MEDUSA_CLOUD_S3_HOSTNAME` / `MEDUSA_CLOUD_S3_PATHNAME` — optional S3 image host for `next/image` remote patterns
-- Validated at boot via `check-env-variables.ts`
+
+| Variable | Required | Description | Default |
+|---|---|---|---|
+| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | **Yes** | Publishable API key from Medusa Admin | — |
+| `NEXT_PUBLIC_MEDUSA_BACKEND_URL` | **Yes** | Medusa v2 backend server URL | `http://localhost:9000` |
+| `NEXT_PUBLIC_DEFAULT_REGION` | No | Default fallback country code | `gb` (or `bn`) |
+| `NEXT_PUBLIC_BASE_URL` | No | Base storefront URL for absolute links | `http://localhost:8000` |
+| `NEXT_PUBLIC_STRIPE_KEY` | No | Stripe publishable key for card payments | — |
+| `CAPACITOR_SERVER_URL` | No | Override server URL for Capacitor livereload | `http://localhost:8000` |
+| `MEDUSA_CLOUD_S3_HOSTNAME` | No | S3 bucket hostname for remote image optimization | — |
+| `MEDUSA_CLOUD_S3_PATHNAME` | No | S3 bucket pathname for remote image optimization | — |
 
 ## Common Commands
 
 ```bash
-# Development server (port 3002)
+# Run Next.js storefront dev server (port 8000)
 pnpm dev
 
-# Production build
+# Build for production
 pnpm build
 
-# Start production server
+# Start production server (port 8000)
 pnpm start
 
-# Lint
+# Run ESLint & code checks
 pnpm lint
+
+# Format check / fix
+pnpm format
+pnpm format:fix
+
+# --- Capacitor Mobile Commands ---
+# Sync web build/assets to native projects
+pnpm cap:sync
+
+# Copy web assets to native projects
+pnpm cap:copy
+
+# Open Android Studio
+pnpm cap:android
+
+# Open Xcode (macOS only)
+pnpm cap:ios
+
+# Run on connected Android device / emulator
+pnpm cap:run:android
+
+# Run on iOS device / simulator (macOS only)
+pnpm cap:run:ios
 ```
 
-> This project is part of a pnpm monorepo (`ez-commerce`). Run commands from the `apps/storefront` directory or via the root workspace tooling (Turborepo — see `.turbo/`).
-
-
+> **Android Dev Tip**: When testing on a physical Android device connected via USB with live-reload, run:
+> ```bash
+> adb reverse tcp:8000 tcp:8000
+> adb reverse tcp:9000 tcp:9000
+> ```
 
 <!-- BEGIN:API-workflow -->
 # API Layer Workflow (Medusa SDK + TanStack Query)
-when working on API Integration should follow these processes, for mow check `/docs/API-workflow.md` this docs. 
+
+When working on API integration, follow the guidelines documented in `/docs/API-workflow.md`:
 
 ## Architecture
-The API layer is divided into **2 separate layers**:
+The API layer is structured in 2 complementary layers:
 
-1. **API Wrappers (`src/lib/api/`)**
-   - Wrap Medusa SDK and custom endpoints.
-   - No React, hooks, or UI code.
-   - Use `sdk.store.*` for built-in APIs.
-   - Use `sdk.client.fetch()` for custom APIs.
-   - Never use `JSON.stringify()` for request bodies.
+1. **API Wrappers (`src/lib/api/`)**:
+   - Wrap Medusa SDK endpoints and custom route handlers.
+   - No React hooks or UI logic.
+   - Use `sdk.store.*` for standard Medusa store endpoints.
+   - Use `sdk.client.fetch()` for custom backend endpoints.
+   - Never use manual `JSON.stringify()` for request bodies (the SDK handles serialization).
    - Export one `<module>Api` object per file.
 
-2. **API Hooks (`src/lib/hooks/api/`)**
-   - Wrap API layer using TanStack Query.
-   - `useQuery` → GET requests.
-   - `useMutation` → POST, PATCH, PUT, DELETE.
-   - Define `*_KEYS` at the top.
-   - Show success/error toasts.
-   - Invalidate related queries after mutations.
+2. **API Hooks (`src/lib/hooks/api/`)**:
+   - Wrap API wrappers with TanStack Query.
+   - Use `useQuery` for GET requests.
+   - Use `useMutation` for POST, PATCH, PUT, and DELETE operations.
+   - Define query keys in a `*_KEYS` constant at the top of the file.
+   - Invalidate related query keys upon successful mutation.
 
-## Folder Structure
-
-src/
-└── lib/
-├── api/
-│ ├── <module>.ts
-│ └── admin/
-└── hooks/
-└── api/
-├── use-<module>.ts
-└── admin/
-
-## Naming
-- API: `<module>Api`
-- Hooks: `use<Module>()`
-- Types:
-  - `<Entity>`
-  - `<Entity>Response`
-  - `<Entity>ListResponse`
-  - `Create<Entity>Data`
-  - `Update<Entity>Data`
-  - `<Entity>QueryParams`
-
-## Query Keys
-
-- Keep all query keys in a `*_KEYS` constant.
-- Use hierarchical keys.
-- Prefix admin keys with `"admin"`.
-
-## Workflow
-
-1. Create API wrapper.
-2. Create React Query hooks.
-3. Use hooks inside UI components.
-
-## Boundaries
-
-### API Layer
-- Medusa SDK calls
-- Custom endpoints
-- API types
-- Query keys
-- Cache invalidation
-- Toasts
-
-### Not Allowed
-- UI components
-- Routing
-- Form validation
-- Business logic
-- Global state
-
-## Best Practices
-
-- Keep API and UI separated.
-- Use Medusa SDK instead of raw `fetch()`.
-- SDK returns parsed JSON directly.
-- Never manually stringify request bodies.
-- Disable buttons while mutations are pending.
-- Keep code type-safe and consistent.
+3. **Server Actions (`src/lib/data/`)**:
+   - Use for SSR data loading, cart cookies, customer session cookies, and server-side checkout handling.
+   - Must include `"use server"` directive at the top.
 
 <!-- END:API-workflow -->
 
-
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
-
-This version might have  breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices. And also do not check every time. Only if you face any version-related issue then do check this. 
-<!-- END:nextjs-agent-rules -->
-
-
 <!-- BEGIN:modification-permission -->
+## Modification Permissions
 
-## no modification permission. 
-Do not do any modification in node_modules or any other file/folder that are in .gitignore. 
-
-
-## 3. Important Rules to Keep in Mind
-
-1. **SDK-Only API requests**: Always use the imported `sdk` instance or functions from `@lib/data/` for fetching data from the backend. Never perform raw `fetch` calls to `/store/*`.
-2. **CORS Configuration**: The Medusa Backend expects `STORE_CORS` to list all client origins. If you change the web app port (defaults to `3000`), make sure to append it to `STORE_CORS` in the backend environment.
-3. **Pill-shaped Buttons**: Per the web app rules (`apps/web/AGENTS.md` and `DESIGN.md`), all buttons must always be styled with `rounded-full` (pill shape). No exceptions.
-
-
+- **Do NOT modify** `node_modules/`, `.next/`, `android/`, `ios/`, or any files listed in `.gitignore`.
+- **Pill-shaped Buttons**: Per brand guidelines, all buttons must always be styled with `rounded-full` (`rounded-pill`). No square or slightly rounded buttons.
+- **SDK-Only Requests**: Always use the Medusa SDK instance (`sdk`) or `@lib/data/` Server Actions for backend calls. Never make raw fetch calls to `/store/*`.
+- **CORS Configuration**: If you adjust port numbers, ensure the Medusa backend `.env` `STORE_CORS` includes the client origin (e.g. `http://localhost:8000`).
 <!-- END:modification-permission -->
 
-
-
-
-
 <!-- BEGIN:behavioral-guidelines -->
-
 ## 1. Think Before Coding
-
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
-
-Before implementing:
-
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- State assumptions explicitly. If uncertain, ask.
+- If multiple approaches exist, explain the tradeoffs before deciding.
+- Push back when simpler solutions exist.
 
 ## 2. Simplicity First
-
 **Minimum code that solves the problem. Nothing speculative.**
-
 - No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+- No single-use abstractions or speculative flexibility.
+- If 50 lines can do the work cleanly, don't write 200 lines.
 
 ## 3. Surgical Changes
-
 **Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
-
-When your changes create orphans:
-
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
+- Don't format or refactor unrelated code.
+- Match existing repository patterns and conventions.
+- Remove imports and variables made unused by your changes.
 
 ## 4. Goal-Driven Execution
-
 **Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
-
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
-## Restricted file or this file: you don't need to edit.
-
-- node_modules/
-- android
-  These are the files that are restricted and not only that. That folder or file that is mentioned in the.gitignore, do not edit or modify anything on that particular file or folder.
-
----
-
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
-
+- Verify changes compile and build cleanly.
+- Test both web and mobile-responsive viewport interactions when modifying UI components.
 <!-- END:behavioral-guidelines -->
