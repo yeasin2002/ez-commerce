@@ -134,31 +134,31 @@ importers:
   apps/storefront:
     dependencies:
       '@capacitor/android':
-        specifier: ^7.0.1
+        specifier: ^7.6.8
         version: 7.6.8(@capacitor/core@7.6.8)
       '@capacitor/app':
-        specifier: ^7.0.0
+        specifier: ^7.1.2
         version: 7.1.2(@capacitor/core@7.6.8)
       '@capacitor/core':
-        specifier: ^7.0.1
+        specifier: ^7.6.8
         version: 7.6.8
       '@capacitor/haptics':
-        specifier: ^7.0.0
+        specifier: ^7.0.5
         version: 7.0.5(@capacitor/core@7.6.8)
       '@capacitor/ios':
-        specifier: ^7.0.1
+        specifier: ^7.6.8
         version: 7.6.8(@capacitor/core@7.6.8)
       '@capacitor/keyboard':
-        specifier: ^7.0.0
+        specifier: ^7.0.6
         version: 7.0.6(@capacitor/core@7.6.8)
       '@capacitor/splash-screen':
-        specifier: ^7.0.0
+        specifier: ^7.0.5
         version: 7.0.5(@capacitor/core@7.6.8)
       '@capacitor/status-bar':
-        specifier: ^7.0.0
+        specifier: ^7.0.6
         version: 7.0.6(@capacitor/core@7.6.8)
       '@hookform/resolvers':
-        specifier: ^5.4.0
+        specifier: ^5.9.1
         version: 5.9.1(@sinclair/typebox@0.34.52)(@standard-schema/spec@1.1.0)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.85.0(react@19.2.4))(zod@4.2.0)
       '@medusajs/js-sdk':
         specifier: 2.17.2
@@ -170,7 +170,7 @@ importers:
         specifier: ^8.11.0
         version: 8.11.0
       '@tabler/icons-react':
-        specifier: ^3.44.0
+        specifier: ^3.46.0
         version: 3.46.0(react@19.2.4)
       '@tanstack/react-query':
         specifier: 5.64.2
@@ -188,7 +188,7 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       lucide-react:
-        specifier: ^1.24.0
+        specifier: ^1.31.0
         version: 1.31.0(react@19.2.4)
       next:
         specifier: 16.2.10
@@ -197,19 +197,19 @@ importers:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       nuqs:
-        specifier: ^2.9.0
+        specifier: ^2.9.6
         version: 2.9.6(next@16.2.10(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-router-dom@6.30.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-router@6.30.4(react@19.2.4))(react@19.2.4)
       pg:
-        specifier: ^8.22.0
+        specifier: ^8.23.0
         version: 8.23.0
       prettier:
-        specifier: ^3.9.5
+        specifier: ^3.9.6
         version: 3.9.6
       qs:
         specifier: ^6.15.3
         version: 6.15.3
       radix-ui:
-        specifier: ^1.6.2
+        specifier: ^1.6.7
         version: 1.6.7(@types/react-dom@19.0.5(@types/react@19.0.5))(@types/react@19.0.5)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: 19.2.4
@@ -221,13 +221,13 @@ importers:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
       react-hook-form:
-        specifier: ^7.81.0
+        specifier: ^7.85.0
         version: 7.85.0(react@19.2.4)
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
       shadcn:
-        specifier: ^4.13.0
+        specifier: ^4.18.0
         version: 4.18.0(babel-plugin-macros@3.1.0)(typescript@5.9.3)
       tailwind-merge:
         specifier: ^3.6.0
@@ -240,26 +240,26 @@ importers:
         version: 4.2.0
     devDependencies:
       '@capacitor/cli':
-        specifier: ^7.0.1
+        specifier: ^7.6.8
         version: 7.6.8
       '@medusajs/types':
         specifier: 2.17.2
         version: 2.17.2(ioredis@5.11.1)(vite@5.4.21(@types/node@20.19.43)(lightningcss@1.32.0)(terser@5.50.0))
       '@tailwindcss/postcss':
-        specifier: ^4
+        specifier: ^4.3.3
         version: 4.3.3
       '@tanstack/eslint-plugin-query':
-        specifier: ^5.101.2
+        specifier: ^5.101.4
         version: 5.101.4(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       '@types/lodash':
-        specifier: ^4.17.24
+        specifier: ^4.17.25
         version: 4.17.25
       '@types/node':
-        specifier: ^20
+        specifier: ^20.19.43
         version: 20.19.43
       '@types/pg':
-        specifier: ^8.20.0
-        version: 8.21.0
+        specifier: ^8.23.0
+        version: 8.23.0
       '@types/react':
         specifier: 19.0.5
         version: 19.0.5
@@ -273,16 +273,16 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       eslint:
-        specifier: ^9
+        specifier: ^9.39.5
         version: 9.39.5(jiti@2.7.0)
       eslint-config-next:
         specifier: 16.2.10
         version: 16.2.10(@typescript-eslint/parser@8.67.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       tailwindcss:
-        specifier: ^4
+        specifier: ^4.3.3
         version: 4.3.3
       typescript:
-        specifier: ^5
+        specifier: ^5.9.3
         version: 5.9.3
 
   apps/storefront-template:
@@ -4944,6 +4944,9 @@ packages:
 
   '@types/pg@8.21.0':
     resolution: {integrity: sha512-AYdtudzabjLZgVgRZmAnU8bAnVUXzuJX2IYHeSIiIHm68olD+LgQYCGWdtcNYnP0uq9c4S4NibVG3Ni7VbKW7Q==}
+
+  '@types/pg@8.23.0':
+    resolution: {integrity: sha512-gPGYzOgqj8wcPJ3GSojYWD1i3wjym3ezWgis/Zk2gY8u29x9tEsP3oaBYFwqsFYmKOm6sawDu3IHNwladQc0ig==}
 
   '@types/pg@8.6.1':
     resolution: {integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==}
@@ -15642,6 +15645,12 @@ snapshots:
       '@types/pg': 8.21.0
 
   '@types/pg@8.21.0':
+    dependencies:
+      '@types/node': 20.19.43
+      pg-protocol: 1.16.0
+      pg-types: 2.2.0
+
+  '@types/pg@8.23.0':
     dependencies:
       '@types/node': 20.19.43
       pg-protocol: 1.16.0
