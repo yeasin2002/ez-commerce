@@ -9,12 +9,12 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME;
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  reactCompiler: true,
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
+  // reactCompiler: true,
+  // logging: {
+  //   fetches: {
+  //     fullUrl: true,
+  //   },
+  // },
   typescript: {
     ignoreBuildErrors: true,
   },
