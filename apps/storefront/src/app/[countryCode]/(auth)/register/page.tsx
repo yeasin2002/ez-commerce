@@ -14,6 +14,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -40,6 +41,7 @@ interface PageProps {
 
 export default function RegisterPage({ params }: PageProps) {
   const { countryCode } = use(params);
+  const router = useRouter();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [isVerificationRequired, setIsVerificationRequired] = useState(false);
@@ -78,14 +80,14 @@ export default function RegisterPage({ params }: PageProps) {
         setIsSubmitted(true);
         reset();
         setTimeout(() => {
-          window.location.href = `/${countryCode}/login`;
-        }, 3000);
+          router.push(`/${countryCode}/otp?email=${encodeURIComponent(data.email)}`);
+        }, 2000);
       } else {
         setIsSubmitted(true);
         reset();
         setTimeout(() => {
-          window.location.href = `/${countryCode}/account`;
-        }, 1500);
+          router.push(`/${countryCode}/account`);
+        }, 1200);
       }
     } catch (e) {
       setApiError(
@@ -101,13 +103,13 @@ export default function RegisterPage({ params }: PageProps) {
           <CheckCircle className="h-7 w-7" />
         </div>
         <h2 className="font-display text-3xl uppercase tracking-tight text-foreground">
-          Success!
+          {isVerificationRequired ? "Verify Account" : "Success!"}
         </h2>
         {isVerificationRequired ? (
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Your account has been created. A verification email has been sent.
+            Your account was registered. A verification code has been generated.
             <br />
-            Redirecting to login page...
+            Redirecting to verification page...
           </p>
         ) : (
           <p className="text-xs text-muted-foreground leading-relaxed">
@@ -128,7 +130,11 @@ export default function RegisterPage({ params }: PageProps) {
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             Create account
           </h1>
+          <p className="text-[11px] text-muted-foreground">
+            Join us to manage orders, wishlist, and track shipments.
+          </p>
         </div>
+
         {/* Input Fields */}
         <div className="space-y-3.5 pt-2">
           {/* Name Fields (Side-by-side) */}
@@ -152,39 +158,44 @@ export default function RegisterPage({ params }: PageProps) {
               {...register("last_name")}
             />
           </div>
+
           {/* Email field */}
           <AuthInput
             type="email"
-            placeholder="Email"
+            placeholder="Email address"
             icon={<Mail className="h-3.5 w-3.5" />}
             error={errors.email}
             disabled={isSubmitting}
             {...register("email")}
           />
+
           {/* Phone field */}
           <AuthInput
-            type="text"
+            type="tel"
             placeholder="Phone number"
             icon={<Phone className="h-3.5 w-3.5" />}
             error={errors.phone}
             disabled={isSubmitting}
             {...register("phone")}
           />
+
           {/* Password field */}
           <AuthInput
             type="password"
-            placeholder="Password"
+            placeholder="Password (min 6 characters)"
             icon={<Lock className="h-3.5 w-3.5" />}
             error={errors.password}
             disabled={isSubmitting}
             {...register("password")}
           />
         </div>
+
         {apiError && (
-          <div className="text-[10px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300 font-sans">
+          <div className="text-[11px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300 font-sans">
             {apiError}
           </div>
         )}
+
         {/* Submit Button */}
         <div className="pt-1">
           <Button
@@ -202,6 +213,7 @@ export default function RegisterPage({ params }: PageProps) {
             )}
           </Button>
         </div>
+
         {/* Sign In Link */}
         <p className="text-xs text-muted-foreground text-center mt-4">
           Already have an account?{" "}

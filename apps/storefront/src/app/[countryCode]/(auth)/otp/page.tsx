@@ -5,7 +5,8 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
-import { SendHorizontal, AlertCircle, CheckCircle } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { SendHorizontal, AlertCircle, CheckCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -13,10 +14,14 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import {
+  confirmEmailVerification,
+  resendVerificationCode,
+} from "@/lib/data/customer";
 
 // Form Validation Schema using Zod
 const otpSchema = z.object({
-  otp: z.string().length(6, "Verification code must be exactly 6 digits"),
+  otp: z.string().min(4, "Verification code must be at least 4 digits"),
 });
 
 type OtpFormData = z.infer<typeof otpSchema>;
@@ -29,7 +34,14 @@ interface PageProps {
 
 export default function OtpPage({ params }: PageProps) {
   const { countryCode } = use(params);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email") || "";
+
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [resendStatus, setResendStatus] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
 
   const {
     control,
@@ -44,16 +56,45 @@ export default function OtpPage({ params }: PageProps) {
   });
 
   const onSubmit = async (data: OtpFormData) => {
-    // Simulate OTP verification API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("OTP verification code submitted:", data);
-    setIsSubmitted(true);
-    reset();
+    setApiError(null);
+    setResendStatus(null);
 
-    // Mock redirect to home page after success
-    setTimeout(() => {
-      window.location.href = `/${countryCode}`;
-    }, 2000);
+    try {
+      const res = await confirmEmailVerification(data.otp);
+      if (res.success) {
+        setIsSubmitted(true);
+        reset();
+        setTimeout(() => {
+          router.push(`/${countryCode}/account`);
+        }, 1500);
+      } else {
+        setApiError(
+          res.error || "Invalid or expired verification code. Please try again.",
+        );
+      }
+    } catch (e) {
+      setApiError(
+        e instanceof Error ? e.message : "An unexpected error occurred",
+      );
+    }
+  };
+
+  const handleResend = async () => {
+    if (!email) {
+      setResendStatus("Please sign in or register to receive a new code.");
+      return;
+    }
+
+    setIsResending(true);
+    setApiError(null);
+    try {
+      await resendVerificationCode(email);
+      setResendStatus("A new verification code has been requested. Check your inbox or terminal.");
+    } catch {
+      setResendStatus("Failed to resend code. Please try again.");
+    } finally {
+      setIsResending(false);
+    }
   };
 
   if (isSubmitted) {
@@ -66,9 +107,9 @@ export default function OtpPage({ params }: PageProps) {
           Verified!
         </h2>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Your security code has been verified.
+          Your account has been verified successfully.
           <br />
-          Redirecting to home page...
+          Redirecting to account dashboard...
         </p>
       </div>
     );
@@ -82,7 +123,14 @@ export default function OtpPage({ params }: PageProps) {
           Security code
         </h1>
         <p className="text-[11px] text-muted-foreground leading-relaxed">
-          Please enter the 6-digit verification code sent to your device.
+          {email ? (
+            <>
+              Enter the verification code sent to{" "}
+              <strong className="text-foreground">{email}</strong>.
+            </>
+          ) : (
+            "Enter the 6-digit verification code sent to your email or device."
+          )}
         </p>
       </div>
 
@@ -133,7 +181,7 @@ export default function OtpPage({ params }: PageProps) {
               </div>
 
               {errors.otp && (
-                <span className="text-[10px] font-semibold text-sale flex items-center gap-1 pl-2 mt-1 animate-in fade-in duration-200">
+                <span className="text-[10px] font-semibold text-red-500 flex items-center gap-1 pl-2 mt-1 animate-in fade-in duration-200">
                   <AlertCircle className="h-3 w-3 shrink-0" />
                   {errors.otp.message}
                 </span>
@@ -142,14 +190,28 @@ export default function OtpPage({ params }: PageProps) {
           )}
         />
 
+        {apiError && (
+          <div className="text-[11px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300">
+            {apiError}
+          </div>
+        )}
+
+        {resendStatus && (
+          <div className="text-[11px] text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full text-center font-medium animate-in fade-in duration-300">
+            {resendStatus}
+          </div>
+        )}
+
         {/* Resend Code Link */}
         <div className="flex justify-end mt-1">
           <button
             type="button"
-            onClick={() => console.log("Resend OTP clicked")}
-            className="text-[10px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            onClick={handleResend}
+            disabled={isResending}
+            className="text-[11px] text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
           >
-            Resend Code?
+            <RefreshCw className={`h-3 w-3 ${isResending ? "animate-spin" : ""}`} />
+            {isResending ? "Resending..." : "Resend Code?"}
           </button>
         </div>
       </div>

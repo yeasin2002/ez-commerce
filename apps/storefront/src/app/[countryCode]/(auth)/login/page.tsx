@@ -3,13 +3,14 @@
 import { AuthInput } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { SocialLogin } from "@/feature/auth/social-auth";
+import { login } from "@/lib/data/customer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, Lock, Mail, SendHorizontal } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { login } from "@/lib/data/customer";
 
 // Form Validation Schema using Zod
 const loginSchema = z.object({
@@ -30,6 +31,7 @@ interface PageProps {
 
 export default function LoginPage({ params }: PageProps) {
   const { countryCode } = use(params);
+  const router = useRouter();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -57,13 +59,16 @@ export default function LoginPage({ params }: PageProps) {
       if (res && res.state === "error") {
         setApiError(res.error || "Invalid email or password");
       } else if (res && res.state === "verification_required") {
-        setApiError("Email verification is required. Please check your inbox.");
+        setApiError("Email verification is required. Redirecting to verification...");
+        setTimeout(() => {
+          router.push(`/${countryCode}/otp?email=${encodeURIComponent(data.email)}`);
+        }, 1500);
       } else {
         setIsSubmitted(true);
         reset();
         setTimeout(() => {
-          window.location.href = `/${countryCode}/account`;
-        }, 1500);
+          router.push(`/${countryCode}/account`);
+        }, 1200);
       }
     } catch (e) {
       setApiError(
@@ -98,18 +103,23 @@ export default function LoginPage({ params }: PageProps) {
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             Welcome back
           </h1>
+          <p className="text-[11px] text-muted-foreground">
+            Enter your credentials to access your account.
+          </p>
         </div>
+
         {/* Input Fields */}
         <div className="space-y-3.5 pt-2">
           {/* Email field */}
           <AuthInput
             type="email"
-            placeholder="Email"
+            placeholder="Email address"
             icon={<Mail className="h-3.5 w-3.5" />}
             error={errors.email}
             disabled={isSubmitting}
             {...register("email")}
           />
+
           {/* Password field */}
           <AuthInput
             type="password"
@@ -119,6 +129,7 @@ export default function LoginPage({ params }: PageProps) {
             disabled={isSubmitting}
             {...register("password")}
           />
+
           {/* Forgot Password Link */}
           <div className="flex justify-end mt-0.5">
             <Link
@@ -129,11 +140,13 @@ export default function LoginPage({ params }: PageProps) {
             </Link>
           </div>
         </div>
+
         {apiError && (
-          <div className="text-[10px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300">
+          <div className="text-[11px] text-red-500 bg-red-500/10 border border-red-500/20 px-4 py-2.5 rounded-full text-center font-medium animate-in fade-in duration-300">
             {apiError}
           </div>
         )}
+
         {/* Submit Button */}
         <div className="pt-1">
           <Button
@@ -151,6 +164,7 @@ export default function LoginPage({ params }: PageProps) {
             )}
           </Button>
         </div>
+
         {/* Sign Up Link */}
         <p className="text-xs text-muted-foreground text-center mt-4">
           Don&apos;t have an account?{" "}
@@ -162,6 +176,7 @@ export default function LoginPage({ params }: PageProps) {
           </Link>
         </p>
       </form>
+
       <SocialLogin />
     </div>
   );
