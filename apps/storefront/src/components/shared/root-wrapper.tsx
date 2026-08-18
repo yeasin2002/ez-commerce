@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React from "react";
+import { BottomNav } from "./bottom-nav";
+import { MobileInitializer } from "./mobile-initializer";
 
 export const RootWrapper = ({ children }: { children: React.ReactNode }) => {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -17,7 +19,11 @@ export const RootWrapper = ({ children }: { children: React.ReactNode }) => {
         disableTransitionOnChange
       >
         <QueryClientProvider client={queryClient}>
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <NuqsAdapter>
+            <MobileInitializer />
+            {children}
+            <BottomNav />
+          </NuqsAdapter>
         </QueryClientProvider>
       </NextThemesProvider>
     </>

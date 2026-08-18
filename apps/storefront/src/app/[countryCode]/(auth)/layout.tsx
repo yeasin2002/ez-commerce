@@ -1,6 +1,5 @@
 "use client";
 
-import { SocialLogin } from "@/feature/auth/social-auth";
 import Image from "next/image";
 import React from "react";
 
@@ -12,7 +11,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row font-sans transition-colors duration-200">
       {/* Left Column: Centered Form Container */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 py-12 sm:px-12 lg:px-20">
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-6 py-12 sm:px-12 lg:px-20 pt-safe pb-safe">
         <div className="w-full max-w-[320px] space-y-6">{children}</div>
       </div>
 

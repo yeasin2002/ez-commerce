@@ -18,7 +18,7 @@ export default async function CheckoutLayout({
   return (
     <div className="min-h-screen bg-canvas text-ink font-sans flex flex-col">
       {/* Sticky, distraction-free Checkout Header */}
-      <header className="sticky top-0 z-50 bg-canvas/80 backdrop-blur-md border-b border-hairline-soft">
+      <header className="sticky top-0 z-50 bg-canvas/80 backdrop-blur-md border-b border-hairline-soft pt-safe">
         <div className="container-page flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             {/* Brand Logo */}
@@ -47,7 +47,7 @@ export default async function CheckoutLayout({
       </header>
 
       {/* Main layout container */}
-      <main className="flex-1 bg-cloud/10">{children}</main>
+      <main className="flex-1 bg-cloud/10 pb-safe">{children}</main>
     </div>
   );
 }
