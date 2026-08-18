@@ -39,7 +39,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-canvas">
+    <header className="sticky top-0 z-40 bg-canvas pt-safe">
       {/* Utility bar */}
       <div className="bg-ink text-canvas">
         <div className="container-page flex h-9 items-center justify-between text-[11px] uppercase tracking-[0.18em]">
@@ -140,6 +140,7 @@ export const MobileHeaderSheet = () => {
   const countryCode = (params?.countryCode as string) || "bn";
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -155,7 +156,7 @@ export const MobileHeaderSheet = () => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="flex flex-col h-full bg-canvas text-ink border-r border-hairline-soft w-[300px] sm:w-[380px] p-6 focus-visible:outline-none"
+        className="flex flex-col h-full bg-canvas text-ink border-r border-hairline-soft w-[300px] sm:w-[380px] p-6 pt-safe pb-safe focus-visible:outline-none"
       >
         <SheetHeader className="border-b border-hairline-soft pb-5 text-left">
           <SheetTitle className="font-display text-2xl tracking-wider uppercase text-ink">

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { sdk } from "@lib/config";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export function Newsletter() {
   const [email, setEmail] = useState("");
@@ -56,7 +56,7 @@ export function Newsletter() {
           <label className="text-xs uppercase tracking-[0.2em] text-stone">
             Email address
           </label>
-          <div className="flex h-14 items-center rounded-pill bg-canvas/10 pl-6 pr-2 ring-1 ring-canvas/20 focus-within:ring-canvas/60">
+          <div className="flex h-14 items-center rounded-pill bg-canvas/10 pl-0 pr-2 ring-1 ring-canvas/20 focus-within:ring-canvas/60">
             <input
               type="email"
               required
@@ -91,14 +91,13 @@ export function Newsletter() {
           )}
 
           {status === "error" && (
-            <p className="text-sm text-red-400 font-medium">
-              {message}
-            </p>
+            <p className="text-sm text-red-400 font-medium">{message}</p>
           )}
 
           {status === "idle" && (
             <p className="text-xs text-stone">
-              By subscribing you agree to our privacy policy. Unsubscribe anytime.
+              By subscribing you agree to our privacy policy. Unsubscribe
+              anytime.
             </p>
           )}
         </form>

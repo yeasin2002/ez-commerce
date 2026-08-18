@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>EzCommerce - Service Unavailable</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #FFFFFF;
+      --fg: #18181B;
+      --mute: #71717A;
+      --card: #F4F4F5;
+      --border: #E4E4E7;
+      --btn-bg: #18181B;
+      --btn-fg: #FFFFFF;
+      --accent: #E11D48;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121214;
+        --fg: #FAFAFA;
+        --mute: #A1A1AA;
+        --card: #1E1E22;
+        --border: #27272A;
+        --btn-bg: #FAFAFA;
+        --btn-fg: #121214;
+        --accent: #F43F5E;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: calc(env(safe-area-inset-top, 24px) + 16px) 24px calc(env(safe-area-inset-bottom, 24px) + 24px);
+      text-align: center;
+      user-select: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .container {
+      max-width: 380px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .icon-wrapper {
+      width: 88px;
+      height: 88px;
+      border-radius: 9999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .icon-wrapper svg {
+      width: 40px;
+      height: 40px;
+      stroke: var(--fg);
+    }
+
+    .badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #FFF;
+      border-radius: 9999px;
+    }
+
+    .brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mute);
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--fg);
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--mute);
+      padding: 0 8px;
+    }
+
+    .btn {
+      margin-top: 12px;
+      width: 100%;
+      height: 52px;
+      border-radius: 9999px;
+      background: var(--btn-bg);
+      color: var(--btn-fg);
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .btn.loading .btn-text {
+      opacity: 0.8;
+    }
+
+    .btn.loading .spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--mute);
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon-wrapper">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+        <line x1="2" y1="2" x2="22" y2="22" stroke="var(--accent)"></line>
+      </svg>
+      <div class="badge">
+        <div class="badge-dot"></div>
+      </div>
+    </div>
+
+    <div class="brand">EZ COMMERCE</div>
+    <h1 class="title">Service Unavailable</h1>
+    <p class="description">
+      That service is not available right now.<br>Please try again later.
+    </p>
+
+    <button id="retry-btn" class="btn" onclick="retryConnection()">
+      <span class="spinner"></span>
+      <span class="btn-text">Try Again</span>
+    </button>
+
+    <div class="footer-note">EzCommerce Mobile App</div>
+  </div>
+
+  <script>
+    function retryConnection() {
+      var btn = document.getElementById("retry-btn");
+      if (btn.classList.contains("loading")) return;
+
+      btn.classList.add("loading");
+      btn.disabled = true;
+
+      // Check if server is reachable
+      setTimeout(function() {
+        window.location.href = "http://localhost:8000/";
+        setTimeout(function() {
+          btn.classList.remove("loading");
+          btn.disabled = false;
+        }, 3000);
+      }, 500);
+    }
+
+    // Auto retry when network comes back online
+    window.addEventListener("online", function() {
+      retryConnection();
+    });
+  </script>
+</body>
+</html>
