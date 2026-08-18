@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import checkEnvVariables from "./check-env-variables";
+import { withNetworkQr } from "./scripts/ip-to-qr";
 
 // Run check for required environment variables during boot
 checkEnvVariables();
@@ -9,12 +10,6 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME;
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // reactCompiler: true,
-  // logging: {
-  //   fetches: {
-  //     fullUrl: true,
-  //   },
-  // },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -50,4 +45,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNetworkQr(nextConfig);
