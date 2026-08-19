@@ -66,9 +66,21 @@ importers:
       '@medusajs/ui':
         specifier: 4.1.19
         version: 4.1.19(@types/react-dom@19.0.5(@types/react@19.0.5))(@types/react@19.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
+      '@mikro-orm/core':
+        specifier: 6.6.14
+        version: 6.6.14
+      '@mikro-orm/knex':
+        specifier: 6.6.14
+        version: 6.6.14(@mikro-orm/core@6.6.14)(pg@8.23.0)
+      '@mikro-orm/migrations':
+        specifier: 6.6.14
+        version: 6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.23.0)
+      '@mikro-orm/postgresql':
+        specifier: 6.6.14
+        version: 6.6.14(@mikro-orm/core@6.6.14)
       '@rsc-labs/medusa-store-analytics-v2':
         specifier: ^0.1.9
-        version: 0.1.9(43684fe426ad909897cb2e16ff137950)
+        version: 0.1.9(e6e4f54c9e66242a135d9f3dbb7ebfd5)
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@18.3.1)
@@ -2242,12 +2254,6 @@ packages:
         optional: true
       mariadb:
         optional: true
-
-  '@mikro-orm/migrations@6.4.3':
-    resolution: {integrity: sha512-VrsKq95esUBEMhwp9vVX+YUj2+/cNwb8UZ63HfgaqPo+pYj8r1RBSTboFOE9V0Md0n3ol9b5xByfPPa3qHmL0g==}
-    engines: {node: '>= 18.12.0'}
-    peerDependencies:
-      '@mikro-orm/core': 6.6.14
 
   '@mikro-orm/migrations@6.6.14':
     resolution: {integrity: sha512-rigk6pVUF8499yuR3kJOa9B0hzkacLYeWYmNuH5005ECQNcbT2d4qqTvWjE96/PqxxnMesKg4RmesSIC7sIXvg==}
@@ -12693,26 +12699,6 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.23.0)':
-    dependencies:
-      '@mikro-orm/core': 6.6.14
-      '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.23.0)
-      fs-extra: 11.2.0
-      umzug: 3.8.2(@types/node@20.19.43)
-    transitivePeerDependencies:
-      - '@types/node'
-      - better-sqlite3
-      - libsql
-      - mariadb
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
-      - pg-query-stream
-      - sqlite3
-      - supports-color
-      - tedious
-
   '@mikro-orm/migrations@6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.23.0)':
     dependencies:
       '@mikro-orm/core': 6.6.14
@@ -15121,7 +15107,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.62.4':
     optional: true
 
-  '@rsc-labs/medusa-store-analytics-v2@0.1.9(43684fe426ad909897cb2e16ff137950)':
+  '@rsc-labs/medusa-store-analytics-v2@0.1.9(e6e4f54c9e66242a135d9f3dbb7ebfd5)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.0.5)(react@18.3.1)
       '@emotion/styled': 11.13.0(@emotion/react@11.14.0(@types/react@19.0.5)(react@18.3.1))(@types/react@19.0.5)(react@18.3.1)
@@ -15135,7 +15121,7 @@ snapshots:
       '@mikro-orm/cli': 6.4.3(pg@8.23.0)
       '@mikro-orm/core': 6.6.14
       '@mikro-orm/knex': 6.6.14(@mikro-orm/core@6.6.14)(pg@8.23.0)
-      '@mikro-orm/migrations': 6.4.3(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.23.0)
+      '@mikro-orm/migrations': 6.6.14(@mikro-orm/core@6.6.14)(@types/node@20.19.43)(pg@8.23.0)
       '@mikro-orm/postgresql': 6.6.14(@mikro-orm/core@6.6.14)
       '@mui/material': 5.18.0(@emotion/react@11.14.0(@types/react@19.0.5)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.14.0(@types/react@19.0.5)(react@18.3.1))(@types/react@19.0.5)(react@18.3.1))(@types/react@19.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@rsc-labs/nocto-plugin-system': 0.1.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
