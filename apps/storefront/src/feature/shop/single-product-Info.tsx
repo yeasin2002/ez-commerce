@@ -64,7 +64,9 @@ export function SingleProductInfo({
   });
 
   const activePrice = variantPrice || cheapestPrice;
+  const currentPriceFormatted = activePrice?.calculated_price;
   const currentPrice = activePrice?.calculated_price_number ?? 0;
+  const originalPriceFormatted = activePrice?.original_price;
   const originalPrice = activePrice?.original_price_number;
   const discountPercent = activePrice?.percentage_diff
     ? parseInt(activePrice.percentage_diff)
@@ -123,11 +125,11 @@ export function SingleProductInfo({
       {/* Pricing */}
       <div className="flex items-baseline gap-3">
         <span className="text-3xl font-bold text-sale">
-          ${currentPrice.toFixed(2)}
+          {currentPriceFormatted || `$${currentPrice.toFixed(2)}`}
         </span>
-        {hasDiscount && originalPrice ? (
+        {hasDiscount && (originalPriceFormatted || originalPrice) ? (
           <span className="text-lg text-mute line-through">
-            ${originalPrice.toFixed(2)}
+            {originalPriceFormatted || `$${originalPrice?.toFixed(2)}`}
           </span>
         ) : null}
       </div>

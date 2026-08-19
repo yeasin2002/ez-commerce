@@ -81,11 +81,15 @@ export default async function initial_data_seed({
           name: "Default Store",
           supported_currencies: [
             {
-              currency_code: "eur",
+              currency_code: "bdt",
               is_default: true,
             },
             {
               currency_code: "usd",
+              is_default: false,
+            },
+            {
+              currency_code: "eur",
               is_default: false,
             },
           ],
@@ -100,9 +104,21 @@ export default async function initial_data_seed({
     input: {
       regions: [
         {
+          name: "Bangladesh",
+          currency_code: "bdt",
+          countries: ["bd"],
+          payment_providers: ["pp_system_default"],
+        },
+        {
           name: "Europe",
           currency_code: "eur",
           countries,
+          payment_providers: ["pp_system_default"],
+        },
+        {
+          name: "International",
+          currency_code: "usd",
+          countries: ["us", "ca", "au", "ae", "sa", "in", "pk", "my", "sg", "nz", "jp"],
           payment_providers: ["pp_system_default"],
         },
       ],
