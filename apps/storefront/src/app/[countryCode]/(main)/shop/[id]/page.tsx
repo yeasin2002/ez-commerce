@@ -2,10 +2,11 @@
 
 import { ChevronLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
 
 import { Footer } from "@/feature/home/Footer";
 import { Header } from "@/feature/home/Header";
+import { ProductAccordions } from "@/feature/shop/product-accordions";
 import { ProductGallery } from "@/feature/shop/ProductGallery";
 import { PromoMarquee } from "@/feature/shop/PromoMarquee";
 import { RelatedProducts } from "@/feature/shop/RelatedProducts";
@@ -19,6 +20,16 @@ export default function ProductDetailsPage({
 }) {
   const { id, countryCode } = use(params);
   const { data: dbProduct, isLoading, error } = useProduct(id, countryCode);
+
+    const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
+      {
+        description: true,
+      },
+    );
+  
+    const toggleAccordion = (key: string) => {
+      setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+    };
 
   useEffect(() => {
     if (dbProduct) {
@@ -124,7 +135,12 @@ export default function ProductDetailsPage({
             }
             name={dbProduct.title || ""}
           />
-          <SingleProductInfo product={dbProduct} />
+          <SingleProductInfo product={dbProduct} /> 
+                <ProductAccordions
+        product={dbProduct}
+        openAccordions={openAccordions}
+        toggleAccordion={toggleAccordion}
+      />
         </div>
 
         {/* Marquee Promotion Banner */}

@@ -42,15 +42,15 @@ export function SingleProductInfo({
   const soldCount = getProductSoldCount(product);
   const viewingCount = getProductViewingCount(product);
 
-  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
-    {
-      description: true,
-    },
-  );
+  // const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
+  //   {
+  //     description: true,
+  //   },
+  // );
 
-  const toggleAccordion = (key: string) => {
-    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+  // const toggleAccordion = (key: string) => {
+  //   setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+  // };
 
   // Find active variant matching selected options
   const selectedVariant = product.variants?.find((v) =>
@@ -120,6 +120,7 @@ export function SingleProductInfo({
         <h1 className="mt-3 font-display text-3xl md:text-4xl uppercase tracking-wide leading-tight">
           {product.title}
         </h1>
+        <h2 id="description" className="mt-2 text-md">Reimagine the feeling of classic sweatpants. With our cotton sweatpants, everyday essentials no longer have to be ordinary.</h2>
       </div>
 
       {/* Pricing */}
@@ -274,11 +275,11 @@ export function SingleProductInfo({
       </div>
 
       {/* Accordions */}
-      <ProductAccordions
+      {/* <ProductAccordions
         product={product}
         openAccordions={openAccordions}
         toggleAccordion={toggleAccordion}
-      />
+      /> */}
     </div>
   );
 }
