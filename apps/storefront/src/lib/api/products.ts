@@ -14,4 +14,37 @@ export const productsApi = {
         },
       },
     ),
+  retrieve: async (id: string, queryParams?: Record<string, unknown>) => {
+    const query = {
+      fields:
+        "*variants.calculated_price,+variants.inventory_quantity,*variants.images,*variants.options,+metadata,+tags",
+      ...queryParams,
+    };
+
+    try {
+      return await sdk.client
+        .fetch<{ product: HttpTypes.StoreProduct }>(`/store/products/${id}`, {
+          method: "GET",
+          query,
+        })
+        .then((res) => res.product);
+    } catch (error) {
+      // Fallback: search by handle
+      const res = await sdk.client.fetch<{
+        products: HttpTypes.StoreProduct[];
+        count: number;
+      }>(`/store/products`, {
+        method: "GET",
+        query: {
+          ...query,
+          handle: id,
+          limit: 1,
+        },
+      });
+      if (res.products && res.products.length > 0) {
+        return res.products[0];
+      }
+      throw error;
+    }
+  },
 };

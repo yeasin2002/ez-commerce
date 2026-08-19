@@ -1,14 +1,23 @@
 "use client";
 
+import { useAddToCart } from "@lib/hooks/api/use-cart";
 import { getProductPrice } from "@lib/util/get-product-price";
-import { HttpTypes } from "@medusajs/types";
-import { Heart, HelpCircle, Minus, Plus, Share2 } from "lucide-react";
-import { useState } from "react";
-import ShippingAndDeliveryCard from "./shipping-and-delivery.card";
-import { ProductAccordions } from "./product-accordions";
 import { getProductSoldCount, getProductViewingCount } from "@lib/util/product";
+import { HttpTypes } from "@medusajs/types";
+import { Check, Heart, HelpCircle, Loader2, Minus, Plus, Share2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { ProductAccordions } from "./product-accordions";
+import ShippingAndDeliveryCard from "./shipping-and-delivery.card";
 
-export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
+export function SingleProductInfo({
+  product,
+}: {
+  product: HttpTypes.StoreProduct;
+}) {
+  const params = useParams();
+  const countryCode = (params?.countryCode as string) || "us";
+
   const [selectedOptions, setSelectedOptions] = useState<
     Record<string, string>
   >(() => {
@@ -21,16 +30,18 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
     return initial;
   });
 
+  const [quantity, setQuantity] = useState(1);
+  const [addedToast, setAddedToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const addToCartMutation = useAddToCart();
+
   // Commented out metadata players/patches for generic PDP
   // const players = getProductPlayers(product);
   // const patches = getProductPatches(product);
   const soldCount = getProductSoldCount(product);
   const viewingCount = getProductViewingCount(product);
 
-  // const [selectedPlayer, setSelectedPlayer] = useState(players?.[0]?.name || "Patch Only");
-  // const [customName, setCustomName] = useState("");
-  // const [selectedPatch, setSelectedPatch] = useState(patches?.[0] || "No Patch");
-  const [quantity, setQuantity] = useState(1);
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
     {
       description: true,
@@ -60,6 +71,31 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
     : undefined;
 
   const hasDiscount = originalPrice ? originalPrice > currentPrice : false;
+
+  const handleAddToCart = () => {
+    if (!selectedVariant?.id) {
+      setErrorMessage("Please select a valid variant option");
+      return;
+    }
+
+    setErrorMessage(null);
+    addToCartMutation.mutate(
+      {
+        variantId: selectedVariant.id,
+        quantity,
+        countryCode,
+      },
+      {
+        onSuccess: () => {
+          setAddedToast(true);
+          setTimeout(() => setAddedToast(false), 2500);
+        },
+        onError: (err: any) => {
+          setErrorMessage(err?.message || "Failed to add item to cart");
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex flex-col gap-6 text-ink">
@@ -146,65 +182,6 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
         );
       })}
 
-      {/* Jersey Player Customization (Commented out for generic PDP) */}
-      {/* 
-      {players && players.length > 0 && (
-        <div className="space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-wide block">
-            Player Name
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {players.map((p) => (
-              <button
-                key={p.name}
-                onClick={() => setSelectedPlayer(p.name)}
-                className={`h-10 px-4 rounded-pill text-xs font-semibold border transition-all ${
-                  selectedPlayer === p.name
-                    ? "bg-ink border-ink text-canvas"
-                    : "bg-cloud border-transparent text-ink hover:border-hairline"
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-          <input
-            type="text"
-            placeholder="Custom Name and Number (Leave Note At Checkout)"
-            value={customName}
-            onChange={(e) => setCustomName(e.target.value)}
-            className="w-full h-11 rounded-pill border border-hairline-soft px-4 text-xs placeholder:text-mute outline-none focus:border-ink transition-colors"
-          />
-        </div>
-      )}
-      */}
-
-      {/* Jersey Patch Selector (Commented out for generic PDP) */}
-      {/* 
-      {patches && patches.length > 0 && (
-        <div className="space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-wide block">
-            Patch
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {patches.map((patch) => (
-              <button
-                key={patch}
-                onClick={() => setSelectedPatch(patch)}
-                className={`h-10 px-4 rounded-pill text-xs font-semibold border transition-all ${
-                  selectedPatch === patch
-                    ? "bg-ink border-ink text-canvas"
-                    : "bg-cloud border-transparent text-ink hover:border-hairline"
-                }`}
-              >
-                {patch}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-      */}
-
       {/* Social Actions */}
       <div className="flex items-center gap-6 py-2 text-xs border-y border-hairline-soft">
         <button className="flex items-center gap-2 text-mute hover:text-ink">
@@ -224,7 +201,8 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
           <div className="flex h-12 items-center rounded-pill bg-cloud px-4 border border-hairline-soft">
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="p-1 text-mute hover:text-ink transition-colors"
+              disabled={quantity <= 1 || addToCartMutation.isPending}
+              className="p-1 text-mute hover:text-ink transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               aria-label="Decrease quantity"
             >
               <Minus className="h-3 w-3" />
@@ -234,7 +212,8 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
             </span>
             <button
               onClick={() => setQuantity((q) => q + 1)}
-              className="p-1 text-mute hover:text-ink transition-colors"
+              disabled={addToCartMutation.isPending}
+              className="p-1 text-mute hover:text-ink transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               aria-label="Increase quantity"
             >
               <Plus className="h-3 w-3" />
@@ -242,8 +221,28 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
           </div>
 
           {/* Add to Cart */}
-          <button className="flex-1 h-12 rounded-pill bg-ink text-xs font-semibold uppercase tracking-wider text-canvas hover:opacity-90 transition-opacity">
-            Add to Cart
+          <button
+            onClick={handleAddToCart}
+            disabled={addToCartMutation.isPending || !selectedVariant}
+            className={`flex-1 h-12 rounded-pill text-xs font-semibold uppercase tracking-wider text-canvas transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+              addedToast
+                ? "bg-emerald-600 hover:bg-emerald-600 text-white"
+                : "bg-ink hover:opacity-90"
+            }`}
+          >
+            {addToCartMutation.isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Adding to Cart...</span>
+              </>
+            ) : addedToast ? (
+              <>
+                <Check className="h-4 w-4 stroke-[3]" />
+                <span>Added to Cart!</span>
+              </>
+            ) : (
+              "Add to Cart"
+            )}
           </button>
 
           {/* Wishlist */}
@@ -254,6 +253,12 @@ export function ProductInfo({ product }: { product: HttpTypes.StoreProduct }) {
             <Heart className="h-5 w-5" />
           </button>
         </div>
+
+        {errorMessage && (
+          <p className="text-xs text-sale font-medium animate-in fade-in duration-200">
+            {errorMessage}
+          </p>
+        )}
 
         {/* Buy with Shop */}
         <button className="w-full h-12 rounded-pill bg-[#5a31f4] text-xs font-bold uppercase tracking-wider text-canvas hover:opacity-90 transition-opacity">

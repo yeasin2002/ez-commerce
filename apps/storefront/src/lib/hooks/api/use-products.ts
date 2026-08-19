@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { productsApi } from "@lib/api/products";
 import { useRegions } from "./use-regions";
 
@@ -7,6 +7,8 @@ const PRODUCT_KEYS = {
   lists: () => ["products", "list"] as const,
   list: (queryParams: Record<string, unknown>) =>
     ["products", "list", queryParams] as const,
+  detail: (id: string, queryParams?: Record<string, unknown>) =>
+    ["products", "detail", id, queryParams] as const,
 };
 
 export const useProducts = (countryCode: string, categoryId?: string) => {
@@ -39,5 +41,24 @@ export const useProducts = (countryCode: string, categoryId?: string) => {
       return lastPage.count > currentCount ? allPages.length : null;
     },
     enabled: !!regions,
+  });
+};
+
+export const useProduct = (id: string, countryCode?: string) => {
+  const { data: regions } = useRegions();
+
+  const region =
+    regions?.find((r) => r.countries?.some((c) => c?.iso_2 === countryCode)) ||
+    regions?.find((r) => r.countries?.some((c) => c?.iso_2 === "us")) ||
+    regions?.[0];
+
+  return useQuery({
+    queryKey: PRODUCT_KEYS.detail(id, { countryCode, regionId: region?.id }),
+    queryFn: () =>
+      productsApi.retrieve(
+        id,
+        region?.id ? { region_id: region.id } : undefined,
+      ),
+    enabled: !!id && !!regions,
   });
 };
