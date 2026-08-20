@@ -1,0 +1,13 @@
+include ':app'
+include ':capacitor-cordova-android-plugins'
+project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
+
+apply from: 'capacitor.settings.gradle'
+
+// Override projectDir to avoid pnpm's dot directory (".pnpm") which causes Gradle to omit XML layout resources
+project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
+project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
+project(':capacitor-haptics').projectDir = new File('../node_modules/@capacitor/haptics/android')
+project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor/keyboard/android')
+project(':capacitor-splash-screen').projectDir = new File('../node_modules/@capacitor/splash-screen/android')
+project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
