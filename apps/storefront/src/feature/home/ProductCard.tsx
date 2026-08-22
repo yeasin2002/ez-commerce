@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
+import notFound from "@/assets/not-found--image.webp";
+
 export type Product = {
   id: string;
   handle?: string;
@@ -12,6 +14,8 @@ export type Product = {
   team: string;
   price: number;
   original?: number;
+  calculatedPrice?: string;
+  originalPrice?: string;
   discount?: number;
   image: string;
   tag?: string;
@@ -64,6 +68,7 @@ export function ProductCard({
       countryCode,
     });
   };
+  const THUMBNAIL_IMAGE = product.image || product?.images?.[0] || notFound;
 
   if (layout === "list") {
     return (
@@ -107,11 +112,11 @@ export function ProductCard({
             <span
               className={`text-sm font-bold ${onSale ? "text-sale" : "text-ink"}`}
             >
-              ${product.price.toFixed(2)}
+              {product.calculatedPrice || `$${product.price.toFixed(2)}`}
             </span>
             {onSale ? (
               <span className="text-xs text-mute line-through">
-                ${product.original!.toFixed(2)}
+                {product.originalPrice || `$${product.original!.toFixed(2)}`}
               </span>
             ) : null}
           </div>
@@ -160,7 +165,7 @@ export function ProductCard({
         </button>
 
         <Image
-          src={product.image}
+          src={THUMBNAIL_IMAGE}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
@@ -196,11 +201,11 @@ export function ProductCard({
           <span
             className={`text-sm font-semibold ${onSale ? "text-sale" : "text-ink"}`}
           >
-            ${product.price.toFixed(2)}
+            {product.calculatedPrice || `$${product.price.toFixed(2)}`}
           </span>
           {onSale ? (
             <span className="text-xs text-mute line-through">
-              ${product.original!.toFixed(2)}
+              {product.originalPrice || `$${product.original!.toFixed(2)}`}
             </span>
           ) : null}
         </div>

@@ -1,19 +1,15 @@
 import { ArrowRight } from "lucide-react";
 
+// const HERO_IMAGE = `https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80&auto=format&fit=crop`;
+import HERO_IMAGE from '@/assets/hero-banner-3.png';
+
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-ink text-canvas">
-      <link
-        rel="preload"
-        href="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80&auto=format&fit=crop"
-        as="image"
-        fetchPriority="high"
-      />
       <div
         className="relative min-h-[70vh] md:min-h-[85vh] w-full bg-cover bg-center"
         style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%), url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80&auto=format&fit=crop')",
+          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%), url('${HERO_IMAGE.src}')`,
         }}
       >
         <div className="container-page relative flex min-h-[70vh] md:min-h-[85vh] flex-col justify-end pb-16 md:pb-24">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { CategoryStrip } from "@/feature/home/CategoryStrip";
 import { EditorialTiles } from "@/feature/home/EditorialTiles";
 import { FAQ } from "@/feature/home/FAQ";
@@ -14,9 +15,10 @@ import { ProductGrid } from "@/feature/home/ProductGrid";
 import { Testimonials } from "@/feature/home/Testimonials";
 import { ValueProps } from "@/feature/home/ValueProps";
 
-import { BEST_SELLERS, NEW_ARRIVALS } from "@/data/products.data";
-
 export default function HomePage() {
+  const params = useParams();
+  const countryCode = (params?.countryCode as string) || "bd";
+
   return (
     <div className="min-h-screen bg-canvas text-ink">
       <Header />
@@ -29,7 +31,9 @@ export default function HomePage() {
           eyebrow="Trending"
           title="Best Sellers"
           subtitle="This month's most-worn kits."
-          products={BEST_SELLERS}
+          collectionHandle="best-sellers"
+          viewAllHref={`/${countryCode}/shop?collection=best-sellers`}
+          limit={4}
         />
         <EditorialTiles />
         <Marquee />
@@ -37,7 +41,9 @@ export default function HomePage() {
           eyebrow="Just Landed"
           title="New Arrivals"
           subtitle="Fresh drops, straight from the pitch."
-          products={NEW_ARRIVALS}
+          collectionHandle="new-arrivals"
+          viewAllHref={`/${countryCode}/shop?collection=new-arrivals`}
+          limit={4}
         />
         <Testimonials />
         <InstagramGrid />

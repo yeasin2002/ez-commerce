@@ -20,16 +20,14 @@ export default function ProductDetailsPage({
 }) {
   const { id, countryCode } = use(params);
   const { data: dbProduct, isLoading, error } = useProduct(id, countryCode);
+  console.log(dbProduct);
 
-    const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
-      {
-        description: true,
-      },
-    );
-  
-    const toggleAccordion = (key: string) => {
-      setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
-    };
+  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>(
+    { description: true },
+  );
+  const toggleAccordion = (key: string) => {
+    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     if (dbProduct) {
